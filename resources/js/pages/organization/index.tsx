@@ -1,25 +1,67 @@
 import { Head } from '@inertiajs/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Building2, Users } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 
 type Props = { departments: any[] };
 
+function EmployeeChip({ employee }: { employee: any }) {
+    return (
+        <div className="flex items-center gap-2 rounded-full border bg-background px-3 py-1 text-xs shadow-sm">
+            <span className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Users className="size-3" />
+            </span>
+            <span className="font-medium">
+                {employee.first_name} {employee.last_name}
+            </span>
+            {employee.position?.name && (
+                <span className="text-muted-foreground">
+                    · {employee.position.name}
+                </span>
+            )}
+        </div>
+    );
+}
+
 function DeptNode({ dept, level = 0 }: { dept: any; level?: number }) {
     return (
-        <div className="ml-4 border-l pl-4">
-            <div className="font-semibold">{dept.name}</div>
-            {dept.employees?.length > 0 && (
-                <ul className="ml-4 list-disc text-sm text-muted-foreground">
-                    {dept.employees.map((e: any) => (
-                        <li key={e.id}>
-                            {e.first_name} {e.last_name} —{' '}
-                            {e.position?.name ?? '-'}
-                        </li>
+        <div className="relative">
+            <Card className="border-l-4 border-l-primary shadow-sm">
+                <CardContent className="space-y-3 p-4">
+                    <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                            <span className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                                <Building2 className="size-4" />
+                            </span>
+                            <div>
+                                <h3 className="leading-tight font-semibold">
+                                    {dept.name}
+                                </h3>
+                                <p className="text-xs text-muted-foreground">
+                                    {dept.employees?.length ?? 0} karyawan
+                                </p>
+                            </div>
+                        </div>
+                        <Badge variant="secondary">Level {level + 1}</Badge>
+                    </div>
+
+                    {dept.employees?.length > 0 && (
+                        <div className="flex flex-wrap gap-2">
+                            {dept.employees.map((e: any) => (
+                                <EmployeeChip key={e.id} employee={e} />
+                            ))}
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+
+            {dept.children?.length > 0 && (
+                <div className="mt-4 ml-6 space-y-4 border-l-2 border-dashed border-border pl-6">
+                    {dept.children.map((c: any) => (
+                        <DeptNode key={c.id} dept={c} level={level + 1} />
                     ))}
-                </ul>
+                </div>
             )}
-            {dept.children?.map((c: any) => (
-                <DeptNode key={c.id} dept={c} level={level + 1} />
-            ))}
         </div>
     );
 }
@@ -30,23 +72,44 @@ export default function OrganizationIndex({ departments }: Props) {
     return (
         <>
             <Head title="Organization" />
-            <div className="flex h-full flex-1 flex-col gap-4 p-4">
-                <h1 className="text-2xl font-bold">Struktur Organisasi</h1>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Departemen & Karyawan</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        {roots.length === 0 && (
-                            <p className="text-muted-foreground">
-                                No departments.
-                            </p>
-                        )}
+            <div className="flex h-full flex-1 flex-col gap-6 p-6">
+                <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div className="flex flex-col gap-1">
+                        <h1 className="text-3xl font-semibold tracking-tight">
+                            Struktur Organisasi
+                        </h1>
+                        <p className="text-sm text-muted-foreground">
+                            Visualisasi departemen, posisi, dan karyawan.
+                        </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Badge variant="outline">
+                            {departments.length} departemen
+                        </Badge>
+                        <Badge variant="outline">
+                            {departments.reduce(
+                                (acc: number, d: any) =>
+                                    acc + (d.employees?.length ?? 0),
+                                0,
+                            )}{' '}
+                            karyawan
+                        </Badge>
+                    </div>
+                </header>
+
+                {roots.length === 0 ? (
+                    <Card>
+                        <CardContent className="py-12 text-center text-muted-foreground">
+                            Belum ada departemen.
+                        </CardContent>
+                    </Card>
+                ) : (
+                    <div className="space-y-6">
                         {roots.map((d) => (
                             <DeptNode key={d.id} dept={d} />
                         ))}
-                    </CardContent>
-                </Card>
+                    </div>
+                )}
             </div>
         </>
     );

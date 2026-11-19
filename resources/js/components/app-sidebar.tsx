@@ -1,10 +1,10 @@
 import { Link } from '@inertiajs/react';
 import {
+    Building2,
     CalendarDays,
     ClipboardList,
     DollarSign,
     LayoutGrid,
-    Settings,
     Users,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -25,7 +25,7 @@ import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dasbor',
+        title: 'Dasboard',
         href: dashboard(),
         icon: LayoutGrid,
     },
@@ -37,7 +37,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Struktur Organisasi',
         href: '/organization',
-        icon: Settings,
+        icon: Building2,
     },
     {
         title: 'Shift & Jadwal',
