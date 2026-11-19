@@ -17,6 +17,11 @@ const sidebarNavItems: NavItem[] = [
         icon: null,
     },
     {
+        title: 'Informasi Perusahaan',
+        href: '/settings/company',
+        icon: null,
+    },
+    {
         title: 'Security',
         href: editSecurity(),
         icon: null,

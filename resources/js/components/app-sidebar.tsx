@@ -25,12 +25,12 @@ import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dasboard',
+        title: 'Dashboard Utama',
         href: dashboard(),
         icon: LayoutGrid,
     },
     {
-        title: 'Karyawan',
+        title: 'Master Karyawan',
         href: '/employees',
         icon: Users,
     },
@@ -40,22 +40,22 @@ const mainNavItems: NavItem[] = [
         icon: Building2,
     },
     {
-        title: 'Shift & Jadwal',
+        title: 'Shift & Jadwal Kerja',
         href: '/shifts',
         icon: CalendarDays,
     },
     {
-        title: 'Absensi',
+        title: 'Absensi & Presensi',
         href: '/attendance',
         icon: ClipboardList,
     },
     {
-        title: 'Cuti & Izin',
+        title: 'Cuti & Izin Pegawai',
         href: '/leave/requests',
         icon: CalendarDays,
     },
     {
-        title: 'Penggajian',
+        title: 'Penggajian & Slip Gaji',
         href: '/payroll/periods',
         icon: DollarSign,
     },
@@ -65,11 +65,11 @@ const footerNavItems: NavItem[] = [];
 
 export function AppSidebar() {
     return (
-        <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
+        <Sidebar collapsible="icon" variant="inset" className="border-r border-slate-200/80 dark:border-slate-800">
+            <SidebarHeader className="border-b border-slate-100 p-3 dark:border-slate-800/80">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton size="lg" asChild className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                             <Link href={dashboard()} prefetch>
                                 <AppLogo />
                             </Link>
@@ -82,7 +82,7 @@ export function AppSidebar() {
                 <NavMain items={mainNavItems} />
             </SidebarContent>
 
-            <SidebarFooter>
+            <SidebarFooter className="border-t border-slate-100 p-2 dark:border-slate-800/80">
                 <NavFooter items={footerNavItems} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>

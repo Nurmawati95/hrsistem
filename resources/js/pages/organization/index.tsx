@@ -1,21 +1,22 @@
-import { Head } from '@inertiajs/react';
-import { Building2, Users } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import { Head, Link } from '@inertiajs/react';
+import { Building2, ChevronRight, Network, UserCheck, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 type Props = { departments: any[] };
 
 function EmployeeChip({ employee }: { employee: any }) {
     return (
-        <div className="flex items-center gap-2 rounded-full border bg-background px-3 py-1 text-xs shadow-sm">
-            <span className="flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <Users className="size-3" />
+        <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50/70 px-2.5 py-1 text-xs shadow-2xs dark:border-slate-800 dark:bg-slate-800/60">
+            <span className="flex size-5 items-center justify-center rounded-full bg-[#16325c]/10 text-[#16325c] dark:text-sky-400">
+                <Users className="size-2.5" />
             </span>
-            <span className="font-medium">
+            <span className="font-semibold text-slate-800 dark:text-slate-200">
                 {employee.first_name} {employee.last_name}
             </span>
             {employee.position?.name && (
-                <span className="text-muted-foreground">
+                <span className="text-[11px] text-slate-400">
                     · {employee.position.name}
                 </span>
             )}
@@ -26,39 +27,52 @@ function EmployeeChip({ employee }: { employee: any }) {
 function DeptNode({ dept, level = 0 }: { dept: any; level?: number }) {
     return (
         <div className="relative">
-            <Card className="border-l-4 border-l-primary shadow-sm">
-                <CardContent className="space-y-3 p-4">
-                    <div className="flex items-center justify-between gap-2">
-                        <div className="flex items-center gap-2">
-                            <span className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                                <Building2 className="size-4" />
-                            </span>
-                            <div>
-                                <h3 className="leading-tight font-semibold">
+            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs border-l-4 border-l-[#16325c] dark:border-slate-800 dark:bg-slate-900">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className="flex size-9 items-center justify-center rounded-lg bg-[#16325c]/10 text-[#16325c] dark:text-sky-400">
+                            <Building2 className="size-4" />
+                        </div>
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                                     {dept.name}
                                 </h3>
-                                <p className="text-xs text-muted-foreground">
-                                    {dept.employees?.length ?? 0} karyawan
-                                </p>
+                                {level > 0 && (
+                                    <span className="rounded bg-slate-100 px-1.5 py-0.2 text-[9px] font-mono text-slate-500 uppercase">
+                                        Sub-Unit
+                                    </span>
+                                )}
                             </div>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                                {dept.description ?? 'Unit kerja operasional'}
+                            </p>
                         </div>
-                        <Badge variant="secondary">Level {level + 1}</Badge>
                     </div>
 
-                    {dept.employees?.length > 0 && (
+                    <span className="font-mono text-xs font-semibold text-[#16325c] bg-slate-100 px-2.5 py-1 rounded-md dark:bg-slate-800 dark:text-sky-400 self-start sm:self-auto">
+                        {dept.employees?.length ?? 0} Pegawai
+                    </span>
+                </div>
+
+                {dept.employees && dept.employees.length > 0 && (
+                    <div className="mt-4 border-t border-slate-100 pt-3 dark:border-slate-800">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                            Anggota & Staf Terdaftar:
+                        </span>
                         <div className="flex flex-wrap gap-2">
-                            {dept.employees.map((e: any) => (
-                                <EmployeeChip key={e.id} employee={e} />
+                            {dept.employees.map((emp: any) => (
+                                <EmployeeChip key={emp.id} employee={emp} />
                             ))}
                         </div>
-                    )}
-                </CardContent>
-            </Card>
+                    </div>
+                )}
+            </div>
 
-            {dept.children?.length > 0 && (
-                <div className="mt-4 ml-6 space-y-4 border-l-2 border-dashed border-border pl-6">
-                    {dept.children.map((c: any) => (
-                        <DeptNode key={c.id} dept={c} level={level + 1} />
+            {dept.children && dept.children.length > 0 && (
+                <div className="mt-4 ml-6 space-y-4 border-l-2 border-dashed border-slate-200 pl-4 dark:border-slate-800">
+                    {dept.children.map((child: any) => (
+                        <DeptNode key={child.id} dept={child} level={level + 1} />
                     ))}
                 </div>
             )}
@@ -67,49 +81,56 @@ function DeptNode({ dept, level = 0 }: { dept: any; level?: number }) {
 }
 
 export default function OrganizationIndex({ departments }: Props) {
-    const roots = departments.filter((d) => !d.parent_id);
+    const rootDepts = departments.filter((d) => !d.parent_id);
 
     return (
         <>
-            <Head title="Organization" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-6">
-                <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                    <div className="flex flex-col gap-1">
-                        <h1 className="text-3xl font-semibold tracking-tight">
-                            Struktur Organisasi
+            <Head title="Struktur Organisasi - HR Sistem" />
+
+            <div className="flex h-full flex-1 flex-col gap-6 p-6 lg:p-8 bg-[#f8fafc] dark:bg-slate-950">
+                {/* Header */}
+                <header className="flex flex-col gap-4 rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900">
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <span className="font-mono text-xs font-bold tracking-widest text-[#16325c] uppercase dark:text-sky-400">
+                                LOKET 02 · ORGANISASI
+                            </span>
+                            <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                                Organogram & Hierarki
+                            </span>
+                        </div>
+                        <h1 className="text-2xl font-bold tracking-tight text-[#0f274a] dark:text-white">
+                            Bagan Struktur Organisasi
                         </h1>
-                        <p className="text-sm text-muted-foreground">
-                            Visualisasi departemen, posisi, dan karyawan.
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Peta hierarki unit kerja perusahaan dan penempatan staf pada masing-masing divisi.
                         </p>
                     </div>
+
                     <div className="flex items-center gap-2">
-                        <Badge variant="outline">
-                            {departments.length} departemen
-                        </Badge>
-                        <Badge variant="outline">
-                            {departments.reduce(
-                                (acc: number, d: any) =>
-                                    acc + (d.employees?.length ?? 0),
-                                0,
-                            )}{' '}
-                            karyawan
-                        </Badge>
+                        <Button variant="outline" size="sm" asChild className="text-xs font-semibold h-9">
+                            <Link href="/departments">
+                                Kelola Unit Departemen
+                            </Link>
+                        </Button>
+                        <Button variant="outline" size="sm" asChild className="text-xs font-semibold h-9">
+                            <Link href="/positions">
+                                Kelola Master Jabatan
+                            </Link>
+                        </Button>
                     </div>
                 </header>
 
-                {roots.length === 0 ? (
-                    <Card>
-                        <CardContent className="py-12 text-center text-muted-foreground">
-                            Belum ada departemen.
-                        </CardContent>
-                    </Card>
-                ) : (
-                    <div className="space-y-6">
-                        {roots.map((d) => (
-                            <DeptNode key={d.id} dept={d} />
-                        ))}
-                    </div>
-                )}
+                {/* Organogram Structure Tree */}
+                <div className="space-y-4">
+                    {rootDepts.length === 0 ? (
+                        <div className="rounded-xl border border-slate-200 bg-white p-12 text-center text-slate-400 text-xs">
+                            Belum ada struktur departemen yang dibuat.
+                        </div>
+                    ) : (
+                        rootDepts.map((d) => <DeptNode key={d.id} dept={d} />)
+                    )}
+                </div>
             </div>
         </>
     );

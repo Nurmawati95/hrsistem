@@ -29,6 +29,14 @@ class EmployeeController extends Controller
         return Inertia::render('employees/index', [
             'employees' => $employees,
             'filters' => $request->only('search'),
+            'stats' => [
+                'total' => Employee::count(),
+                'permanent' => Employee::where('employment_status', 'permanent')->count(),
+                'contract' => Employee::where('employment_status', 'contract')->count(),
+                'intern' => Employee::where('employment_status', 'intern')->count(),
+                'departments' => Department::count(),
+            ],
+            'recent' => Employee::orderByDesc('hire_date')->limit(5)->get(['id', 'first_name', 'last_name', 'hire_date', 'employment_status']),
         ]);
     }
 

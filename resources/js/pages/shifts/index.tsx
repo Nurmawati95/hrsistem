@@ -1,4 +1,13 @@
 import { Head, router, useForm } from '@inertiajs/react';
+import {
+    Calendar,
+    CalendarDays,
+    Clock,
+    Plus,
+    Trash2,
+    UserCheck,
+    Users,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -44,276 +53,275 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
     };
 
     const removeShift = (id: number) => {
-        if (confirm('Delete shift?')) router.delete(`/shifts/${id}`);
+        if (confirm('Hapus jadwal shift ini?')) router.delete(`/shifts/${id}`);
     };
 
     return (
         <>
-            <Head title="Shifts" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-6">
-                <header className="flex flex-col gap-1">
-                    <h1 className="text-3xl font-semibold tracking-tight">
-                        Shift & Jadwal
-                    </h1>
-                    <p className="text-sm text-muted-foreground">
-                        Kelola shift dan penugasan karyawan.
-                    </p>
+            <Head title="Shift & Jadwal Kerja - HR Sistem" />
+
+            <div className="flex h-full flex-1 flex-col gap-6 p-6 lg:p-8 bg-[#f8fafc] dark:bg-slate-950">
+                {/* Header */}
+                <header className="flex flex-col gap-4 rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900">
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <span className="font-mono text-xs font-bold tracking-widest text-[#16325c] uppercase dark:text-sky-400">
+                                LOKET 03 · PENJADWALAN
+                            </span>
+                            <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                                Jam Kerja Pegawai
+                            </span>
+                        </div>
+                        <h1 className="text-2xl font-bold tracking-tight text-[#0f274a] dark:text-white">
+                            Master Shift & Penugasan Jadwal
+                        </h1>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Pengaturan template shift kerja, jam istirahat, serta alokasi jadwal harian pegawai.
+                        </p>
+                    </div>
                 </header>
 
-                <div className="grid gap-4 md:grid-cols-2">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Tambah Shift</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <form onSubmit={submitShift} className="grid gap-3">
-                                <div className="grid gap-2">
-                                    <Label>Nama</Label>
-                                    <Input
-                                        placeholder="Nama shift"
-                                        value={shiftForm.data.name}
-                                        onChange={(e) =>
-                                            shiftForm.setData(
-                                                'name',
-                                                e.target.value,
-                                            )
-                                        }
-                                    />
-                                </div>
-                                <div className="grid gap-2">
-                                    <Label>Mulai</Label>
+                <div className="grid gap-6 md:grid-cols-2">
+                    {/* Tambah Shift Template */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900 border-t-4 border-t-[#16325c]">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                            <div className="flex items-center gap-2">
+                                <Clock className="size-4 text-[#16325c] dark:text-sky-400" />
+                                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                                    Tambah Template Shift
+                                </h3>
+                            </div>
+                        </div>
+
+                        <form onSubmit={submitShift} className="mt-4 grid gap-3">
+                            <div className="grid gap-1.5">
+                                <Label className="text-xs font-semibold">Nama Shift</Label>
+                                <Input
+                                    placeholder="Contoh: Shift Pagi (08:00 - 17:00)"
+                                    value={shiftForm.data.name}
+                                    onChange={(e) => shiftForm.setData('name', e.target.value)}
+                                    className="text-xs h-9"
+                                    required
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="grid gap-1.5">
+                                    <Label className="text-xs font-semibold">Jam Mulai</Label>
                                     <Input
                                         type="time"
                                         value={shiftForm.data.start_time}
-                                        onChange={(e) =>
-                                            shiftForm.setData(
-                                                'start_time',
-                                                e.target.value,
-                                            )
-                                        }
+                                        onChange={(e) => shiftForm.setData('start_time', e.target.value)}
+                                        className="text-xs h-9 font-mono"
+                                        required
                                     />
                                 </div>
-                                <div className="grid gap-2">
-                                    <Label>Selesai</Label>
+                                <div className="grid gap-1.5">
+                                    <Label className="text-xs font-semibold">Jam Selesai</Label>
                                     <Input
                                         type="time"
                                         value={shiftForm.data.end_time}
-                                        onChange={(e) =>
-                                            shiftForm.setData(
-                                                'end_time',
-                                                e.target.value,
-                                            )
-                                        }
+                                        onChange={(e) => shiftForm.setData('end_time', e.target.value)}
+                                        className="text-xs h-9 font-mono"
+                                        required
                                     />
                                 </div>
-                                <div className="grid gap-2">
-                                    <Label>Istirahat (mnt)</Label>
-                                    <Input
-                                        type="number"
-                                        value={shiftForm.data.break_minutes}
-                                        onChange={(e) =>
-                                            shiftForm.setData(
-                                                'break_minutes',
-                                                Number(e.target.value),
-                                            )
-                                        }
-                                    />
-                                </div>
-                                <Button
-                                    disabled={shiftForm.processing}
-                                    type="submit"
-                                    className="w-full"
-                                >
-                                    Tambah Shift
-                                </Button>
-                            </form>
-                        </CardContent>
-                    </Card>
+                            </div>
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Penugasan Shift</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <form
-                                onSubmit={submitAssign}
-                                className="grid gap-3"
+                            <div className="grid gap-1.5">
+                                <Label className="text-xs font-semibold">Durasi Istirahat (Menit)</Label>
+                                <Input
+                                    type="number"
+                                    placeholder="60"
+                                    value={shiftForm.data.break_minutes}
+                                    onChange={(e) => shiftForm.setData('break_minutes', Number(e.target.value))}
+                                    className="text-xs h-9 font-mono"
+                                />
+                            </div>
+
+                            <Button
+                                disabled={shiftForm.processing}
+                                type="submit"
+                                className="mt-1 h-9 bg-[#12284c] hover:bg-[#1b3a6b] text-xs font-semibold uppercase tracking-wider text-white shadow-sm"
                             >
-                                <div className="grid gap-2">
-                                    <Label>Karyawan</Label>
-                                    <Select
-                                        value={assignForm.data.employee_id}
-                                        onValueChange={(v) =>
-                                            assignForm.setData('employee_id', v)
-                                        }
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Pilih karyawan" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {employees.map((e) => (
-                                                <SelectItem
-                                                    key={e.id}
-                                                    value={String(e.id)}
-                                                >
-                                                    {e.first_name} {e.last_name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="grid gap-2">
-                                    <Label>Shift</Label>
-                                    <Select
-                                        value={assignForm.data.shift_id}
-                                        onValueChange={(v) =>
-                                            assignForm.setData('shift_id', v)
-                                        }
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Pilih shift" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {shifts.map((s) => (
-                                                <SelectItem
-                                                    key={s.id}
-                                                    value={String(s.id)}
-                                                >
-                                                    {s.name}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="grid gap-2">
-                                    <Label>Tanggal</Label>
-                                    <Input
-                                        type="date"
-                                        value={assignForm.data.date}
-                                        onChange={(e) =>
-                                            assignForm.setData(
-                                                'date',
-                                                e.target.value,
-                                            )
-                                        }
-                                    />
-                                </div>
-                                <Button
-                                    disabled={assignForm.processing}
-                                    type="submit"
-                                    className="w-full"
+                                <Plus className="mr-1.5 size-3.5" />
+                                Simpan Template Shift
+                            </Button>
+                        </form>
+                    </div>
+
+                    {/* Penugasan Shift ke Pegawai */}
+                    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900 border-t-4 border-t-sky-600">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                            <div className="flex items-center gap-2">
+                                <UserCheck className="size-4 text-sky-600" />
+                                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                                    Tugaskan Shift ke Pegawai
+                                </h3>
+                            </div>
+                        </div>
+
+                        <form onSubmit={submitAssign} className="mt-4 grid gap-3">
+                            <div className="grid gap-1.5">
+                                <Label className="text-xs font-semibold">Pilih Pegawai</Label>
+                                <Select
+                                    value={assignForm.data.employee_id}
+                                    onValueChange={(v) => assignForm.setData('employee_id', v)}
                                 >
-                                    Tugaskan
-                                </Button>
-                            </form>
-                        </CardContent>
-                    </Card>
+                                    <SelectTrigger className="text-xs h-9">
+                                        <SelectValue placeholder="Pilih nama pegawai" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {employees.map((e) => (
+                                            <SelectItem key={e.id} value={String(e.id)} className="text-xs">
+                                                {e.employee_number} - {e.first_name} {e.last_name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="grid gap-1.5">
+                                <Label className="text-xs font-semibold">Pilih Shift</Label>
+                                <Select
+                                    value={assignForm.data.shift_id}
+                                    onValueChange={(v) => assignForm.setData('shift_id', v)}
+                                >
+                                    <SelectTrigger className="text-xs h-9">
+                                        <SelectValue placeholder="Pilih jadwal shift" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {shifts.map((s) => (
+                                            <SelectItem key={s.id} value={String(s.id)} className="text-xs">
+                                                {s.name} ({s.start_time} - {s.end_time})
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="grid gap-1.5">
+                                <Label className="text-xs font-semibold">Tanggal Penugasan</Label>
+                                <Input
+                                    type="date"
+                                    value={assignForm.data.date}
+                                    onChange={(e) => assignForm.setData('date', e.target.value)}
+                                    className="text-xs h-9 font-mono"
+                                    required
+                                />
+                            </div>
+
+                            <Button
+                                disabled={assignForm.processing}
+                                type="submit"
+                                className="mt-1 h-9 bg-sky-700 hover:bg-sky-800 text-xs font-semibold uppercase tracking-wider text-white shadow-sm"
+                            >
+                                <UserCheck className="mr-1.5 size-3.5" />
+                                Alokasikan Jadwal
+                            </Button>
+                        </form>
+                    </div>
                 </div>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Shift</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
-                                <thead>
-                                    <tr className="border-b text-left text-muted-foreground">
-                                        <th className="p-3 font-medium">
-                                            Nama
-                                        </th>
-                                        <th className="p-3 font-medium">
-                                            Mulai
-                                        </th>
-                                        <th className="p-3 font-medium">
-                                            Selesai
-                                        </th>
-                                        <th className="p-3 font-medium">
-                                            Istirahat (mnt)
-                                        </th>
-                                        <th className="p-3 font-medium">
-                                            Aksi
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {shifts.map((s: any) => (
-                                        <tr
-                                            key={s.id}
-                                            className="border-b transition-colors hover:bg-muted/50"
-                                        >
-                                            <td className="p-3 font-medium">
-                                                {s.name}
-                                            </td>
-                                            <td className="p-3">
-                                                {s.start_time}
-                                            </td>
-                                            <td className="p-3">
-                                                {s.end_time}
-                                            </td>
-                                            <td className="p-3">
-                                                {s.break_minutes}
-                                            </td>
-                                            <td className="p-3">
-                                                <Button
-                                                    variant="destructive"
-                                                    size="sm"
-                                                    onClick={() =>
-                                                        removeShift(s.id)
-                                                    }
-                                                >
-                                                    Hapus
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                {/* Daftar Shift & Penugasan Terkini */}
+                <div className="grid gap-6 lg:grid-cols-2">
+                    {/* Daftar Shift */}
+                    <div className="rounded-xl border border-slate-200/90 bg-white shadow-xs overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+                        <div className="border-b border-slate-200/80 px-5 py-3.5 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-800/50">
+                            <span className="font-mono text-xs font-bold text-[#0f274a] dark:text-white uppercase tracking-wider">
+                                DAFTAR TEMPLATE SHIFT
+                            </span>
                         </div>
-                    </CardContent>
-                </Card>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Penugasan Terbaru</CardTitle>
-                    </CardHeader>
-                    <CardContent>
                         <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
+                            <table className="w-full text-xs text-left">
                                 <thead>
-                                    <tr className="border-b text-left text-muted-foreground">
-                                        <th className="p-3 font-medium">
-                                            Karyawan
-                                        </th>
-                                        <th className="p-3 font-medium">
-                                            Shift
-                                        </th>
-                                        <th className="p-3 font-medium">
-                                            Tanggal
-                                        </th>
+                                    <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-800/80">
+                                        <th className="p-3.5 pl-5">Nama Shift</th>
+                                        <th className="p-3.5">Jam Masuk</th>
+                                        <th className="p-3.5">Jam Keluar</th>
+                                        <th className="p-3.5">Istirahat</th>
+                                        <th className="p-3.5 pr-5 text-right">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {assignments.map((a: any) => (
-                                        <tr
-                                            key={a.id}
-                                            className="border-b transition-colors hover:bg-muted/50"
-                                        >
-                                            <td className="p-3 font-medium">
-                                                {a.employee?.first_name}{' '}
-                                                {a.employee?.last_name}
+                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
+                                    {shifts.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={5} className="p-6 text-center text-slate-400 font-sans">
+                                                Belum ada template shift terdaftar.
                                             </td>
-                                            <td className="p-3">
-                                                {a.shift?.name}
-                                            </td>
-                                            <td className="p-3">{a.date}</td>
                                         </tr>
-                                    ))}
+                                    ) : (
+                                        shifts.map((s: any) => (
+                                            <tr key={s.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
+                                                <td className="p-3.5 pl-5 font-sans font-semibold text-slate-900 dark:text-slate-100">
+                                                    {s.name}
+                                                </td>
+                                                <td className="p-3.5 text-emerald-700 font-semibold">{s.start_time}</td>
+                                                <td className="p-3.5 text-amber-700 font-semibold">{s.end_time}</td>
+                                                <td className="p-3.5 text-slate-500">{s.break_minutes} mnt</td>
+                                                <td className="p-3.5 pr-5 text-right">
+                                                    <Button
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        className="h-7 w-7 p-0 text-red-600 hover:bg-red-50"
+                                                        onClick={() => removeShift(s.id)}
+                                                    >
+                                                        <Trash2 className="size-3.5" />
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         </div>
-                    </CardContent>
-                </Card>
+                    </div>
+
+                    {/* Penugasan Terkini */}
+                    <div className="rounded-xl border border-slate-200/90 bg-white shadow-xs overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+                        <div className="border-b border-slate-200/80 px-5 py-3.5 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-800/50">
+                            <span className="font-mono text-xs font-bold text-[#0f274a] dark:text-white uppercase tracking-wider">
+                                JADWAL ALOKASI PEGAWAI TERKINI
+                            </span>
+                        </div>
+
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-xs text-left">
+                                <thead>
+                                    <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-800/80">
+                                        <th className="p-3.5 pl-5">Pegawai</th>
+                                        <th className="p-3.5">Tanggal</th>
+                                        <th className="p-3.5 pr-5">Shift Kerja</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                                    {assignments.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={3} className="p-6 text-center text-slate-400">
+                                                Belum ada penugasan shift tercatat.
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        assignments.map((a: any) => (
+                                            <tr key={a.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
+                                                <td className="p-3.5 pl-5 font-semibold text-slate-900 dark:text-slate-100">
+                                                    {a.employee?.first_name} {a.employee?.last_name}
+                                                </td>
+                                                <td className="p-3.5 font-mono text-slate-600 dark:text-slate-400">
+                                                    {a.date}
+                                                </td>
+                                                <td className="p-3.5 pr-5 font-medium text-[#16325c] dark:text-sky-400">
+                                                    {a.shift?.name} ({a.shift?.start_time} - {a.shift?.end_time})
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     );

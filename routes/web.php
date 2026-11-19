@@ -9,13 +9,23 @@ use App\Http\Controllers\PayrollPeriodController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ShiftController;
 use App\Models\Attendance;
+use App\Models\CompanySetting;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\LeaveRequest;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::inertia('/', 'welcome')->name('home');
+Route::get('/', function () {
+    return Inertia::render('welcome', [
+        'company' => CompanySetting::current(),
+        'stats' => [
+            'employees' => Employee::count(),
+            'departments' => Department::count(),
+            'today_attendance' => Attendance::whereDate('date', now()->toDateString())->count(),
+        ],
+    ]);
+})->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', function () {

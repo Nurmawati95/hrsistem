@@ -1,4 +1,5 @@
 import { Head, router, useForm } from '@inertiajs/react';
+import { Briefcase, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -26,141 +27,156 @@ export default function PositionsIndex({ positions, departments }: Props) {
     };
 
     const remove = (id: number) => {
-        if (confirm('Delete this position?')) router.delete(`/positions/${id}`);
+        if (confirm('Hapus jabatan ini?')) router.delete(`/positions/${id}`);
     };
 
     return (
         <>
-            <Head title="Positions" />
-            <div className="flex h-full flex-1 flex-col gap-6 p-6">
-                <header className="flex flex-col gap-1">
-                    <h1 className="text-3xl font-semibold tracking-tight">
-                        Jabatan
-                    </h1>
-                    <p className="text-sm text-muted-foreground">
-                        Kelola jabatan per departemen.
-                    </p>
+            <Head title="Jabatan - HR Sistem" />
+
+            <div className="flex h-full flex-1 flex-col gap-6 p-6 lg:p-8 bg-[#f8fafc] dark:bg-slate-950">
+                {/* Header */}
+                <header className="flex flex-col gap-4 rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900">
+                    <div>
+                        <div className="flex items-center gap-2">
+                            <span className="font-mono text-xs font-bold tracking-widest text-[#16325c] uppercase dark:text-sky-400">
+                                LOKET 02 · ORGANISASI
+                            </span>
+                            <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                                Master Jabatan Pegawai
+                            </span>
+                        </div>
+                        <h1 className="text-2xl font-bold tracking-tight text-[#0f274a] dark:text-white">
+                            Posisi & Jenjang Jabatan
+                        </h1>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Pengelolaan standardisasi gelar jabatan dan penempatan divisi kerja pegawai.
+                        </p>
+                    </div>
                 </header>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Tambah Jabatan</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <form
-                            onSubmit={submit}
-                            className="grid gap-3 md:grid-cols-4"
-                        >
-                            <div className="grid gap-2">
-                                <Label>Nama</Label>
+                <div className="grid gap-6 lg:grid-cols-12">
+                    {/* Form Tambah Posisi */}
+                    <div className="lg:col-span-5 rounded-xl border border-slate-200 bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900 border-t-4 border-t-[#16325c]">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                            <div className="flex items-center gap-2">
+                                <Briefcase className="size-4 text-[#16325c] dark:text-sky-400" />
+                                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                                    Tambah Jabatan Baru
+                                </h3>
+                            </div>
+                        </div>
+
+                        <form onSubmit={submit} className="mt-4 grid gap-3">
+                            <div className="grid gap-1.5">
+                                <Label className="text-xs font-semibold">Nama Jabatan</Label>
                                 <Input
-                                    placeholder="Nama jabatan"
+                                    placeholder="Contoh: HR Specialist / Software Engineer"
                                     value={data.name}
-                                    onChange={(e) =>
-                                        setData('name', e.target.value)
-                                    }
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    className="text-xs h-9"
+                                    required
                                 />
                             </div>
-                            <div className="grid gap-2">
-                                <Label>Departemen</Label>
+
+                            <div className="grid gap-1.5">
+                                <Label className="text-xs font-semibold">Departemen Naungan</Label>
                                 <Select
                                     value={data.department_id}
-                                    onValueChange={(v) =>
-                                        setData('department_id', v)
-                                    }
+                                    onValueChange={(v) => setData('department_id', v)}
                                 >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Pilih departemen" />
+                                    <SelectTrigger className="text-xs h-9">
+                                        <SelectValue placeholder="Pilih unit departemen" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {departments.map((d) => (
-                                            <SelectItem
-                                                key={d.id}
-                                                value={String(d.id)}
-                                            >
+                                            <SelectItem key={d.id} value={String(d.id)} className="text-xs">
                                                 {d.name}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="grid gap-2">
-                                <Label>Deskripsi</Label>
+
+                            <div className="grid gap-1.5">
+                                <Label className="text-xs font-semibold">Deskripsi Tugas</Label>
                                 <Input
-                                    placeholder="Deskripsi"
+                                    placeholder="Tanggung jawab ringkas posisi ini"
                                     value={data.description}
-                                    onChange={(e) =>
-                                        setData('description', e.target.value)
-                                    }
+                                    onChange={(e) => setData('description', e.target.value)}
+                                    className="text-xs h-9"
                                 />
                             </div>
-                            <div className="flex items-end">
-                                <Button
-                                    disabled={processing}
-                                    type="submit"
-                                    className="w-full"
-                                >
-                                    Tambah
-                                </Button>
-                            </div>
-                        </form>
-                    </CardContent>
-                </Card>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Daftar Jabatan</CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                            <Button
+                                disabled={processing}
+                                type="submit"
+                                className="mt-2 h-9 bg-[#12284c] hover:bg-[#1b3a6b] text-xs font-semibold uppercase tracking-wider text-white shadow-sm"
+                            >
+                                <Plus className="mr-1.5 size-3.5" />
+                                Simpan Data Jabatan
+                            </Button>
+                        </form>
+                    </div>
+
+                    {/* Table Daftar Jabatan */}
+                    <div className="lg:col-span-7 rounded-xl border border-slate-200/90 bg-white shadow-xs overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+                        <div className="flex items-center justify-between border-b border-slate-200/80 px-5 py-3.5 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-800/50">
+                            <span className="font-mono text-xs font-bold text-[#0f274a] dark:text-white uppercase tracking-wider">
+                                DAFTAR JABATAN RESMI
+                            </span>
+                            <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-mono text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                                {positions.length} posisi
+                            </span>
+                        </div>
+
                         <div className="overflow-x-auto">
-                            <table className="w-full text-sm">
+                            <table className="w-full text-xs text-left">
                                 <thead>
-                                    <tr className="border-b text-left text-muted-foreground">
-                                        <th className="p-3 font-medium">
-                                            Nama
-                                        </th>
-                                        <th className="p-3 font-medium">
-                                            Departemen
-                                        </th>
-                                        <th className="p-3 font-medium">
-                                            Deskripsi
-                                        </th>
-                                        <th className="p-3 font-medium">
-                                            Aksi
-                                        </th>
+                                    <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-800/80">
+                                        <th className="p-3.5 pl-5">Nama Jabatan</th>
+                                        <th className="p-3.5">Departemen</th>
+                                        <th className="p-3.5">Deskripsi</th>
+                                        <th className="p-3.5 pr-5 text-right">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {positions.map((p: any) => (
-                                        <tr
-                                            key={p.id}
-                                            className="border-b transition-colors hover:bg-muted/50"
-                                        >
-                                            <td className="p-3 font-medium">
-                                                {p.name}
-                                            </td>
-                                            <td className="p-3">
-                                                {p.department?.name ?? '-'}
-                                            </td>
-                                            <td className="p-3">
-                                                {p.description ?? '-'}
-                                            </td>
-                                            <td className="p-3">
-                                                <Button
-                                                    variant="destructive"
-                                                    size="sm"
-                                                    onClick={() => remove(p.id)}
-                                                >
-                                                    Hapus
-                                                </Button>
+                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                                    {positions.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={4} className="p-6 text-center text-slate-400">
+                                                Belum ada jabatan terdaftar.
                                             </td>
                                         </tr>
-                                    ))}
+                                    ) : (
+                                        positions.map((p: any) => (
+                                            <tr key={p.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
+                                                <td className="p-3.5 pl-5 font-semibold text-slate-900 dark:text-slate-100">
+                                                    {p.name}
+                                                </td>
+                                                <td className="p-3.5 text-slate-700 dark:text-slate-300 font-medium">
+                                                    {p.department?.name ?? '-'}
+                                                </td>
+                                                <td className="p-3.5 text-slate-500">
+                                                    {p.description ?? '-'}
+                                                </td>
+                                                <td className="p-3.5 pr-5 text-right">
+                                                    <Button
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        className="h-7 w-7 p-0 text-red-600 hover:bg-red-50"
+                                                        onClick={() => remove(p.id)}
+                                                    >
+                                                        <Trash2 className="size-3.5" />
+                                                    </Button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         </div>
-                    </CardContent>
-                </Card>
+                    </div>
+                </div>
             </div>
         </>
     );
