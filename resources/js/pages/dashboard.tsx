@@ -1,0 +1,67 @@
+import { Head } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { dashboard } from '@/routes';
+
+type Props = {
+    stats?: {
+        employees: number;
+        departments: number;
+        pending_leaves: number;
+        today_attendance: number;
+    };
+};
+
+export default function Dashboard({ stats }: Props) {
+    const items = [
+        { title: 'Employees', value: stats?.employees ?? 0, href: '/employees' },
+        { title: 'Departments', value: stats?.departments ?? 0, href: '/departments' },
+        { title: 'Pending Leaves', value: stats?.pending_leaves ?? 0, href: '/leave/requests' },
+        { title: 'Today Attendance', value: stats?.today_attendance ?? 0, href: '/attendance' },
+    ];
+
+    return (
+        <>
+            <Head title="Dashboard" />
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+                <h1 className="text-2xl font-bold">Dashboard</h1>
+                <div className="grid gap-4 md:grid-cols-4">
+                    {items.map((it) => (
+                        <Link key={it.title} href={it.href}>
+                            <Card className="transition hover:shadow-md">
+                                <CardHeader>
+                                    <CardTitle className="text-sm text-muted-foreground">{it.title}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-3xl font-bold">{it.value}</p>
+                                </CardContent>
+                            </Card>
+                        </Link>
+                    ))}
+                </div>
+                <div className="grid gap-4 md:grid-cols-2">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Quick Links</CardTitle>
+                        </CardHeader>
+                        <CardContent className="flex flex-wrap gap-2">
+                            <Link href="/employees/create" className="text-blue-600 hover:underline">Add Employee</Link>
+                            <Link href="/leave/requests" className="text-blue-600 hover:underline">Leave Requests</Link>
+                            <Link href="/attendance" className="text-blue-600 hover:underline">Attendance</Link>
+                            <Link href="/payroll/periods" className="text-blue-600 hover:underline">Payroll</Link>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </>
+    );
+}
+
+Dashboard.layout = {
+    breadcrumbs: [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+        },
+    ],
+};
