@@ -15,10 +15,10 @@ Every HR module operates as a numbered service window ("Loket Layanan"). The sys
 - **Work Area Background:** Clean Slate Light (`#f8fafc`) / Pure White (`#ffffff`)
 - **Text:** Slate 900 (`#0f172a`), Muted Slate (`#64748b`)
 - **Status Ticket Badges:**
-  - **Hadir / Disetujui / Normal:** Emerald Green (`#059669`, `#10b981`, bg `#ecfdf5`)
-  - **Terlambat / Pending / Peringatan:** Amber (`#d97706`, bg `#fffbeb`)
-  - **Alfa / Ditolak / Kritis:** Red (`#dc2626`, bg `#fef2f2`)
-  - **Tetap / Kontrak / Master Data:** Navy / Sky (`#0284c7`, bg `#f0f9ff`)
+    - **Hadir / Disetujui / Normal:** Emerald Green (`#059669`, `#10b981`, bg `#ecfdf5`)
+    - **Terlambat / Pending / Peringatan:** Amber (`#d97706`, bg `#fffbeb`)
+    - **Alfa / Ditolak / Kritis:** Red (`#dc2626`, bg `#fef2f2`)
+    - **Tetap / Kontrak / Master Data:** Navy / Sky (`#0284c7`, bg `#f0f9ff`)
 
 ## Typography
 

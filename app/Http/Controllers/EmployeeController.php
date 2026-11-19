@@ -8,6 +8,7 @@ use App\Models\Position;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -114,14 +115,14 @@ class EmployeeController extends Controller
         $employee->load(['department', 'position', 'user', 'educations', 'documents', 'jobHistories.position', 'jobHistories.department', 'attendances', 'leaveRequests.leaveType', 'payrolls.period']);
 
         return Inertia::render('employees/show', [
-            'employee' => $employee,
+            'employee' => $employee->append('profile_photo_url'),
         ]);
     }
 
     public function edit(Employee $employee): Response
     {
         return Inertia::render('employees/edit', [
-            'employee' => $employee,
+            'employee' => $employee->append('profile_photo_url'),
             'departments' => Department::orderBy('name')->get(),
             'positions' => Position::orderBy('name')->get(),
             'users' => User::orderBy('name')->get(['id', 'name', 'email']),
@@ -151,10 +152,18 @@ class EmployeeController extends Controller
         ]);
 
         if ($request->hasFile('profile_photo')) {
-            $data['profile_photo'] = $this->storeProfilePhoto($request->file('profile_photo'));
+            $newPhoto = $this->storeProfilePhoto($request->file('profile_photo'));
+
+            // Hapus foto lama jika ada
+            if ($employee->profile_photo && File::exists(public_path('uploads/employees/'.$employee->profile_photo))) {
+                File::delete(public_path('uploads/employees/'.$employee->profile_photo));
+            }
+
+            $data['profile_photo'] = $newPhoto;
         }
 
-        $employee->update($data);
+        $employee->fill($data);
+        $employee->save();
 
         return redirect()->route('employees.show', $employee)->with('success', 'Employee updated.');
     }
@@ -169,7 +178,7 @@ class EmployeeController extends Controller
     /**
      * Store an uploaded profile photo and return its file name.
      */
-    protected function storeProfilePhoto($file): string
+    protected function storeProfilePhoto(UploadedFile $file): string
     {
         $directory = public_path('uploads/employees');
 

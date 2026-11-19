@@ -33,13 +33,13 @@ export default function PayrollPeriods({ periods }: Props) {
         const s = (status ?? '').toLowerCase();
         if (s === 'processed' || s === 'selesai') {
             return (
-                <span className="inline-flex items-center rounded-sm bg-emerald-50 px-2.5 py-1 font-mono text-[11px] font-bold text-emerald-800 border border-emerald-200">
+                <span className="inline-flex items-center rounded-sm border border-emerald-200 bg-emerald-50 px-2.5 py-1 font-mono text-[11px] font-bold text-emerald-800">
                     ✓ SELESAI DIPROSES
                 </span>
             );
         }
         return (
-            <span className="inline-flex items-center rounded-sm bg-sky-50 px-2.5 py-1 font-mono text-[11px] font-bold text-sky-800 border border-sky-200">
+            <span className="inline-flex items-center rounded-sm border border-sky-200 bg-sky-50 px-2.5 py-1 font-mono text-[11px] font-bold text-sky-800">
                 ● DRAF PERIODE
             </span>
         );
@@ -49,7 +49,7 @@ export default function PayrollPeriods({ periods }: Props) {
         <>
             <Head title="Periode Penggajian - HR Sistem" />
 
-            <div className="flex h-full flex-1 flex-col gap-6 p-6 lg:p-8 bg-[#f8fafc] dark:bg-slate-950">
+            <div className="flex h-full flex-1 flex-col gap-6 bg-[#f8fafc] p-6 lg:p-8 dark:bg-slate-950">
                 {/* Header */}
                 <header className="flex flex-col gap-4 rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900">
                     <div>
@@ -65,17 +65,18 @@ export default function PayrollPeriods({ periods }: Props) {
                             Periode Penggajian & Slip Gaji
                         </h1>
                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Pengelolaan siklus tutup buku penggajian bulanan, perhitungan tunjangan, dan penerbitan slip gaji.
+                            Pengelolaan siklus tutup buku penggajian bulanan,
+                            perhitungan tunjangan, dan penerbitan slip gaji.
                         </p>
                     </div>
                 </header>
 
                 {/* Form Buka Periode Baru */}
-                <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900 border-t-4 border-t-[#16325c]">
-                    <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                <div className="rounded-xl border border-t-4 border-slate-200 border-t-[#16325c] bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
                         <div className="flex items-center gap-2">
                             <Plus className="size-4 text-[#16325c] dark:text-sky-400" />
-                            <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                            <h3 className="text-sm font-bold tracking-wider text-slate-900 uppercase dark:text-white">
                                 Buka Periode Penggajian Baru
                             </h3>
                         </div>
@@ -84,52 +85,71 @@ export default function PayrollPeriods({ periods }: Props) {
                         </span>
                     </div>
 
-                    <form onSubmit={submit} className="mt-4 grid gap-4 md:grid-cols-5">
+                    <form
+                        onSubmit={submit}
+                        className="mt-4 grid gap-4 md:grid-cols-5"
+                    >
                         <div className="grid gap-1.5 md:col-span-2">
-                            <Label className="text-xs font-semibold">Nama / Identitas Periode</Label>
+                            <Label className="text-xs font-semibold">
+                                Nama / Identitas Periode
+                            </Label>
                             <Input
                                 placeholder="Contoh: Gaji Periode November 2026"
                                 value={form.data.name}
-                                onChange={(e) => form.setData('name', e.target.value)}
-                                className="text-xs h-9"
+                                onChange={(e) =>
+                                    form.setData('name', e.target.value)
+                                }
+                                className="h-9 text-xs"
                                 required
                             />
                         </div>
                         <div className="grid gap-1.5">
-                            <Label className="text-xs font-semibold">Tanggal Mulai</Label>
+                            <Label className="text-xs font-semibold">
+                                Tanggal Mulai
+                            </Label>
                             <Input
                                 type="date"
                                 value={form.data.start_date}
-                                onChange={(e) => form.setData('start_date', e.target.value)}
-                                className="text-xs h-9 font-mono"
+                                onChange={(e) =>
+                                    form.setData('start_date', e.target.value)
+                                }
+                                className="h-9 font-mono text-xs"
                                 required
                             />
                         </div>
                         <div className="grid gap-1.5">
-                            <Label className="text-xs font-semibold">Tanggal Selesai</Label>
+                            <Label className="text-xs font-semibold">
+                                Tanggal Selesai
+                            </Label>
                             <Input
                                 type="date"
                                 value={form.data.end_date}
-                                onChange={(e) => form.setData('end_date', e.target.value)}
-                                className="text-xs h-9 font-mono"
+                                onChange={(e) =>
+                                    form.setData('end_date', e.target.value)
+                                }
+                                className="h-9 font-mono text-xs"
                                 required
                             />
                         </div>
                         <div className="grid gap-1.5">
-                            <Label className="text-xs font-semibold">Tgl Pencairan</Label>
+                            <Label className="text-xs font-semibold">
+                                Tgl Pencairan
+                            </Label>
                             <Input
                                 type="date"
                                 value={form.data.pay_date}
-                                onChange={(e) => form.setData('pay_date', e.target.value)}
-                                className="text-xs h-9 font-mono"
+                                onChange={(e) =>
+                                    form.setData('pay_date', e.target.value)
+                                }
+                                className="h-9 font-mono text-xs"
                                 required
                             />
                         </div>
-                        <div className="md:col-span-5 flex justify-end">
+                        <div className="flex justify-end md:col-span-5">
                             <Button
                                 disabled={form.processing}
                                 type="submit"
-                                className="h-9 px-6 bg-[#12284c] hover:bg-[#1b3a6b] text-xs font-semibold uppercase tracking-wider text-white shadow-sm"
+                                className="h-9 bg-[#12284c] px-6 text-xs font-semibold tracking-wider text-white uppercase shadow-sm hover:bg-[#1b3a6b]"
                             >
                                 <Plus className="mr-1.5 size-3.5" />
                                 Buka Periode Penggajian
@@ -139,34 +159,44 @@ export default function PayrollPeriods({ periods }: Props) {
                 </div>
 
                 {/* Table Periode Penggajian */}
-                <div className="rounded-xl border border-slate-200/90 bg-white shadow-xs overflow-hidden dark:border-slate-800 dark:bg-slate-900">
-                    <div className="flex items-center justify-between border-b border-slate-200/80 px-5 py-3.5 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-800/50">
+                <div className="overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                    <div className="flex items-center justify-between border-b border-slate-200/80 bg-slate-50/70 px-5 py-3.5 dark:border-slate-800 dark:bg-slate-800/50">
                         <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs font-bold text-[#0f274a] dark:text-white uppercase tracking-wider">
+                            <span className="font-mono text-xs font-bold tracking-wider text-[#0f274a] uppercase dark:text-white">
                                 ARSIP DAFTAR PERIODE PAYROLL
                             </span>
-                            <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-mono text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+                            <span className="rounded-full bg-slate-200 px-2 py-0.5 font-mono text-[10px] text-slate-700 dark:bg-slate-700 dark:text-slate-300">
                                 {periods.length} periode
                             </span>
                         </div>
                     </div>
 
                     <div className="overflow-x-auto">
-                        <table className="w-full text-xs text-left">
+                        <table className="w-full text-left text-xs">
                             <thead>
-                                <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-400">
-                                    <th className="p-3.5 pl-5">Nama Periode Penggajian</th>
+                                <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold tracking-wider text-slate-500 uppercase dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-400">
+                                    <th className="p-3.5 pl-5">
+                                        Nama Periode Penggajian
+                                    </th>
                                     <th className="p-3.5">Rentang Siklus</th>
-                                    <th className="p-3.5">Tanggal Transfer/Bayar</th>
+                                    <th className="p-3.5">
+                                        Tanggal Transfer/Bayar
+                                    </th>
                                     <th className="p-3.5">Status Pemrosesan</th>
-                                    <th className="p-3.5 pr-5 text-right">Rincian Slip</th>
+                                    <th className="p-3.5 pr-5 text-right">
+                                        Rincian Slip
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                                 {periods.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="p-8 text-center text-slate-400 text-xs">
-                                            Belum ada periode penggajian yang dibuka.
+                                        <td
+                                            colSpan={5}
+                                            className="p-8 text-center text-xs text-slate-400"
+                                        >
+                                            Belum ada periode penggajian yang
+                                            dibuka.
                                         </td>
                                     </tr>
                                 ) : (
@@ -192,7 +222,11 @@ export default function PayrollPeriods({ periods }: Props) {
                                                     size="sm"
                                                     variant="outline"
                                                     className="h-7 text-[11px] font-semibold text-[#16325c] hover:bg-slate-100 dark:text-sky-400"
-                                                    onClick={() => router.visit(`/payroll/periods/${p.id}`)}
+                                                    onClick={() =>
+                                                        router.visit(
+                                                            `/payroll/periods/${p.id}`,
+                                                        )
+                                                    }
                                                 >
                                                     <Eye className="mr-1 size-3" />
                                                     Buka Slip Gaji

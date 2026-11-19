@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { Building2, ChevronRight, Network, UserCheck, Users } from 'lucide-react';
+import { Building2, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -27,7 +27,7 @@ function EmployeeChip({ employee }: { employee: any }) {
 function DeptNode({ dept, level = 0 }: { dept: any; level?: number }) {
     return (
         <div className="relative">
-            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs border-l-4 border-l-[#16325c] dark:border-slate-800 dark:bg-slate-900">
+            <div className="rounded-xl border border-l-4 border-slate-200 border-l-[#16325c] bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-3">
                         <div className="flex size-9 items-center justify-center rounded-lg bg-[#16325c]/10 text-[#16325c] dark:text-sky-400">
@@ -39,7 +39,7 @@ function DeptNode({ dept, level = 0 }: { dept: any; level?: number }) {
                                     {dept.name}
                                 </h3>
                                 {level > 0 && (
-                                    <span className="rounded bg-slate-100 px-1.5 py-0.2 text-[9px] font-mono text-slate-500 uppercase">
+                                    <span className="py-0.2 rounded bg-slate-100 px-1.5 font-mono text-[9px] text-slate-500 uppercase">
                                         Sub-Unit
                                     </span>
                                 )}
@@ -50,14 +50,14 @@ function DeptNode({ dept, level = 0 }: { dept: any; level?: number }) {
                         </div>
                     </div>
 
-                    <span className="font-mono text-xs font-semibold text-[#16325c] bg-slate-100 px-2.5 py-1 rounded-md dark:bg-slate-800 dark:text-sky-400 self-start sm:self-auto">
+                    <span className="self-start rounded-md bg-slate-100 px-2.5 py-1 font-mono text-xs font-semibold text-[#16325c] sm:self-auto dark:bg-slate-800 dark:text-sky-400">
                         {dept.employees?.length ?? 0} Pegawai
                     </span>
                 </div>
 
                 {dept.employees && dept.employees.length > 0 && (
                     <div className="mt-4 border-t border-slate-100 pt-3 dark:border-slate-800">
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+                        <span className="mb-2 block text-[10px] font-bold tracking-wider text-slate-400 uppercase">
                             Anggota & Staf Terdaftar:
                         </span>
                         <div className="flex flex-wrap gap-2">
@@ -72,7 +72,11 @@ function DeptNode({ dept, level = 0 }: { dept: any; level?: number }) {
             {dept.children && dept.children.length > 0 && (
                 <div className="mt-4 ml-6 space-y-4 border-l-2 border-dashed border-slate-200 pl-4 dark:border-slate-800">
                     {dept.children.map((child: any) => (
-                        <DeptNode key={child.id} dept={child} level={level + 1} />
+                        <DeptNode
+                            key={child.id}
+                            dept={child}
+                            level={level + 1}
+                        />
                     ))}
                 </div>
             )}
@@ -87,7 +91,7 @@ export default function OrganizationIndex({ departments }: Props) {
         <>
             <Head title="Struktur Organisasi - HR Sistem" />
 
-            <div className="flex h-full flex-1 flex-col gap-6 p-6 lg:p-8 bg-[#f8fafc] dark:bg-slate-950">
+            <div className="flex h-full flex-1 flex-col gap-6 bg-[#f8fafc] p-6 lg:p-8 dark:bg-slate-950">
                 {/* Header */}
                 <header className="flex flex-col gap-4 rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900">
                     <div>
@@ -103,20 +107,29 @@ export default function OrganizationIndex({ departments }: Props) {
                             Bagan Struktur Organisasi
                         </h1>
                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Peta hierarki unit kerja perusahaan dan penempatan staf pada masing-masing divisi.
+                            Peta hierarki unit kerja perusahaan dan penempatan
+                            staf pada masing-masing divisi.
                         </p>
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" asChild className="text-xs font-semibold h-9">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            asChild
+                            className="h-9 text-xs font-semibold"
+                        >
                             <Link href="/departments">
                                 Kelola Unit Departemen
                             </Link>
                         </Button>
-                        <Button variant="outline" size="sm" asChild className="text-xs font-semibold h-9">
-                            <Link href="/positions">
-                                Kelola Master Jabatan
-                            </Link>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            asChild
+                            className="h-9 text-xs font-semibold"
+                        >
+                            <Link href="/positions">Kelola Master Jabatan</Link>
                         </Button>
                     </div>
                 </header>
@@ -124,7 +137,7 @@ export default function OrganizationIndex({ departments }: Props) {
                 {/* Organogram Structure Tree */}
                 <div className="space-y-4">
                     {rootDepts.length === 0 ? (
-                        <div className="rounded-xl border border-slate-200 bg-white p-12 text-center text-slate-400 text-xs">
+                        <div className="rounded-xl border border-slate-200 bg-white p-12 text-center text-xs text-slate-400">
                             Belum ada struktur departemen yang dibuat.
                         </div>
                     ) : (

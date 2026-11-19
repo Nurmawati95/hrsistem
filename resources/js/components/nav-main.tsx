@@ -28,19 +28,25 @@ export function NavMain({ items }: { items: NavItem[] }) {
                                 asChild
                                 isActive={active}
                                 tooltip={{ children: item.title }}
-                                className={`relative group flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-all ${
+                                className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-all ${
                                     active
                                         ? 'bg-[#16325c] text-white shadow-xs'
                                         : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800'
                                 }`}
                             >
-                                <Link href={item.href} prefetch className="flex items-center w-full">
+                                <Link
+                                    href={item.href}
+                                    prefetch
+                                    className="flex w-full items-center"
+                                >
                                     {active && (
-                                        <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-sm bg-amber-400" />
+                                        <span className="absolute top-1.5 bottom-1.5 left-0 w-1 rounded-r-sm bg-amber-400" />
                                     )}
 
                                     {item.icon && (
-                                        <item.icon className={`size-4 shrink-0 ${active ? 'text-amber-400' : 'text-slate-400 group-hover:text-slate-600 dark:text-slate-400'}`} />
+                                        <item.icon
+                                            className={`size-4 shrink-0 ${active ? 'text-amber-400' : 'text-slate-400 group-hover:text-slate-600 dark:text-slate-400'}`}
+                                        />
                                     )}
 
                                     <span className="flex-1 truncate font-medium">
@@ -48,7 +54,7 @@ export function NavMain({ items }: { items: NavItem[] }) {
                                     </span>
 
                                     <span
-                                        className={`font-mono text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+                                        className={`rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold ${
                                             active
                                                 ? 'bg-white/15 text-amber-200'
                                                 : 'text-slate-400 group-hover:text-slate-500'

@@ -60,7 +60,7 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
         <>
             <Head title="Shift & Jadwal Kerja - HR Sistem" />
 
-            <div className="flex h-full flex-1 flex-col gap-6 p-6 lg:p-8 bg-[#f8fafc] dark:bg-slate-950">
+            <div className="flex h-full flex-1 flex-col gap-6 bg-[#f8fafc] p-6 lg:p-8 dark:bg-slate-950">
                 {/* Header */}
                 <header className="flex flex-col gap-4 rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900">
                     <div>
@@ -76,73 +76,105 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                             Master Shift & Penugasan Jadwal
                         </h1>
                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Pengaturan template shift kerja, jam istirahat, serta alokasi jadwal harian pegawai.
+                            Pengaturan template shift kerja, jam istirahat,
+                            serta alokasi jadwal harian pegawai.
                         </p>
                     </div>
                 </header>
 
                 <div className="grid gap-6 md:grid-cols-2">
                     {/* Tambah Shift Template */}
-                    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900 border-t-4 border-t-[#16325c]">
-                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                    <div className="rounded-xl border border-t-4 border-slate-200 border-t-[#16325c] bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                        <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
                             <div className="flex items-center gap-2">
                                 <Clock className="size-4 text-[#16325c] dark:text-sky-400" />
-                                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                                <h3 className="text-sm font-bold tracking-wider text-slate-900 uppercase dark:text-white">
                                     Tambah Template Shift
                                 </h3>
                             </div>
                         </div>
 
-                        <form onSubmit={submitShift} className="mt-4 grid gap-3">
+                        <form
+                            onSubmit={submitShift}
+                            className="mt-4 grid gap-3"
+                        >
                             <div className="grid gap-1.5">
-                                <Label className="text-xs font-semibold">Nama Shift</Label>
+                                <Label className="text-xs font-semibold">
+                                    Nama Shift
+                                </Label>
                                 <Input
                                     placeholder="Contoh: Shift Pagi (08:00 - 17:00)"
                                     value={shiftForm.data.name}
-                                    onChange={(e) => shiftForm.setData('name', e.target.value)}
-                                    className="text-xs h-9"
+                                    onChange={(e) =>
+                                        shiftForm.setData(
+                                            'name',
+                                            e.target.value,
+                                        )
+                                    }
+                                    className="h-9 text-xs"
                                     required
                                 />
                             </div>
 
                             <div className="grid grid-cols-2 gap-3">
                                 <div className="grid gap-1.5">
-                                    <Label className="text-xs font-semibold">Jam Mulai</Label>
+                                    <Label className="text-xs font-semibold">
+                                        Jam Mulai
+                                    </Label>
                                     <Input
                                         type="time"
                                         value={shiftForm.data.start_time}
-                                        onChange={(e) => shiftForm.setData('start_time', e.target.value)}
-                                        className="text-xs h-9 font-mono"
+                                        onChange={(e) =>
+                                            shiftForm.setData(
+                                                'start_time',
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="h-9 font-mono text-xs"
                                         required
                                     />
                                 </div>
                                 <div className="grid gap-1.5">
-                                    <Label className="text-xs font-semibold">Jam Selesai</Label>
+                                    <Label className="text-xs font-semibold">
+                                        Jam Selesai
+                                    </Label>
                                     <Input
                                         type="time"
                                         value={shiftForm.data.end_time}
-                                        onChange={(e) => shiftForm.setData('end_time', e.target.value)}
-                                        className="text-xs h-9 font-mono"
+                                        onChange={(e) =>
+                                            shiftForm.setData(
+                                                'end_time',
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="h-9 font-mono text-xs"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label className="text-xs font-semibold">Durasi Istirahat (Menit)</Label>
+                                <Label className="text-xs font-semibold">
+                                    Durasi Istirahat (Menit)
+                                </Label>
                                 <Input
                                     type="number"
                                     placeholder="60"
                                     value={shiftForm.data.break_minutes}
-                                    onChange={(e) => shiftForm.setData('break_minutes', Number(e.target.value))}
-                                    className="text-xs h-9 font-mono"
+                                    onChange={(e) =>
+                                        shiftForm.setData(
+                                            'break_minutes',
+                                            Number(e.target.value),
+                                        )
+                                    }
+                                    className="h-9 font-mono text-xs"
                                 />
                             </div>
 
                             <Button
                                 disabled={shiftForm.processing}
                                 type="submit"
-                                className="mt-1 h-9 bg-[#12284c] hover:bg-[#1b3a6b] text-xs font-semibold uppercase tracking-wider text-white shadow-sm"
+                                className="mt-1 h-9 bg-[#12284c] text-xs font-semibold tracking-wider text-white uppercase shadow-sm hover:bg-[#1b3a6b]"
                             >
                                 <Plus className="mr-1.5 size-3.5" />
                                 Simpan Template Shift
@@ -151,30 +183,42 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                     </div>
 
                     {/* Penugasan Shift ke Pegawai */}
-                    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900 border-t-4 border-t-sky-600">
-                        <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                    <div className="rounded-xl border border-t-4 border-slate-200 border-t-sky-600 bg-white p-5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                        <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
                             <div className="flex items-center gap-2">
                                 <UserCheck className="size-4 text-sky-600" />
-                                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                                <h3 className="text-sm font-bold tracking-wider text-slate-900 uppercase dark:text-white">
                                     Tugaskan Shift ke Pegawai
                                 </h3>
                             </div>
                         </div>
 
-                        <form onSubmit={submitAssign} className="mt-4 grid gap-3">
+                        <form
+                            onSubmit={submitAssign}
+                            className="mt-4 grid gap-3"
+                        >
                             <div className="grid gap-1.5">
-                                <Label className="text-xs font-semibold">Pilih Pegawai</Label>
+                                <Label className="text-xs font-semibold">
+                                    Pilih Pegawai
+                                </Label>
                                 <Select
                                     value={assignForm.data.employee_id}
-                                    onValueChange={(v) => assignForm.setData('employee_id', v)}
+                                    onValueChange={(v) =>
+                                        assignForm.setData('employee_id', v)
+                                    }
                                 >
-                                    <SelectTrigger className="text-xs h-9">
+                                    <SelectTrigger className="h-9 text-xs">
                                         <SelectValue placeholder="Pilih nama pegawai" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {employees.map((e) => (
-                                            <SelectItem key={e.id} value={String(e.id)} className="text-xs">
-                                                {e.employee_number} - {e.first_name} {e.last_name}
+                                            <SelectItem
+                                                key={e.id}
+                                                value={String(e.id)}
+                                                className="text-xs"
+                                            >
+                                                {e.employee_number} -{' '}
+                                                {e.first_name} {e.last_name}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
@@ -182,18 +226,27 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label className="text-xs font-semibold">Pilih Shift</Label>
+                                <Label className="text-xs font-semibold">
+                                    Pilih Shift
+                                </Label>
                                 <Select
                                     value={assignForm.data.shift_id}
-                                    onValueChange={(v) => assignForm.setData('shift_id', v)}
+                                    onValueChange={(v) =>
+                                        assignForm.setData('shift_id', v)
+                                    }
                                 >
-                                    <SelectTrigger className="text-xs h-9">
+                                    <SelectTrigger className="h-9 text-xs">
                                         <SelectValue placeholder="Pilih jadwal shift" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {shifts.map((s) => (
-                                            <SelectItem key={s.id} value={String(s.id)} className="text-xs">
-                                                {s.name} ({s.start_time} - {s.end_time})
+                                            <SelectItem
+                                                key={s.id}
+                                                value={String(s.id)}
+                                                className="text-xs"
+                                            >
+                                                {s.name} ({s.start_time} -{' '}
+                                                {s.end_time})
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
@@ -201,12 +254,19 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                             </div>
 
                             <div className="grid gap-1.5">
-                                <Label className="text-xs font-semibold">Tanggal Penugasan</Label>
+                                <Label className="text-xs font-semibold">
+                                    Tanggal Penugasan
+                                </Label>
                                 <Input
                                     type="date"
                                     value={assignForm.data.date}
-                                    onChange={(e) => assignForm.setData('date', e.target.value)}
-                                    className="text-xs h-9 font-mono"
+                                    onChange={(e) =>
+                                        assignForm.setData(
+                                            'date',
+                                            e.target.value,
+                                        )
+                                    }
+                                    className="h-9 font-mono text-xs"
                                     required
                                 />
                             </div>
@@ -214,7 +274,7 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                             <Button
                                 disabled={assignForm.processing}
                                 type="submit"
-                                className="mt-1 h-9 bg-sky-700 hover:bg-sky-800 text-xs font-semibold uppercase tracking-wider text-white shadow-sm"
+                                className="mt-1 h-9 bg-sky-700 text-xs font-semibold tracking-wider text-white uppercase shadow-sm hover:bg-sky-800"
                             >
                                 <UserCheck className="mr-1.5 size-3.5" />
                                 Alokasikan Jadwal
@@ -226,46 +286,65 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                 {/* Daftar Shift & Penugasan Terkini */}
                 <div className="grid gap-6 lg:grid-cols-2">
                     {/* Daftar Shift */}
-                    <div className="rounded-xl border border-slate-200/90 bg-white shadow-xs overflow-hidden dark:border-slate-800 dark:bg-slate-900">
-                        <div className="border-b border-slate-200/80 px-5 py-3.5 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-800/50">
-                            <span className="font-mono text-xs font-bold text-[#0f274a] dark:text-white uppercase tracking-wider">
+                    <div className="overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                        <div className="border-b border-slate-200/80 bg-slate-50/70 px-5 py-3.5 dark:border-slate-800 dark:bg-slate-800/50">
+                            <span className="font-mono text-xs font-bold tracking-wider text-[#0f274a] uppercase dark:text-white">
                                 DAFTAR TEMPLATE SHIFT
                             </span>
                         </div>
 
                         <div className="overflow-x-auto">
-                            <table className="w-full text-xs text-left">
+                            <table className="w-full text-left text-xs">
                                 <thead>
-                                    <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-800/80">
-                                        <th className="p-3.5 pl-5">Nama Shift</th>
+                                    <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold tracking-wider text-slate-500 uppercase dark:border-slate-800 dark:bg-slate-800/80">
+                                        <th className="p-3.5 pl-5">
+                                            Nama Shift
+                                        </th>
                                         <th className="p-3.5">Jam Masuk</th>
                                         <th className="p-3.5">Jam Keluar</th>
                                         <th className="p-3.5">Istirahat</th>
-                                        <th className="p-3.5 pr-5 text-right">Aksi</th>
+                                        <th className="p-3.5 pr-5 text-right">
+                                            Aksi
+                                        </th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
+                                <tbody className="divide-y divide-slate-100 font-mono dark:divide-slate-800">
                                     {shifts.length === 0 ? (
                                         <tr>
-                                            <td colSpan={5} className="p-6 text-center text-slate-400 font-sans">
-                                                Belum ada template shift terdaftar.
+                                            <td
+                                                colSpan={5}
+                                                className="p-6 text-center font-sans text-slate-400"
+                                            >
+                                                Belum ada template shift
+                                                terdaftar.
                                             </td>
                                         </tr>
                                     ) : (
                                         shifts.map((s: any) => (
-                                            <tr key={s.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
+                                            <tr
+                                                key={s.id}
+                                                className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40"
+                                            >
                                                 <td className="p-3.5 pl-5 font-sans font-semibold text-slate-900 dark:text-slate-100">
                                                     {s.name}
                                                 </td>
-                                                <td className="p-3.5 text-emerald-700 font-semibold">{s.start_time}</td>
-                                                <td className="p-3.5 text-amber-700 font-semibold">{s.end_time}</td>
-                                                <td className="p-3.5 text-slate-500">{s.break_minutes} mnt</td>
+                                                <td className="p-3.5 font-semibold text-emerald-700">
+                                                    {s.start_time}
+                                                </td>
+                                                <td className="p-3.5 font-semibold text-amber-700">
+                                                    {s.end_time}
+                                                </td>
+                                                <td className="p-3.5 text-slate-500">
+                                                    {s.break_minutes} mnt
+                                                </td>
                                                 <td className="p-3.5 pr-5 text-right">
                                                     <Button
                                                         size="sm"
                                                         variant="ghost"
                                                         className="h-7 w-7 p-0 text-red-600 hover:bg-red-50"
-                                                        onClick={() => removeShift(s.id)}
+                                                        onClick={() =>
+                                                            removeShift(s.id)
+                                                        }
                                                     >
                                                         <Trash2 className="size-3.5" />
                                                     </Button>
@@ -279,40 +358,52 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                     </div>
 
                     {/* Penugasan Terkini */}
-                    <div className="rounded-xl border border-slate-200/90 bg-white shadow-xs overflow-hidden dark:border-slate-800 dark:bg-slate-900">
-                        <div className="border-b border-slate-200/80 px-5 py-3.5 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-800/50">
-                            <span className="font-mono text-xs font-bold text-[#0f274a] dark:text-white uppercase tracking-wider">
+                    <div className="overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+                        <div className="border-b border-slate-200/80 bg-slate-50/70 px-5 py-3.5 dark:border-slate-800 dark:bg-slate-800/50">
+                            <span className="font-mono text-xs font-bold tracking-wider text-[#0f274a] uppercase dark:text-white">
                                 JADWAL ALOKASI PEGAWAI TERKINI
                             </span>
                         </div>
 
                         <div className="overflow-x-auto">
-                            <table className="w-full text-xs text-left">
+                            <table className="w-full text-left text-xs">
                                 <thead>
-                                    <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-800/80">
+                                    <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold tracking-wider text-slate-500 uppercase dark:border-slate-800 dark:bg-slate-800/80">
                                         <th className="p-3.5 pl-5">Pegawai</th>
                                         <th className="p-3.5">Tanggal</th>
-                                        <th className="p-3.5 pr-5">Shift Kerja</th>
+                                        <th className="p-3.5 pr-5">
+                                            Shift Kerja
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                                     {assignments.length === 0 ? (
                                         <tr>
-                                            <td colSpan={3} className="p-6 text-center text-slate-400">
-                                                Belum ada penugasan shift tercatat.
+                                            <td
+                                                colSpan={3}
+                                                className="p-6 text-center text-slate-400"
+                                            >
+                                                Belum ada penugasan shift
+                                                tercatat.
                                             </td>
                                         </tr>
                                     ) : (
                                         assignments.map((a: any) => (
-                                            <tr key={a.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
+                                            <tr
+                                                key={a.id}
+                                                className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40"
+                                            >
                                                 <td className="p-3.5 pl-5 font-semibold text-slate-900 dark:text-slate-100">
-                                                    {a.employee?.first_name} {a.employee?.last_name}
+                                                    {a.employee?.first_name}{' '}
+                                                    {a.employee?.last_name}
                                                 </td>
                                                 <td className="p-3.5 font-mono text-slate-600 dark:text-slate-400">
                                                     {a.date}
                                                 </td>
                                                 <td className="p-3.5 pr-5 font-medium text-[#16325c] dark:text-sky-400">
-                                                    {a.shift?.name} ({a.shift?.start_time} - {a.shift?.end_time})
+                                                    {a.shift?.name} (
+                                                    {a.shift?.start_time} -{' '}
+                                                    {a.shift?.end_time})
                                                 </td>
                                             </tr>
                                         ))

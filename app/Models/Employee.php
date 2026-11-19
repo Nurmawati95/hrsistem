@@ -20,6 +20,9 @@ class Employee extends Model
         'basic_salary' => 'decimal:2',
     ];
 
+    /** @var list<string> */
+    protected $appends = ['profile_photo_url'];
+
     /** @return BelongsTo<User, $this> */
     /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo

@@ -33,7 +33,10 @@ export default function Login({ status, canResetPassword }: Props) {
                     <>
                         <div className="grid gap-5">
                             <div className="grid gap-2">
-                                <Label htmlFor="email" className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                                <Label
+                                    htmlFor="email"
+                                    className="text-xs font-semibold text-slate-700 dark:text-slate-200"
+                                >
                                     Alamat Email Pegawai
                                 </Label>
                                 <Input
@@ -52,7 +55,10 @@ export default function Login({ status, canResetPassword }: Props) {
 
                             <div className="grid gap-2">
                                 <div className="flex items-center justify-between">
-                                    <Label htmlFor="password" className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                                    <Label
+                                        htmlFor="password"
+                                        className="text-xs font-semibold text-slate-700 dark:text-slate-200"
+                                    >
                                         Kata Sandi
                                     </Label>
                                     {canResetPassword && (
@@ -83,14 +89,17 @@ export default function Login({ status, canResetPassword }: Props) {
                                     name="remember"
                                     tabIndex={3}
                                 />
-                                <Label htmlFor="remember" className="text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
+                                <Label
+                                    htmlFor="remember"
+                                    className="cursor-pointer text-xs text-slate-600 dark:text-slate-400"
+                                >
                                     Ingat sesi perangkat ini
                                 </Label>
                             </div>
 
                             <Button
                                 type="submit"
-                                className="mt-2 w-full h-10 bg-[#12284c] hover:bg-[#1b3a6b] font-semibold text-xs tracking-wider uppercase text-white shadow-sm"
+                                className="mt-2 h-10 w-full bg-[#12284c] text-xs font-semibold tracking-wider text-white uppercase shadow-sm hover:bg-[#1b3a6b]"
                                 tabIndex={4}
                                 disabled={processing}
                                 data-test="login-button"
@@ -100,9 +109,13 @@ export default function Login({ status, canResetPassword }: Props) {
                             </Button>
                         </div>
 
-                        <div className="text-center text-xs text-slate-500 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <div className="border-t border-slate-100 pt-2 text-center text-xs text-slate-500 dark:border-slate-800">
                             Belum memiliki akun?{' '}
-                            <TextLink href={register()} tabIndex={5} className="font-semibold text-[#16325c] hover:underline dark:text-sky-400">
+                            <TextLink
+                                href={register()}
+                                tabIndex={5}
+                                className="font-semibold text-[#16325c] hover:underline dark:text-sky-400"
+                            >
                                 Registrasi Pegawai
                             </TextLink>
                         </div>
@@ -111,7 +124,7 @@ export default function Login({ status, canResetPassword }: Props) {
             </Form>
 
             {status && (
-                <div className="mt-4 rounded-lg bg-emerald-50 p-3 text-center text-xs font-medium text-emerald-700 border border-emerald-200">
+                <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center text-xs font-medium text-emerald-700">
                     {status}
                 </div>
             )}

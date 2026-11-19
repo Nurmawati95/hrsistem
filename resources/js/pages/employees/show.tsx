@@ -12,15 +12,20 @@ export default function EmployeesShow({ employee }: Props) {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <div className="flex-shrink-0">
-                            {employee.profile_photo ? (
+                            {employee.profile_photo_url ? (
                                 <img
-                                    src={employee.profile_photo}
-                                    alt={employee.first_name+' '+employee.last_name}
-                                    className="size-20 rounded-full object-cover border border-slate-200 dark:border-slate-700"
+                                    src={employee.profile_photo_url}
+                                    alt={
+                                        employee.first_name +
+                                        ' ' +
+                                        employee.last_name
+                                    }
+                                    className="size-20 rounded-full border border-slate-200 object-cover dark:border-slate-700"
                                 />
                             ) : (
-                                <div className="size-20 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-3xl font-bold text-slate-600 dark:text-slate-400">
-                                    {(employee.first_name?.charAt(0) ?? '')+(employee.last_name?.charAt(0) ?? '')}
+                                <div className="flex size-20 items-center justify-center rounded-full bg-slate-200 text-3xl font-bold text-slate-600 dark:bg-slate-700 dark:text-slate-400">
+                                    {(employee.first_name?.charAt(0) ?? '') +
+                                        (employee.last_name?.charAt(0) ?? '')}
                                 </div>
                             )}
                         </div>
@@ -29,7 +34,8 @@ export default function EmployeesShow({ employee }: Props) {
                                 {employee.first_name} {employee.last_name}
                             </h1>
                             <p className="text-sm text-slate-500 dark:text-slate-400">
-                                {employee.position?.name ?? '-'}{' • '}
+                                {employee.position?.name ?? '-'}
+                                {' • '}
                                 {employee.department?.name ?? '-'}
                             </p>
                         </div>

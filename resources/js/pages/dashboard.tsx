@@ -126,7 +126,7 @@ export default function Dashboard({ stats }: Props) {
         <>
             <Head title="Dashboard - HR Sistem" />
 
-            <div className="flex h-full flex-1 flex-col gap-6 p-6 lg:p-8 bg-[#f8fafc] dark:bg-slate-950">
+            <div className="flex h-full flex-1 flex-col gap-6 bg-[#f8fafc] p-6 lg:p-8 dark:bg-slate-950">
                 {/* Header Banner resembling Institutional Service Desk */}
                 <header className="flex flex-col gap-4 rounded-xl border border-slate-200/80 bg-white p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900">
                     <div className="flex flex-col gap-1">
@@ -135,7 +135,7 @@ export default function Dashboard({ stats }: Props) {
                                 LOKET OPERASIONAL UTAMA
                             </span>
                             <span className="inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 ring-1 ring-emerald-600/20">
-                                <span className="mr-1 size-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                <span className="mr-1 size-1.5 animate-pulse rounded-full bg-emerald-500" />
                                 Sistem Siap
                             </span>
                         </div>
@@ -143,7 +143,8 @@ export default function Dashboard({ stats }: Props) {
                             Pusat Komando & Administrasi HR
                         </h1>
                         <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Pemantauan langsung data pegawai, kehadiran real-time, dan antrean persetujuan.
+                            Pemantauan langsung data pegawai, kehadiran
+                            real-time, dan antrean persetujuan.
                         </p>
                     </div>
 
@@ -178,7 +179,7 @@ export default function Dashboard({ stats }: Props) {
                                                 LOKET {item.num}
                                             </span>
                                             <span
-                                                className={`rounded px-2 py-0.5 text-[10px] uppercase tracking-wide ${item.badgeClass}`}
+                                                className={`rounded px-2 py-0.5 text-[10px] tracking-wide uppercase ${item.badgeClass}`}
                                             >
                                                 {item.tag}
                                             </span>
@@ -188,7 +189,7 @@ export default function Dashboard({ stats }: Props) {
                                             <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
                                                 {item.title}
                                             </span>
-                                            <Icon className="size-4 text-slate-400 group-hover:text-[#16325c] transition-colors" />
+                                            <Icon className="size-4 text-slate-400 transition-colors group-hover:text-[#16325c]" />
                                         </div>
 
                                         <p className="mt-2 font-mono text-3xl font-extrabold tracking-tight text-[#0f274a] dark:text-white">
@@ -197,8 +198,10 @@ export default function Dashboard({ stats }: Props) {
                                     </div>
 
                                     <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-[11px] text-slate-500 dark:border-slate-800 dark:text-slate-400">
-                                        <span className="truncate">{item.hint}</span>
-                                        <ArrowUpRight className="size-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#16325c]" />
+                                        <span className="truncate">
+                                            {item.hint}
+                                        </span>
+                                        <ArrowUpRight className="size-3.5 text-[#16325c] opacity-60 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
                                     </div>
                                 </div>
                             </Link>
@@ -209,10 +212,12 @@ export default function Dashboard({ stats }: Props) {
                 {/* Quick Desk / Tindakan Cepat */}
                 <section className="space-y-3">
                     <div className="flex items-center justify-between">
-                        <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider dark:text-slate-200">
+                        <h2 className="text-sm font-bold tracking-wider text-slate-800 uppercase dark:text-slate-200">
                             Meja Tindakan Cepat (Quick Desk)
                         </h2>
-                        <span className="text-xs text-slate-500">Akses langsung fungsi operasional harian</span>
+                        <span className="text-xs text-slate-500">
+                            Akses langsung fungsi operasional harian
+                        </span>
                     </div>
 
                     <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
@@ -237,13 +242,15 @@ export default function Dashboard({ stats }: Props) {
                                             }`}
                                         />
                                         <ArrowUpRight
-                                            className={`size-3.5 opacity-40 group-hover:opacity-100 transition-opacity ${
-                                                action.primary ? 'text-white' : 'text-slate-500'
+                                            className={`size-3.5 opacity-40 transition-opacity group-hover:opacity-100 ${
+                                                action.primary
+                                                    ? 'text-white'
+                                                    : 'text-slate-500'
                                             }`}
                                         />
                                     </div>
                                     <div className="mt-4">
-                                        <p className="text-xs font-bold leading-tight">
+                                        <p className="text-xs leading-tight font-bold">
                                             {action.label}
                                         </p>
                                         <p
@@ -266,34 +273,57 @@ export default function Dashboard({ stats }: Props) {
                 <section className="grid gap-6 lg:grid-cols-2">
                     {/* Alur Kerja Harian */}
                     <Card className="border-slate-200/90 shadow-xs dark:border-slate-800">
-                        <CardHeader className="pb-3 border-b border-slate-100 dark:border-slate-800">
-                            <CardTitle className="text-sm font-bold text-[#0f274a] dark:text-white uppercase tracking-wider flex items-center gap-2">
+                        <CardHeader className="border-b border-slate-100 pb-3 dark:border-slate-800">
+                            <CardTitle className="flex items-center gap-2 text-sm font-bold tracking-wider text-[#0f274a] uppercase dark:text-white">
                                 <CheckCircle2 className="size-4 text-emerald-600" />
                                 Standar Alur Kerja Harian HR
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="pt-4 space-y-3 text-xs text-slate-600 dark:text-slate-300">
-                            <div className="flex items-start gap-3 rounded-lg bg-slate-50 p-3 border border-slate-100 dark:bg-slate-800/40 dark:border-slate-800">
-                                <span className="font-mono font-bold text-[#16325c] dark:text-sky-400">01.</span>
+                        <CardContent className="space-y-3 pt-4 text-xs text-slate-600 dark:text-slate-300">
+                            <div className="flex items-start gap-3 rounded-lg border border-slate-100 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-800/40">
+                                <span className="font-mono font-bold text-[#16325c] dark:text-sky-400">
+                                    01.
+                                </span>
                                 <div>
-                                    <p className="font-semibold text-slate-800 dark:text-slate-100">Presensi & Monitoring Shift</p>
-                                    <p className="text-[11px] text-slate-500">Cek rekapitulasi check-in masuk dan toleransi keterlambatan pegawai pada modul Absensi.</p>
+                                    <p className="font-semibold text-slate-800 dark:text-slate-100">
+                                        Presensi & Monitoring Shift
+                                    </p>
+                                    <p className="text-[11px] text-slate-500">
+                                        Cek rekapitulasi check-in masuk dan
+                                        toleransi keterlambatan pegawai pada
+                                        modul Absensi.
+                                    </p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-3 rounded-lg bg-slate-50 p-3 border border-slate-100 dark:bg-slate-800/40 dark:border-slate-800">
-                                <span className="font-mono font-bold text-[#16325c] dark:text-sky-400">02.</span>
+                            <div className="flex items-start gap-3 rounded-lg border border-slate-100 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-800/40">
+                                <span className="font-mono font-bold text-[#16325c] dark:text-sky-400">
+                                    02.
+                                </span>
                                 <div>
-                                    <p className="font-semibold text-slate-800 dark:text-slate-100">Verifikasi Berkas Cuti & Izin</p>
-                                    <p className="text-[11px] text-slate-500">Tinjau permohonan cuti yang masuk. Kuota cuti terpotong otomatis saat disetujui.</p>
+                                    <p className="font-semibold text-slate-800 dark:text-slate-100">
+                                        Verifikasi Berkas Cuti & Izin
+                                    </p>
+                                    <p className="text-[11px] text-slate-500">
+                                        Tinjau permohonan cuti yang masuk. Kuota
+                                        cuti terpotong otomatis saat disetujui.
+                                    </p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-3 rounded-lg bg-slate-50 p-3 border border-slate-100 dark:bg-slate-800/40 dark:border-slate-800">
-                                <span className="font-mono font-bold text-[#16325c] dark:text-sky-400">03.</span>
+                            <div className="flex items-start gap-3 rounded-lg border border-slate-100 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-800/40">
+                                <span className="font-mono font-bold text-[#16325c] dark:text-sky-400">
+                                    03.
+                                </span>
                                 <div>
-                                    <p className="font-semibold text-slate-800 dark:text-slate-100">Penyesuaian Data & Penggajian</p>
-                                    <p className="text-[11px] text-slate-500">Pastikan unit departemen dan jabatan pegawai telah sinkron sebelum memproses periode payroll.</p>
+                                    <p className="font-semibold text-slate-800 dark:text-slate-100">
+                                        Penyesuaian Data & Penggajian
+                                    </p>
+                                    <p className="text-[11px] text-slate-500">
+                                        Pastikan unit departemen dan jabatan
+                                        pegawai telah sinkron sebelum memproses
+                                        periode payroll.
+                                    </p>
                                 </div>
                             </div>
                         </CardContent>
@@ -301,30 +331,47 @@ export default function Dashboard({ stats }: Props) {
 
                     {/* Informasi Portal & Status Keamanan */}
                     <Card className="border-slate-200/90 shadow-xs dark:border-slate-800">
-                        <CardHeader className="pb-3 border-b border-slate-100 dark:border-slate-800">
-                            <CardTitle className="text-sm font-bold text-[#0f274a] dark:text-white uppercase tracking-wider flex items-center gap-2">
+                        <CardHeader className="border-b border-slate-100 pb-3 dark:border-slate-800">
+                            <CardTitle className="flex items-center gap-2 text-sm font-bold tracking-wider text-[#0f274a] uppercase dark:text-white">
                                 <Shield className="size-4 text-[#16325c] dark:text-sky-400" />
                                 Informasi Sistem & Keamanan Akun
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="pt-4 space-y-3.5 text-xs">
-                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                                Portal HR Sistem menggunakan enkripsi session dan autentikasi multi-faktor (2FA) serta mendukung Passkey biometrik untuk menjaga kerahasiaan data kepegawaian.
+                        <CardContent className="space-y-3.5 pt-4 text-xs">
+                            <p className="leading-relaxed text-slate-600 dark:text-slate-300">
+                                Portal HR Sistem menggunakan enkripsi session
+                                dan autentikasi multi-faktor (2FA) serta
+                                mendukung Passkey biometrik untuk menjaga
+                                kerahasiaan data kepegawaian.
                             </p>
 
                             <div className="grid grid-cols-2 gap-3 pt-2">
                                 <div className="rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
-                                    <span className="text-[10px] text-slate-400 uppercase font-medium">Pengaturan Informasi</span>
-                                    <p className="mt-1 font-semibold text-slate-800 dark:text-slate-100">Portal Publik & Perusahaan</p>
-                                    <Link href="/settings/company" className="mt-2 inline-flex items-center text-[11px] font-semibold text-[#16325c] hover:underline dark:text-sky-400">
+                                    <span className="text-[10px] font-medium text-slate-400 uppercase">
+                                        Pengaturan Informasi
+                                    </span>
+                                    <p className="mt-1 font-semibold text-slate-800 dark:text-slate-100">
+                                        Portal Publik & Perusahaan
+                                    </p>
+                                    <Link
+                                        href="/settings/company"
+                                        className="mt-2 inline-flex items-center text-[11px] font-semibold text-[#16325c] hover:underline dark:text-sky-400"
+                                    >
                                         Kelola Informasi →
                                     </Link>
                                 </div>
 
                                 <div className="rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
-                                    <span className="text-[10px] text-slate-400 uppercase font-medium">Keamanan Pengguna</span>
-                                    <p className="mt-1 font-semibold text-slate-800 dark:text-slate-100">2FA & Kredensial Passkey</p>
-                                    <Link href="/settings/security" className="mt-2 inline-flex items-center text-[11px] font-semibold text-[#16325c] hover:underline dark:text-sky-400">
+                                    <span className="text-[10px] font-medium text-slate-400 uppercase">
+                                        Keamanan Pengguna
+                                    </span>
+                                    <p className="mt-1 font-semibold text-slate-800 dark:text-slate-100">
+                                        2FA & Kredensial Passkey
+                                    </p>
+                                    <Link
+                                        href="/settings/security"
+                                        className="mt-2 inline-flex items-center text-[11px] font-semibold text-[#16325c] hover:underline dark:text-sky-400"
+                                    >
                                         Periksa Keamanan →
                                     </Link>
                                 </div>

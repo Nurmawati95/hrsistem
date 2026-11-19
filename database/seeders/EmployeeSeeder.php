@@ -38,19 +38,19 @@ class EmployeeSeeder extends Seeder
 
         // 2 admin karyawan
         $admins = [
-            ['name' => 'Admin Sistem', 'email' => 'admin@hrsistem.local', 'number' => 'ADM-0001'],
-            ['name' => 'Admin Operasional', 'email' => 'admin.ops@hrsistem.local', 'number' => 'ADM-0002'],
+            ['first_name' => 'Admin', 'last_name' => 'Sistem', 'email' => 'admin@hrsistem.local', 'number' => 'ADM-0001'],
+            ['first_name' => 'Admin', 'last_name' => 'Operasional', 'email' => 'admin.ops@hrsistem.local', 'number' => 'ADM-0002'],
         ];
 
         foreach ($admins as $index => $admin) {
-            $nameParts = explode(' ', $admin['name']);
-            $firstName = $nameParts[0];
-            $lastName = $nameParts[1] ?? $nameParts[0];
+            $firstName = $admin['first_name'];
+            $lastName = $admin['last_name'];
+            $name = $firstName.' '.$lastName;
 
             $user = User::firstOrCreate(
                 ['email' => $admin['email']],
                 [
-                    'name' => $admin['name'],
+                    'name' => $name,
                     'password' => Hash::make('password'),
                     'email_verified_at' => now(),
                 ]
@@ -66,7 +66,7 @@ class EmployeeSeeder extends Seeder
                     'last_name' => $lastName,
                     'email' => $admin['email'],
                     'profile_photo' => $photo,
-                    'phone' => '08123456'.str_pad($index + 1, 4, '0', STR_PAD_LEFT),
+                    'phone' => sprintf('08123456%04d', $index + 1),
                     'gender' => $index % 2 === 0 ? 'Laki-laki' : 'Perempuan',
                     'address' => fake()->address(),
                     'hire_date' => now()->subYears(3)->format('Y-m-d'),
@@ -87,7 +87,7 @@ class EmployeeSeeder extends Seeder
             $lastName = fake()->lastName();
             $name = $firstName.' '.$lastName;
             $email = strtolower($firstName.'.'.$lastName.$i.'@hrsistem.local');
-            $number = 'KRY-'.str_pad($i, 4, '0', STR_PAD_LEFT);
+            $number = sprintf('KRY-%04d', $i);
 
             $user = User::firstOrCreate(
                 ['email' => $email],
