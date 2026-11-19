@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Employee extends Model
 {
     protected $fillable = [
-        'user_id', 'employee_number', 'first_name', 'last_name', 'email', 'phone',
+        'user_id', 'employee_number', 'first_name', 'last_name', 'email', 'profile_photo', 'phone',
         'date_of_birth', 'gender', 'address', 'emergency_contact_name', 'emergency_contact_phone',
         'hire_date', 'employment_status', 'position_id', 'department_id', 'basic_salary',
     ];
@@ -100,5 +100,14 @@ class Employee extends Model
     public function getFullNameAttribute(): string
     {
         return $this->first_name.' '.$this->last_name;
+    }
+
+    public function getProfilePhotoUrlAttribute(): ?string
+    {
+        if (! $this->profile_photo) {
+            return null;
+        }
+
+        return asset('uploads/employees/'.$this->profile_photo);
     }
 }

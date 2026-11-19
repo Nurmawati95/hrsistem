@@ -34,5 +34,7 @@ class DatabaseSeeder extends Seeder
 
         Shift::firstOrCreate(['name' => 'Morning'], ['start_time' => '08:00:00', 'end_time' => '17:00:00', 'break_minutes' => 60]);
         Shift::firstOrCreate(['name' => 'Night'], ['start_time' => '20:00:00', 'end_time' => '05:00:00', 'break_minutes' => 60]);
+
+        $this->call(EmployeeSeeder::class);
     }
 }

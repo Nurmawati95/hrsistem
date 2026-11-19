@@ -23,12 +23,13 @@ export default function EmployeesEdit({
     departments,
     positions,
 }: Props) {
-    const { data, setData, put, processing } = useForm({
+    const { data, setData, put, processing, errors } = useForm({
         user_id: employee.user_id ? String(employee.user_id) : '',
         employee_number: employee.employee_number ?? '',
         first_name: employee.first_name ?? '',
         last_name: employee.last_name ?? '',
         email: employee.email ?? '',
+        profile_photo: employee.profile_photo ?? '',
         phone: employee.phone ?? '',
         date_of_birth: employee.date_of_birth ?? '',
         gender: employee.gender ?? '',
@@ -108,6 +109,35 @@ export default function EmployeesEdit({
                                         setData('email', e.target.value)
                                     }
                                 />
+                            </div>
+                            <div className="md:col-span-2 grid gap-2">
+                                <div className="flex flex-col gap-2">
+                                    <Label>Foto Profil</Label>
+                                    {employee.profile_photo ? (
+                                        <div className="flex items-center gap-3">
+                                            <img
+                                                src={employee.profile_photo}
+                                                alt={employee.first_name+' '+employee.last_name}
+                                                className="size-16 rounded-full object-cover border border-slate-200 dark:border-slate-700"
+                                            />
+                                            <span className="text-xs text-slate-500">Foto saat ini</span>
+                                        </div>
+                                    ) : (
+                                        <p className="text-xs text-slate-500">Belum ada foto profil.</p>
+                                    )}
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0] ?? null;
+                                            setData('profile_photo', (file ?? '') as string);
+                                        }}
+                                        className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#12284c] file:text-white hover:file:bg-[#1b3a6b]"
+                                    />
+                                    {errors.profile_photo && (
+                                        <p className="text-sm text-red-500">{errors.profile_photo}</p>
+                                    )}
+                                </div>
                             </div>
                             <div className="grid gap-2">
                                 <Label>Phone</Label>

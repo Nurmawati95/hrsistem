@@ -8,6 +8,7 @@ use App\Models\Position;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -29,6 +30,8 @@ class EmployeeController extends Controller
         return Inertia::render('employees/index', [
             'employees' => $employees,
             'filters' => $request->only('search'),
+            'isAdmin' => $this->authUserIsAdmin($request),
+            'userPosition' => $this->authUserPosition($request),
             'stats' => [
                 'total' => Employee::count(),
                 'permanent' => Employee::where('employment_status', 'permanent')->count(),
@@ -38,6 +41,24 @@ class EmployeeController extends Controller
             ],
             'recent' => Employee::orderByDesc('hire_date')->limit(5)->get(['id', 'first_name', 'last_name', 'hire_date', 'employment_status']),
         ]);
+    }
+
+    /**
+     * Get the authenticated employee's position name.
+     */
+    protected function authUserPosition(Request $request): ?string
+    {
+        $employee = Employee::with('position')->where('user_id', $request->user()?->id)->first();
+
+        return $employee?->position?->name;
+    }
+
+    /**
+     * Determine whether the authenticated user holds the Admin position.
+     */
+    protected function authUserIsAdmin(Request $request): bool
+    {
+        return $this->authUserPosition($request) === 'Admin';
     }
 
     public function create(): Response
@@ -57,6 +78,7 @@ class EmployeeController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:employees,email',
+            'profile_photo' => 'nullable|image|max:2048',
             'phone' => 'nullable|string|max:50',
             'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|string',
@@ -69,6 +91,10 @@ class EmployeeController extends Controller
             'department_id' => 'nullable|exists:departments,id',
             'basic_salary' => 'nullable|numeric',
         ]);
+
+        if ($request->hasFile('profile_photo')) {
+            $data['profile_photo'] = $this->storeProfilePhoto($request->file('profile_photo'));
+        }
 
         $employee = Employee::create($data);
 
@@ -110,6 +136,7 @@ class EmployeeController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:employees,email,'.$employee->id,
+            'profile_photo' => 'nullable|image|max:2048',
             'phone' => 'nullable|string|max:50',
             'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|string',
@@ -123,6 +150,10 @@ class EmployeeController extends Controller
             'basic_salary' => 'nullable|numeric',
         ]);
 
+        if ($request->hasFile('profile_photo')) {
+            $data['profile_photo'] = $this->storeProfilePhoto($request->file('profile_photo'));
+        }
+
         $employee->update($data);
 
         return redirect()->route('employees.show', $employee)->with('success', 'Employee updated.');
@@ -133,5 +164,21 @@ class EmployeeController extends Controller
         $employee->delete();
 
         return redirect()->route('employees.index')->with('success', 'Employee deleted.');
+    }
+
+    /**
+     * Store an uploaded profile photo and return its file name.
+     */
+    protected function storeProfilePhoto($file): string
+    {
+        $directory = public_path('uploads/employees');
+
+        File::ensureDirectoryExists($directory, 0755, true);
+
+        $fileName = uniqid('emp_', true).'.'.$file->getClientOriginalExtension();
+
+        $file->move($directory, $fileName);
+
+        return $fileName;
     }
 }

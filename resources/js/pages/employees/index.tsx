@@ -4,6 +4,7 @@ import {
     Building2,
     Eye,
     GraduationCap,
+    Pencil,
     Plus,
     Search,
     UserCheck,
@@ -22,6 +23,8 @@ type PageProps = {
         meta?: any;
     };
     filters: { search?: string };
+    isAdmin: boolean;
+    userPosition?: string | null;
     stats?: {
         total: number;
         permanent: number;
@@ -35,6 +38,8 @@ type PageProps = {
 export default function EmployeesIndex({
     employees,
     filters,
+    isAdmin,
+    userPosition,
     stats,
     recent,
 }: PageProps) {
@@ -99,12 +104,14 @@ export default function EmployeesIndex({
                         </p>
                     </div>
 
-                    <Button asChild className="bg-[#12284c] hover:bg-[#1b3a6b] text-xs font-semibold uppercase tracking-wider text-white shadow-sm">
-                        <Link href="/employees/create">
-                            <Plus className="mr-1.5 size-4" />
-                            Tambah Pegawai Baru
-                        </Link>
-                    </Button>
+                    {isAdmin && (
+                        <Button asChild className="bg-[#12284c] hover:bg-[#1b3a6b] text-xs font-semibold uppercase tracking-wider text-white shadow-sm">
+                            <Link href="/employees/create">
+                                <Plus className="mr-1.5 size-4" />
+                                Tambah Pegawai Baru
+                            </Link>
+                        </Button>
+                    )}
                 </header>
 
                 {/* 5 Stat Cards */}
@@ -225,6 +232,7 @@ export default function EmployeesIndex({
                         <table className="w-full text-xs text-left">
                             <thead>
                                 <tr className="border-b border-slate-200 bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-400">
+                                    <th className="p-3.5">Foto</th>
                                     <th className="p-3.5 pl-5">NIP / Nomor</th>
                                     <th className="p-3.5">Nama Lengkap</th>
                                     <th className="p-3.5">Email Kantor</th>
@@ -237,7 +245,7 @@ export default function EmployeesIndex({
                             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                                 {employees.data.length === 0 ? (
                                     <tr>
-                                        <td colSpan={7} className="p-8 text-center text-slate-400 text-xs">
+                                        <td colSpan={8} className="p-8 text-center text-slate-400 text-xs">
                                             Tidak ada data karyawan ditemukan. Silakan tambahkan data baru.
                                         </td>
                                     </tr>
@@ -247,6 +255,19 @@ export default function EmployeesIndex({
                                             key={emp.id}
                                             className="transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-800/40"
                                         >
+                                            <td className="p-3.5">
+                                                {emp.profile_photo ? (
+                                                    <img
+                                                        src={emp.profile_photo}
+                                                        alt={emp.first_name+' '+emp.last_name}
+                                                        className="size-8 rounded-full object-cover border border-slate-200 dark:border-slate-700"
+                                                    />
+                                                ) : (
+                                                    <div className="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-400">
+                                                        {(emp.first_name?.charAt(0) ?? '')+(emp.last_name?.charAt(0) ?? '')}
+                                                    </div>
+                                                )}
+                                            </td>
                                             <td className="p-3.5 pl-5 font-mono font-semibold text-[#16325c] dark:text-sky-400">
                                                 {emp.employee_number}
                                             </td>
@@ -277,6 +298,19 @@ export default function EmployeesIndex({
                                                         Rincian
                                                     </Link>
                                                 </Button>
+                                                {isAdmin && (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        asChild
+                                                        className="ml-2 h-7 text-[11px] font-semibold text-[#16325c] hover:bg-slate-100 dark:text-sky-400 dark:hover:bg-slate-800"
+                                                    >
+                                                        <Link href={`/employees/${emp.id}/edit`}>
+                                                            <Pencil className="mr-1 size-3" />
+                                                            Ubah
+                                                        </Link>
+                                                    </Button>
+                                                )}
                                             </td>
                                         </tr>
                                     ))

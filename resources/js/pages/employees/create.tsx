@@ -28,6 +28,7 @@ export default function EmployeesCreate({
         first_name: '',
         last_name: '',
         email: '',
+        profile_photo: '',
         phone: '',
         date_of_birth: '',
         gender: '',
@@ -145,6 +146,21 @@ export default function EmployeesCreate({
                                     <p className="text-sm text-red-500">
                                         {errors.email}
                                     </p>
+                                )}
+                            </div>
+                            <div className="md:col-span-2 grid gap-2">
+                                <Label>Foto Profil</Label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0] ?? null;
+                                        setData('profile_photo', (file ?? '') as string);
+                                    }}
+                                    className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#12284c] file:text-white hover:file:bg-[#1b3a6b]"
+                                />
+                                {errors.profile_photo && (
+                                    <p className="text-sm text-red-500">{errors.profile_photo}</p>
                                 )}
                             </div>
                             <div className="grid gap-2">
