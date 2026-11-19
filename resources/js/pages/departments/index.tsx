@@ -26,11 +26,11 @@ export default function DepartmentsIndex({ departments }: Props) {
         <>
             <Head title="Departments" />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
-                <h1 className="text-2xl font-bold">Departments</h1>
+                <h1 className="text-2xl font-bold">Departemen</h1>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Add Department</CardTitle>
+                        <CardTitle>Tambah Departemen</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={submit} className="flex flex-wrap gap-2">
@@ -47,7 +47,7 @@ export default function DepartmentsIndex({ departments }: Props) {
                                 className="w-64"
                             />
                             <Button disabled={processing} type="submit">
-                                Add
+                                Tambah
                             </Button>
                         </form>
                     </CardContent>
@@ -55,16 +55,16 @@ export default function DepartmentsIndex({ departments }: Props) {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Department List</CardTitle>
+                        <CardTitle>Daftar Departemen</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <table className="w-full text-sm">
                             <thead>
                                 <tr className="border-b text-left">
-                                    <th className="p-2">Name</th>
-                                    <th className="p-2">Parent</th>
-                                    <th className="p-2">Description</th>
-                                    <th className="p-2">Actions</th>
+                                    <th className="p-2">Nama</th>
+                                    <th className="p-2">Induk</th>
+                                    <th className="p-2">Deskripsi</th>
+                                    <th className="p-2">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -75,7 +75,7 @@ export default function DepartmentsIndex({ departments }: Props) {
                                         <td className="p-2">{d.description ?? '-'}</td>
                                         <td className="p-2">
                                             <Button variant="destructive" size="sm" onClick={() => remove(d.id)}>
-                                                Delete
+                                                Hapus
                                             </Button>
                                         </td>
                                     </tr>
@@ -90,5 +90,5 @@ export default function DepartmentsIndex({ departments }: Props) {
 }
 
 DepartmentsIndex.layout = {
-    breadcrumbs: [{ title: 'Departments', href: '/departments' }],
+    breadcrumbs: [{ title: 'Departemen', href: '/departments' }],
 };

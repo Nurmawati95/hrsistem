@@ -48,12 +48,12 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
         <>
             <Head title="Shifts" />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
-                <h1 className="text-2xl font-bold">Shifts & Scheduling</h1>
+                <h1 className="text-2xl font-bold">Shift & Jadwal</h1>
 
                 <div className="grid gap-4 md:grid-cols-2">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Add Shift</CardTitle>
+                            <CardTitle>Tambah Shift</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={submitShift} className="grid gap-2">
@@ -61,14 +61,14 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                                 <Input type="time" value={shiftForm.data.start_time} onChange={(e) => shiftForm.setData('start_time', e.target.value)} />
                                 <Input type="time" value={shiftForm.data.end_time} onChange={(e) => shiftForm.setData('end_time', e.target.value)} />
                                 <Input type="number" placeholder="Break minutes" value={shiftForm.data.break_minutes} onChange={(e) => shiftForm.setData('break_minutes', Number(e.target.value))} />
-                                <Button disabled={shiftForm.processing} type="submit">Add Shift</Button>
+                                <Button disabled={shiftForm.processing} type="submit">Tambah Shift</Button>
                             </form>
                         </CardContent>
                     </Card>
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Assign Shift</CardTitle>
+                            <CardTitle>Penugasan Shift</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={submitAssign} className="grid gap-2">
@@ -91,7 +91,7 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                                     </SelectContent>
                                 </Select>
                                 <Input type="date" value={assignForm.data.date} onChange={(e) => assignForm.setData('date', e.target.value)} />
-                                <Button disabled={assignForm.processing} type="submit">Assign</Button>
+                                <Button disabled={assignForm.processing} type="submit">Tugaskan</Button>
                             </form>
                         </CardContent>
                     </Card>
@@ -99,17 +99,17 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Shifts</CardTitle>
+                        <CardTitle>Shift</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <table className="w-full text-sm">
                             <thead>
                                 <tr className="border-b text-left">
-                                    <th className="p-2">Name</th>
-                                    <th className="p-2">Start</th>
-                                    <th className="p-2">End</th>
-                                    <th className="p-2">Break (min)</th>
-                                    <th className="p-2">Actions</th>
+                                    <th className="p-2">Nama</th>
+                                    <th className="p-2">Mulai</th>
+                                    <th className="p-2">Selesai</th>
+                                    <th className="p-2">Istirahat (mnt)</th>
+                                    <th className="p-2">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,7 +121,7 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                                         <td className="p-2">{s.break_minutes}</td>
                                         <td className="p-2">
                                             <Button variant="destructive" size="sm" onClick={() => removeShift(s.id)}>
-                                                Delete
+                                                Hapus
                                             </Button>
                                         </td>
                                     </tr>
@@ -133,15 +133,15 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Recent Assignments</CardTitle>
+                        <CardTitle>Penugasan Terbaru</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <table className="w-full text-sm">
                             <thead>
                                 <tr className="border-b text-left">
-                                    <th className="p-2">Employee</th>
+                                    <th className="p-2">Karyawan</th>
                                     <th className="p-2">Shift</th>
-                                    <th className="p-2">Date</th>
+                                    <th className="p-2">Tanggal</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -162,5 +162,5 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
 }
 
 ShiftsIndex.layout = {
-    breadcrumbs: [{ title: 'Shifts', href: '/shifts' }],
+    breadcrumbs: [{ title: 'Shift & Jadwal', href: '/shifts' }],
 };

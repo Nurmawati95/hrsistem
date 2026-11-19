@@ -25,37 +25,37 @@ import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Dasbor',
         href: dashboard(),
         icon: LayoutGrid,
     },
     {
-        title: 'Employees',
+        title: 'Karyawan',
         href: '/employees',
         icon: Users,
     },
     {
-        title: 'Organization',
+        title: 'Struktur Organisasi',
         href: '/organization',
         icon: Settings,
     },
     {
-        title: 'Shifts',
+        title: 'Shift & Jadwal',
         href: '/shifts',
         icon: CalendarDays,
     },
     {
-        title: 'Attendance',
+        title: 'Absensi',
         href: '/attendance',
         icon: ClipboardList,
     },
     {
-        title: 'Leave',
+        title: 'Cuti & Izin',
         href: '/leave/requests',
         icon: CalendarDays,
     },
     {
-        title: 'Payroll',
+        title: 'Penggajian',
         href: '/payroll/periods',
         icon: DollarSign,
     },

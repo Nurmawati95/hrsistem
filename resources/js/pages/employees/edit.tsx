@@ -49,7 +49,7 @@ export default function EmployeesEdit({ employee, departments, positions, users 
             <Head title="Edit Employee" />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Edit Employee</h1>
+                    <h1 className="text-2xl font-bold">Ubah Karyawan</h1>
                     <Link href={`/employees/${employee.id}`}>
                         <Button variant="outline">Back</Button>
                     </Link>
@@ -57,7 +57,7 @@ export default function EmployeesEdit({ employee, departments, positions, users 
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Employee Details</CardTitle>
+                        <CardTitle>Detail Karyawan</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={submit} className="grid gap-4 md:grid-cols-2">
@@ -124,7 +124,7 @@ export default function EmployeesEdit({ employee, departments, positions, users 
                             </div>
 
                             <div className="md:col-span-2">
-                                <Button disabled={processing} type="submit">Update</Button>
+                                <Button disabled={processing} type="submit">Simpan</Button>
                             </div>
                         </form>
                     </CardContent>

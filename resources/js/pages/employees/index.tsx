@@ -26,15 +26,15 @@ export default function EmployeesIndex({ employees, filters }: PageProps) {
             <Head title="Employees" />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Employees</h1>
+                    <h1 className="text-2xl font-bold">Karyawan</h1>
                     <Link href="/employees/create">
-                        <Button>Add Employee</Button>
+                        <Button>Tambah Karyawan</Button>
                     </Link>
                 </div>
 
                 <form onSubmit={submitSearch} className="flex gap-2">
                     <Input
-                        placeholder="Search employees..."
+                        placeholder="Cari karyawan..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
@@ -45,20 +45,20 @@ export default function EmployeesIndex({ employees, filters }: PageProps) {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Employee List</CardTitle>
+                        <CardTitle>Daftar Karyawan</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
                                     <tr className="border-b text-left">
-                                        <th className="p-2">Number</th>
-                                        <th className="p-2">Name</th>
+                                        <th className="p-2">Nomor</th>
+                                        <th className="p-2">Nama</th>
                                         <th className="p-2">Email</th>
-                                        <th className="p-2">Department</th>
-                                        <th className="p-2">Position</th>
+                                        <th className="p-2">Departemen</th>
+                                        <th className="p-2">Jabatan</th>
                                         <th className="p-2">Status</th>
-                                        <th className="p-2">Actions</th>
+                                        <th className="p-2">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,7 +77,7 @@ export default function EmployeesIndex({ employees, filters }: PageProps) {
                                                     href={`/employees/${emp.id}`}
                                                     className="text-blue-600 hover:underline"
                                                 >
-                                                    View
+                                                    Lihat
                                                 </Link>
                                             </td>
                                         </tr>
@@ -107,5 +107,5 @@ export default function EmployeesIndex({ employees, filters }: PageProps) {
 }
 
 EmployeesIndex.layout = {
-    breadcrumbs: [{ title: 'Employees', href: '/employees' }],
+    breadcrumbs: [{ title: 'Karyawan', href: '/employees' }],
 };

@@ -14,29 +14,29 @@ export default function PayrollShow({ period }: Props) {
             <Head title={`Payroll ${period.name}`} />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Payroll: {period.name}</h1>
+                    <h1 className="text-2xl font-bold">Penggajian: {period.name}</h1>
                     <div className="flex gap-2">
                         {period.status !== 'processed' && period.status !== 'paid' && (
-                            <Button onClick={process}>Process Payroll</Button>
+                            <Button onClick={process}>Proses Penggajian</Button>
                         )}
                     </div>
                 </div>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Payslips</CardTitle>
+                        <CardTitle>Slip Gaji</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
                                     <tr className="border-b text-left">
-                                        <th className="p-2">Employee</th>
-                                        <th className="p-2">Basic</th>
-                                        <th className="p-2">OT Pay</th>
-                                        <th className="p-2">Earnings</th>
-                                        <th className="p-2">Deductions</th>
-                                        <th className="p-2">Net Salary</th>
+                                        <th className="p-2">Karyawan</th>
+                                        <th className="p-2">Gaji Pokok</th>
+                                        <th className="p-2">Lembur</th>
+                                        <th className="p-2">Pendapatan</th>
+                                        <th className="p-2">Potongan</th>
+                                        <th className="p-2">Gaji Bersih</th>
                                         <th className="p-2">Status</th>
                                     </tr>
                                 </thead>
@@ -63,5 +63,5 @@ export default function PayrollShow({ period }: Props) {
 }
 
 PayrollShow.layout = {
-    breadcrumbs: [{ title: 'Payroll', href: '/payroll/periods' }, { title: 'Detail', href: '#' }],
+    breadcrumbs: [{ title: 'Penggajian', href: '/payroll/periods' }, { title: 'Detail', href: '#' }],
 };

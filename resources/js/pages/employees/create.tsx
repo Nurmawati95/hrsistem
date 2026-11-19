@@ -47,7 +47,7 @@ export default function EmployeesCreate({ departments, positions, users }: Props
             <Head title="Add Employee" />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Add Employee</h1>
+                    <h1 className="text-2xl font-bold">Tambah Karyawan</h1>
                     <Link href="/employees">
                         <Button variant="outline">Back</Button>
                     </Link>
@@ -55,12 +55,12 @@ export default function EmployeesCreate({ departments, positions, users }: Props
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Employee Details</CardTitle>
+                        <CardTitle>Detail Karyawan</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={submit} className="grid gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
-                                <Label>Employee Number</Label>
+                                <Label>Nomor Karyawan</Label>
                                 <Input
                                     value={data.employee_number}
                                     onChange={(e) => setData('employee_number', e.target.value)}
@@ -70,7 +70,7 @@ export default function EmployeesCreate({ departments, positions, users }: Props
                                 )}
                             </div>
                             <div className="grid gap-2">
-                                <Label>Linked User (optional)</Label>
+                                <Label>Pengguna Terkait (opsional)</Label>
                                 <Select value={data.user_id} onValueChange={(v) => setData('user_id', v)}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="None" />
@@ -85,7 +85,7 @@ export default function EmployeesCreate({ departments, positions, users }: Props
                                 </Select>
                             </div>
                             <div className="grid gap-2">
-                                <Label>First Name</Label>
+                                <Label>Nama Depan</Label>
                                 <Input
                                     value={data.first_name}
                                     onChange={(e) => setData('first_name', e.target.value)}
@@ -93,7 +93,7 @@ export default function EmployeesCreate({ departments, positions, users }: Props
                                 {errors.first_name && <p className="text-sm text-red-500">{errors.first_name}</p>}
                             </div>
                             <div className="grid gap-2">
-                                <Label>Last Name</Label>
+                                <Label>Nama Belakang</Label>
                                 <Input
                                     value={data.last_name}
                                     onChange={(e) => setData('last_name', e.target.value)}
@@ -110,14 +110,14 @@ export default function EmployeesCreate({ departments, positions, users }: Props
                                 {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                             </div>
                             <div className="grid gap-2">
-                                <Label>Phone</Label>
+                                <Label>Telepon</Label>
                                 <Input
                                     value={data.phone}
                                     onChange={(e) => setData('phone', e.target.value)}
                                 />
                             </div>
                             <div className="grid gap-2">
-                                <Label>Date of Birth</Label>
+                                <Label>Tanggal Lahir</Label>
                                 <Input
                                     type="date"
                                     value={data.date_of_birth}
@@ -125,40 +125,40 @@ export default function EmployeesCreate({ departments, positions, users }: Props
                                 />
                             </div>
                             <div className="grid gap-2">
-                                <Label>Gender</Label>
+                                <Label>Jenis Kelamin</Label>
                                 <Select value={data.gender} onValueChange={(v) => setData('gender', v)}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="male">Male</SelectItem>
-                                        <SelectItem value="female">Female</SelectItem>
+                                        <SelectItem value="male">Laki-laki</SelectItem>
+                                        <SelectItem value="female">Perempuan</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="grid gap-2 md:col-span-2">
-                                <Label>Address</Label>
+                                <Label>Alamat</Label>
                                 <Input
                                     value={data.address}
                                     onChange={(e) => setData('address', e.target.value)}
                                 />
                             </div>
                             <div className="grid gap-2">
-                                <Label>Emergency Contact Name</Label>
+                                <Label>Nama Kontak Darurat</Label>
                                 <Input
                                     value={data.emergency_contact_name}
                                     onChange={(e) => setData('emergency_contact_name', e.target.value)}
                                 />
                             </div>
                             <div className="grid gap-2">
-                                <Label>Emergency Contact Phone</Label>
+                                <Label>Telepon Kontak Darurat</Label>
                                 <Input
                                     value={data.emergency_contact_phone}
                                     onChange={(e) => setData('emergency_contact_phone', e.target.value)}
                                 />
                             </div>
                             <div className="grid gap-2">
-                                <Label>Hire Date</Label>
+                                <Label>Tanggal Masuk</Label>
                                 <Input
                                     type="date"
                                     value={data.hire_date}
@@ -167,20 +167,20 @@ export default function EmployeesCreate({ departments, positions, users }: Props
                                 {errors.hire_date && <p className="text-sm text-red-500">{errors.hire_date}</p>}
                             </div>
                             <div className="grid gap-2">
-                                <Label>Employment Status</Label>
+                                <Label>Status Kepegawaian</Label>
                                 <Select value={data.employment_status} onValueChange={(v) => setData('employment_status', v)}>
                                     <SelectTrigger>
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="permanent">Permanent</SelectItem>
-                                        <SelectItem value="contract">Contract</SelectItem>
-                                        <SelectItem value="intern">Intern</SelectItem>
+                                        <SelectItem value="permanent">Tetap</SelectItem>
+                                        <SelectItem value="contract">Kontrak</SelectItem>
+                                        <SelectItem value="intern">Magang</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
                             <div className="grid gap-2">
-                                <Label>Department</Label>
+                                <Label>Departemen</Label>
                                 <Select value={data.department_id} onValueChange={(v) => setData('department_id', v)}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select" />
@@ -195,7 +195,7 @@ export default function EmployeesCreate({ departments, positions, users }: Props
                                 </Select>
                             </div>
                             <div className="grid gap-2">
-                                <Label>Position</Label>
+                                <Label>Jabatan</Label>
                                 <Select value={data.position_id} onValueChange={(v) => setData('position_id', v)}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select" />
@@ -210,7 +210,7 @@ export default function EmployeesCreate({ departments, positions, users }: Props
                                 </Select>
                             </div>
                             <div className="grid gap-2">
-                                <Label>Basic Salary</Label>
+                                <Label>Gaji Pokok</Label>
                                 <Input
                                     type="number"
                                     value={data.basic_salary}
@@ -220,7 +220,7 @@ export default function EmployeesCreate({ departments, positions, users }: Props
 
                             <div className="md:col-span-2">
                                 <Button disabled={processing} type="submit">
-                                    Save
+                                    Simpan
                                 </Button>
                             </div>
                         </form>

@@ -43,15 +43,15 @@ export default function LeaveRequests({ requests, leaveTypes, employees, balance
             <Head title="Leave Requests" />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Leave Requests</h1>
+                    <h1 className="text-2xl font-bold">Pengajuan Cuti & Izin</h1>
                     <Link href="/leave/types" className="text-sm text-blue-600 hover:underline">
-                        Manage Leave Types
+                        Kelola Jenis Cuti
                     </Link>
                 </div>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Apply for Leave</CardTitle>
+                        <CardTitle>Ajukan Cuti</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={submit} className="grid gap-2 md:grid-cols-3">
@@ -75,26 +75,26 @@ export default function LeaveRequests({ requests, leaveTypes, employees, balance
                             <Input type="date" value={form.data.end_date} onChange={(e) => form.setData('end_date', e.target.value)} />
                             <Input placeholder="Reason" value={form.data.reason} onChange={(e) => form.setData('reason', e.target.value)} />
                             <Input placeholder="Attachment path" value={form.data.attachment} onChange={(e) => form.setData('attachment', e.target.value)} />
-                            <Button disabled={form.processing} type="submit">Submit</Button>
+                            <Button disabled={form.processing} type="submit">Kirim</Button>
                         </form>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Requests</CardTitle>
+                        <CardTitle>Pengajuan</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <table className="w-full text-sm">
                             <thead>
                                 <tr className="border-b text-left">
-                                    <th className="p-2">Employee</th>
-                                    <th className="p-2">Type</th>
-                                    <th className="p-2">Start</th>
-                                    <th className="p-2">End</th>
-                                    <th className="p-2">Days</th>
+                                    <th className="p-2">Karyawan</th>
+                                    <th className="p-2">Jenis</th>
+                                    <th className="p-2">Mulai</th>
+                                    <th className="p-2">Selesai</th>
+                                    <th className="p-2">Hari</th>
                                     <th className="p-2">Status</th>
-                                    <th className="p-2">Actions</th>
+                                    <th className="p-2">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -109,8 +109,8 @@ export default function LeaveRequests({ requests, leaveTypes, employees, balance
                                         <td className="p-2">
                                             {r.status === 'pending' && (
                                                 <>
-                                                    <Button size="sm" className="mr-1" onClick={() => approve(r.id)}>Approve</Button>
-                                                    <Button size="sm" variant="destructive" onClick={() => reject(r.id)}>Reject</Button>
+                                                    <Button size="sm" className="mr-1" onClick={() => approve(r.id)}>Setujui</Button>
+                                                    <Button size="sm" variant="destructive" onClick={() => reject(r.id)}>Tolak</Button>
                                                 </>
                                             )}
                                         </td>
@@ -123,18 +123,18 @@ export default function LeaveRequests({ requests, leaveTypes, employees, balance
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Leave Balances</CardTitle>
+                        <CardTitle>Sisa Kuota Cuti</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <table className="w-full text-sm">
                             <thead>
                                 <tr className="border-b text-left">
-                                    <th className="p-2">Employee</th>
-                                    <th className="p-2">Type</th>
-                                    <th className="p-2">Year</th>
+                                    <th className="p-2">Karyawan</th>
+                                    <th className="p-2">Jenis</th>
+                                    <th className="p-2">Tahun</th>
                                     <th className="p-2">Total</th>
-                                    <th className="p-2">Used</th>
-                                    <th className="p-2">Remaining</th>
+                                    <th className="p-2">Terpakai</th>
+                                    <th className="p-2">Sisa</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -158,5 +158,5 @@ export default function LeaveRequests({ requests, leaveTypes, employees, balance
 }
 
 LeaveRequests.layout = {
-    breadcrumbs: [{ title: 'Leave Requests', href: '/leave/requests' }],
+    breadcrumbs: [{ title: 'Pengajuan Cuti', href: '/leave/requests' }],
 };

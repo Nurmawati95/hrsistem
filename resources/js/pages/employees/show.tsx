@@ -15,10 +15,10 @@ export default function EmployeesShow({ employee }: Props) {
                     </h1>
                     <div className="flex gap-2">
                         <Link href={`/employees/${employee.id}/edit`}>
-                            <Button variant="outline">Edit</Button>
+                            <Button variant="outline">Ubah</Button>
                         </Link>
                         <Link href="/employees">
-                            <Button variant="ghost">Back</Button>
+                            <Button variant="ghost">Kembali</Button>
                         </Link>
                     </div>
                 </div>
@@ -29,24 +29,24 @@ export default function EmployeesShow({ employee }: Props) {
                             <CardTitle>Biodata</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-2 text-sm">
-                            <p><strong>Employee Number:</strong> {employee.employee_number}</p>
+                            <p><strong>Nomor Karyawan:</strong> {employee.employee_number}</p>
                             <p><strong>Email:</strong> {employee.email}</p>
-                            <p><strong>Phone:</strong> {employee.phone ?? '-'}</p>
-                            <p><strong>Date of Birth:</strong> {employee.date_of_birth ?? '-'}</p>
-                            <p><strong>Gender:</strong> {employee.gender ?? '-'}</p>
-                            <p><strong>Address:</strong> {employee.address ?? '-'}</p>
-                            <p><strong>Hire Date:</strong> {employee.hire_date}</p>
+                            <p><strong>Telepon:</strong> {employee.phone ?? '-'}</p>
+                            <p><strong>Tanggal Lahir:</strong> {employee.date_of_birth ?? '-'}</p>
+                            <p><strong>Jenis Kelamin:</strong> {employee.gender ?? '-'}</p>
+                            <p><strong>Alamat:</strong> {employee.address ?? '-'}</p>
+                            <p><strong>Tanggal Masuk:</strong> {employee.hire_date}</p>
                             <p><strong>Status:</strong> {employee.employment_status}</p>
-                            <p><strong>Department:</strong> {employee.department?.name ?? '-'}</p>
-                            <p><strong>Position:</strong> {employee.position?.name ?? '-'}</p>
-                            <p><strong>Basic Salary:</strong> {employee.basic_salary}</p>
-                            <p><strong>Emergency Contact:</strong> {employee.emergency_contact_name ?? '-'} ({employee.emergency_contact_phone ?? '-'})</p>
+                            <p><strong>Departemen:</strong> {employee.department?.name ?? '-'}</p>
+                            <p><strong>Jabatan:</strong> {employee.position?.name ?? '-'}</p>
+                            <p><strong>Gaji Pokok:</strong> {employee.basic_salary}</p>
+                            <p><strong>Kontak Darurat:</strong> {employee.emergency_contact_name ?? '-'} ({employee.emergency_contact_phone ?? '-'})</p>
                         </CardContent>
                     </Card>
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Job History</CardTitle>
+                            <CardTitle>Riwayat Jabatan</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <ul className="space-y-2 text-sm">
@@ -64,7 +64,7 @@ export default function EmployeesShow({ employee }: Props) {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Education</CardTitle>
+                            <CardTitle>Pendidikan</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <ul className="space-y-2 text-sm">
@@ -81,7 +81,7 @@ export default function EmployeesShow({ employee }: Props) {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Documents</CardTitle>
+                            <CardTitle>Dokumen</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <ul className="space-y-2 text-sm">

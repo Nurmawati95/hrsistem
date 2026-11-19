@@ -22,11 +22,11 @@ export default function PayrollPeriods({ periods }: Props) {
         <>
             <Head title="Payroll Periods" />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
-                <h1 className="text-2xl font-bold">Payroll Periods</h1>
+                <h1 className="text-2xl font-bold">Periode Penggajian</h1>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Add Period</CardTitle>
+                        <CardTitle>Tambah Periode</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={submit} className="flex flex-wrap gap-2">
@@ -34,25 +34,25 @@ export default function PayrollPeriods({ periods }: Props) {
                             <Input type="date" value={form.data.start_date} onChange={(e) => form.setData('start_date', e.target.value)} />
                             <Input type="date" value={form.data.end_date} onChange={(e) => form.setData('end_date', e.target.value)} />
                             <Input type="date" value={form.data.pay_date} onChange={(e) => form.setData('pay_date', e.target.value)} />
-                            <Button disabled={form.processing} type="submit">Add</Button>
+                            <Button disabled={form.processing} type="submit">Tambah</Button>
                         </form>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Periods</CardTitle>
+                        <CardTitle>Periode</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <table className="w-full text-sm">
                             <thead>
                                 <tr className="border-b text-left">
-                                    <th className="p-2">Name</th>
-                                    <th className="p-2">Start</th>
-                                    <th className="p-2">End</th>
-                                    <th className="p-2">Pay Date</th>
+                                    <th className="p-2">Nama</th>
+                                    <th className="p-2">Mulai</th>
+                                    <th className="p-2">Selesai</th>
+                                    <th className="p-2">Tanggal Bayar</th>
                                     <th className="p-2">Status</th>
-                                    <th className="p-2">Actions</th>
+                                    <th className="p-2">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,7 +65,7 @@ export default function PayrollPeriods({ periods }: Props) {
                                         <td className="p-2">{p.status}</td>
                                         <td className="p-2">
                                             <Button size="sm" className="mr-1" onClick={() => router.visit(`/payroll/periods/${p.id}`)}>
-                                                View
+                                                Lihat
                                             </Button>
                                         </td>
                                     </tr>
@@ -80,5 +80,5 @@ export default function PayrollPeriods({ periods }: Props) {
 }
 
 PayrollPeriods.layout = {
-    breadcrumbs: [{ title: 'Payroll Periods', href: '/payroll/periods' }],
+    breadcrumbs: [{ title: 'Periode Penggajian', href: '/payroll/periods' }],
 };

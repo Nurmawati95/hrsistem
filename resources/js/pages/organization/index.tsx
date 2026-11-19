@@ -30,10 +30,10 @@ export default function OrganizationIndex({ departments }: Props) {
         <>
             <Head title="Organization" />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
-                <h1 className="text-2xl font-bold">Organization Structure</h1>
+                <h1 className="text-2xl font-bold">Struktur Organisasi</h1>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Departments & Employees</CardTitle>
+                        <CardTitle>Departemen & Karyawan</CardTitle>
                     </CardHeader>
                     <CardContent>
                         {roots.length === 0 && <p className="text-muted-foreground">No departments.</p>}
@@ -48,5 +48,5 @@ export default function OrganizationIndex({ departments }: Props) {
 }
 
 OrganizationIndex.layout = {
-    breadcrumbs: [{ title: 'Organization', href: '/organization' }],
+    breadcrumbs: [{ title: 'Struktur Organisasi', href: '/organization' }],
 };

@@ -22,35 +22,35 @@ export default function LeaveTypes({ leaveTypes }: Props) {
         <>
             <Head title="Leave Types" />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
-                <h1 className="text-2xl font-bold">Leave Types</h1>
+                <h1 className="text-2xl font-bold">Jenis Cuti</h1>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Add Leave Type</CardTitle>
+                        <CardTitle>Tambah Jenis Cuti</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={submit} className="flex flex-wrap gap-2">
                             <Input placeholder="Name" value={form.data.name} onChange={(e) => form.setData('name', e.target.value)} />
                             <Input type="number" placeholder="Days allowed" value={form.data.days_allowed} onChange={(e) => form.setData('days_allowed', Number(e.target.value))} />
                             <Input placeholder="Description" value={form.data.description} onChange={(e) => form.setData('description', e.target.value)} />
-                            <Button disabled={form.processing} type="submit">Add</Button>
+                            <Button disabled={form.processing} type="submit">Tambah</Button>
                         </form>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Leave Type List</CardTitle>
+                        <CardTitle>Daftar Jenis Cuti</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <table className="w-full text-sm">
                             <thead>
                                 <tr className="border-b text-left">
-                                    <th className="p-2">Name</th>
-                                    <th className="p-2">Days Allowed</th>
-                                    <th className="p-2">Paid</th>
-                                    <th className="p-2">Description</th>
-                                    <th className="p-2">Actions</th>
+                                    <th className="p-2">Nama</th>
+                                    <th className="p-2">Hari Diizinkan</th>
+                                    <th className="p-2">Berbayar</th>
+                                    <th className="p-2">Deskripsi</th>
+                                    <th className="p-2">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,7 +61,7 @@ export default function LeaveTypes({ leaveTypes }: Props) {
                                         <td className="p-2">{lt.is_paid ? 'Yes' : 'No'}</td>
                                         <td className="p-2">{lt.description ?? '-'}</td>
                                         <td className="p-2">
-                                            <Button variant="destructive" size="sm" onClick={() => remove(lt.id)}>Delete</Button>
+                                            <Button variant="destructive" size="sm" onClick={() => remove(lt.id)}>Hapus</Button>
                                         </td>
                                     </tr>
                                 ))}
@@ -75,5 +75,5 @@ export default function LeaveTypes({ leaveTypes }: Props) {
 }
 
 LeaveTypes.layout = {
-    breadcrumbs: [{ title: 'Leave Types', href: '/leave/types' }],
+    breadcrumbs: [{ title: 'Jenis Cuti', href: '/leave/types' }],
 };

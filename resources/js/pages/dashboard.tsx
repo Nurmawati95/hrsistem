@@ -14,17 +14,17 @@ type Props = {
 
 export default function Dashboard({ stats }: Props) {
     const items = [
-        { title: 'Employees', value: stats?.employees ?? 0, href: '/employees' },
-        { title: 'Departments', value: stats?.departments ?? 0, href: '/departments' },
-        { title: 'Pending Leaves', value: stats?.pending_leaves ?? 0, href: '/leave/requests' },
-        { title: 'Today Attendance', value: stats?.today_attendance ?? 0, href: '/attendance' },
+        { title: 'Karyawan', value: stats?.employees ?? 0, href: '/employees' },
+        { title: 'Departemen', value: stats?.departments ?? 0, href: '/departments' },
+        { title: 'Cuti Menunggu', value: stats?.pending_leaves ?? 0, href: '/leave/requests' },
+        { title: 'Absensi Hari Ini', value: stats?.today_attendance ?? 0, href: '/attendance' },
     ];
 
     return (
         <>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <h1 className="text-2xl font-bold">Dashboard</h1>
+                <h1 className="text-2xl font-bold">Dasbor</h1>
                 <div className="grid gap-4 md:grid-cols-4">
                     {items.map((it) => (
                         <Link key={it.title} href={it.href}>
@@ -42,13 +42,13 @@ export default function Dashboard({ stats }: Props) {
                 <div className="grid gap-4 md:grid-cols-2">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Quick Links</CardTitle>
+                            <CardTitle>Tautan Cepat</CardTitle>
                         </CardHeader>
                         <CardContent className="flex flex-wrap gap-2">
-                            <Link href="/employees/create" className="text-blue-600 hover:underline">Add Employee</Link>
-                            <Link href="/leave/requests" className="text-blue-600 hover:underline">Leave Requests</Link>
-                            <Link href="/attendance" className="text-blue-600 hover:underline">Attendance</Link>
-                            <Link href="/payroll/periods" className="text-blue-600 hover:underline">Payroll</Link>
+                            <Link href="/employees/create" className="text-blue-600 hover:underline">Tambah Karyawan</Link>
+                            <Link href="/leave/requests" className="text-blue-600 hover:underline">Pengajuan Cuti</Link>
+                            <Link href="/attendance" className="text-blue-600 hover:underline">Absensi</Link>
+                            <Link href="/payroll/periods" className="text-blue-600 hover:underline">Penggajian</Link>
                         </CardContent>
                     </Card>
                 </div>
@@ -60,7 +60,7 @@ export default function Dashboard({ stats }: Props) {
 Dashboard.layout = {
     breadcrumbs: [
         {
-            title: 'Dashboard',
+            title: 'Dasbor',
             href: dashboard(),
         },
     ],

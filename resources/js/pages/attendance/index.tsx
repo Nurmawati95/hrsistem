@@ -51,12 +51,12 @@ export default function AttendanceIndex({ attendances, employees, filters }: Pro
         <>
             <Head title="Attendance" />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
-                <h1 className="text-2xl font-bold">Attendance</h1>
+                <h1 className="text-2xl font-bold">Absensi</h1>
 
                 <div className="grid gap-4 md:grid-cols-2">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Check In</CardTitle>
+                            <CardTitle>Absen Masuk</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={doCheckIn} className="grid gap-2">
@@ -69,14 +69,14 @@ export default function AttendanceIndex({ attendances, employees, filters }: Pro
                                     </SelectContent>
                                 </Select>
                                 <Input placeholder="Location" value={checkInForm.data.location} onChange={(e) => checkInForm.setData('location', e.target.value)} />
-                                <Button disabled={checkInForm.processing} type="submit">Check In</Button>
+                                <Button disabled={checkInForm.processing} type="submit">Absen Masuk</Button>
                             </form>
                         </CardContent>
                     </Card>
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Check Out</CardTitle>
+                            <CardTitle>Absen Keluar</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={doCheckOut} className="grid gap-2">
@@ -89,7 +89,7 @@ export default function AttendanceIndex({ attendances, employees, filters }: Pro
                                     </SelectContent>
                                 </Select>
                                 <Input placeholder="Location" value={checkOutForm.data.location} onChange={(e) => checkOutForm.setData('location', e.target.value)} />
-                                <Button disabled={checkOutForm.processing} type="submit">Check Out</Button>
+                                <Button disabled={checkOutForm.processing} type="submit">Absen Keluar</Button>
                             </form>
                         </CardContent>
                     </Card>
@@ -97,7 +97,7 @@ export default function AttendanceIndex({ attendances, employees, filters }: Pro
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Manual Entry</CardTitle>
+                        <CardTitle>Entri Manual</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <form onSubmit={doManual} className="grid gap-2 md:grid-cols-4">
@@ -115,14 +115,14 @@ export default function AttendanceIndex({ attendances, employees, filters }: Pro
                             <Input placeholder="Status" value={manualForm.data.status} onChange={(e) => manualForm.setData('status', e.target.value)} />
                             <Input type="number" placeholder="Late min" value={manualForm.data.late_minutes} onChange={(e) => manualForm.setData('late_minutes', Number(e.target.value))} />
                             <Input type="number" placeholder="OT min" value={manualForm.data.overtime_minutes} onChange={(e) => manualForm.setData('overtime_minutes', Number(e.target.value))} />
-                            <Button disabled={manualForm.processing} type="submit">Save</Button>
+                            <Button disabled={manualForm.processing} type="submit">Simpan</Button>
                         </form>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Attendance Records</CardTitle>
+                        <CardTitle>Riwayat Absensi</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="mb-2">
@@ -131,13 +131,13 @@ export default function AttendanceIndex({ attendances, employees, filters }: Pro
                         <table className="w-full text-sm">
                             <thead>
                                 <tr className="border-b text-left">
-                                    <th className="p-2">Employee</th>
-                                    <th className="p-2">Date</th>
-                                    <th className="p-2">Check In</th>
-                                    <th className="p-2">Check Out</th>
+                                    <th className="p-2">Karyawan</th>
+                                    <th className="p-2">Tanggal</th>
+                                    <th className="p-2">Masuk</th>
+                                    <th className="p-2">Keluar</th>
                                     <th className="p-2">Status</th>
-                                    <th className="p-2">Late (min)</th>
-                                    <th className="p-2">OT (min)</th>
+                                    <th className="p-2">Terlambat (mnt)</th>
+                                    <th className="p-2">Lembur (mnt)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -162,5 +162,5 @@ export default function AttendanceIndex({ attendances, employees, filters }: Pro
 }
 
 AttendanceIndex.layout = {
-    breadcrumbs: [{ title: 'Attendance', href: '/attendance' }],
+    breadcrumbs: [{ title: 'Absensi', href: '/attendance' }],
 };
