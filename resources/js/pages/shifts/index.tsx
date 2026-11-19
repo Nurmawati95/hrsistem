@@ -37,7 +37,9 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
 
     const submitAssign = (e: React.FormEvent) => {
         e.preventDefault();
-        assignForm.post('/shifts/assign', { onSuccess: () => assignForm.reset() });
+        assignForm.post('/shifts/assign', {
+            onSuccess: () => assignForm.reset(),
+        });
     };
 
     const removeShift = (id: number) => {
@@ -57,11 +59,53 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                         </CardHeader>
                         <CardContent>
                             <form onSubmit={submitShift} className="grid gap-2">
-                                <Input placeholder="Name" value={shiftForm.data.name} onChange={(e) => shiftForm.setData('name', e.target.value)} />
-                                <Input type="time" value={shiftForm.data.start_time} onChange={(e) => shiftForm.setData('start_time', e.target.value)} />
-                                <Input type="time" value={shiftForm.data.end_time} onChange={(e) => shiftForm.setData('end_time', e.target.value)} />
-                                <Input type="number" placeholder="Break minutes" value={shiftForm.data.break_minutes} onChange={(e) => shiftForm.setData('break_minutes', Number(e.target.value))} />
-                                <Button disabled={shiftForm.processing} type="submit">Tambah Shift</Button>
+                                <Input
+                                    placeholder="Name"
+                                    value={shiftForm.data.name}
+                                    onChange={(e) =>
+                                        shiftForm.setData(
+                                            'name',
+                                            e.target.value,
+                                        )
+                                    }
+                                />
+                                <Input
+                                    type="time"
+                                    value={shiftForm.data.start_time}
+                                    onChange={(e) =>
+                                        shiftForm.setData(
+                                            'start_time',
+                                            e.target.value,
+                                        )
+                                    }
+                                />
+                                <Input
+                                    type="time"
+                                    value={shiftForm.data.end_time}
+                                    onChange={(e) =>
+                                        shiftForm.setData(
+                                            'end_time',
+                                            e.target.value,
+                                        )
+                                    }
+                                />
+                                <Input
+                                    type="number"
+                                    placeholder="Break minutes"
+                                    value={shiftForm.data.break_minutes}
+                                    onChange={(e) =>
+                                        shiftForm.setData(
+                                            'break_minutes',
+                                            Number(e.target.value),
+                                        )
+                                    }
+                                />
+                                <Button
+                                    disabled={shiftForm.processing}
+                                    type="submit"
+                                >
+                                    Tambah Shift
+                                </Button>
                             </form>
                         </CardContent>
                     </Card>
@@ -71,27 +115,66 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                             <CardTitle>Penugasan Shift</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={submitAssign} className="grid gap-2">
-                                <Select value={assignForm.data.employee_id} onValueChange={(v) => assignForm.setData('employee_id', v)}>
-                                    <SelectTrigger><SelectValue placeholder="Employee" /></SelectTrigger>
+                            <form
+                                onSubmit={submitAssign}
+                                className="grid gap-2"
+                            >
+                                <Select
+                                    value={assignForm.data.employee_id}
+                                    onValueChange={(v) =>
+                                        assignForm.setData('employee_id', v)
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Employee" />
+                                    </SelectTrigger>
                                     <SelectContent>
                                         {employees.map((e) => (
-                                            <SelectItem key={e.id} value={String(e.id)}>
+                                            <SelectItem
+                                                key={e.id}
+                                                value={String(e.id)}
+                                            >
                                                 {e.first_name} {e.last_name}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <Select value={assignForm.data.shift_id} onValueChange={(v) => assignForm.setData('shift_id', v)}>
-                                    <SelectTrigger><SelectValue placeholder="Shift" /></SelectTrigger>
+                                <Select
+                                    value={assignForm.data.shift_id}
+                                    onValueChange={(v) =>
+                                        assignForm.setData('shift_id', v)
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Shift" />
+                                    </SelectTrigger>
                                     <SelectContent>
                                         {shifts.map((s) => (
-                                            <SelectItem key={s.id} value={String(s.id)}>{s.name}</SelectItem>
+                                            <SelectItem
+                                                key={s.id}
+                                                value={String(s.id)}
+                                            >
+                                                {s.name}
+                                            </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <Input type="date" value={assignForm.data.date} onChange={(e) => assignForm.setData('date', e.target.value)} />
-                                <Button disabled={assignForm.processing} type="submit">Tugaskan</Button>
+                                <Input
+                                    type="date"
+                                    value={assignForm.data.date}
+                                    onChange={(e) =>
+                                        assignForm.setData(
+                                            'date',
+                                            e.target.value,
+                                        )
+                                    }
+                                />
+                                <Button
+                                    disabled={assignForm.processing}
+                                    type="submit"
+                                >
+                                    Tugaskan
+                                </Button>
                             </form>
                         </CardContent>
                     </Card>
@@ -118,9 +201,17 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                                         <td className="p-2">{s.name}</td>
                                         <td className="p-2">{s.start_time}</td>
                                         <td className="p-2">{s.end_time}</td>
-                                        <td className="p-2">{s.break_minutes}</td>
                                         <td className="p-2">
-                                            <Button variant="destructive" size="sm" onClick={() => removeShift(s.id)}>
+                                            {s.break_minutes}
+                                        </td>
+                                        <td className="p-2">
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() =>
+                                                    removeShift(s.id)
+                                                }
+                                            >
                                                 Hapus
                                             </Button>
                                         </td>
@@ -147,7 +238,10 @@ export default function ShiftsIndex({ shifts, assignments, employees }: Props) {
                             <tbody>
                                 {assignments.map((a: any) => (
                                     <tr key={a.id} className="border-b">
-                                        <td className="p-2">{a.employee?.first_name} {a.employee?.last_name}</td>
+                                        <td className="p-2">
+                                            {a.employee?.first_name}{' '}
+                                            {a.employee?.last_name}
+                                        </td>
                                         <td className="p-2">{a.shift?.name}</td>
                                         <td className="p-2">{a.date}</td>
                                     </tr>

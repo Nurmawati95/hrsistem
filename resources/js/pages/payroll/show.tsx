@@ -14,11 +14,16 @@ export default function PayrollShow({ period }: Props) {
             <Head title={`Payroll ${period.name}`} />
             <div className="flex h-full flex-1 flex-col gap-4 p-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold">Penggajian: {period.name}</h1>
+                    <h1 className="text-2xl font-bold">
+                        Penggajian: {period.name}
+                    </h1>
                     <div className="flex gap-2">
-                        {period.status !== 'processed' && period.status !== 'paid' && (
-                            <Button onClick={process}>Proses Penggajian</Button>
-                        )}
+                        {period.status !== 'processed' &&
+                            period.status !== 'paid' && (
+                                <Button onClick={process}>
+                                    Proses Penggajian
+                                </Button>
+                            )}
                     </div>
                 </div>
 
@@ -43,12 +48,25 @@ export default function PayrollShow({ period }: Props) {
                                 <tbody>
                                     {(period.payrolls ?? []).map((pr: any) => (
                                         <tr key={pr.id} className="border-b">
-                                            <td className="p-2">{pr.employee?.first_name} {pr.employee?.last_name}</td>
-                                            <td className="p-2">{money(pr.basic_salary)}</td>
-                                            <td className="p-2">{money(pr.overtime_pay)}</td>
-                                            <td className="p-2">{money(pr.total_earnings)}</td>
-                                            <td className="p-2">{money(pr.total_deductions)}</td>
-                                            <td className="p-2 font-bold">{money(pr.net_salary)}</td>
+                                            <td className="p-2">
+                                                {pr.employee?.first_name}{' '}
+                                                {pr.employee?.last_name}
+                                            </td>
+                                            <td className="p-2">
+                                                {money(pr.basic_salary)}
+                                            </td>
+                                            <td className="p-2">
+                                                {money(pr.overtime_pay)}
+                                            </td>
+                                            <td className="p-2">
+                                                {money(pr.total_earnings)}
+                                            </td>
+                                            <td className="p-2">
+                                                {money(pr.total_deductions)}
+                                            </td>
+                                            <td className="p-2 font-bold">
+                                                {money(pr.net_salary)}
+                                            </td>
                                             <td className="p-2">{pr.status}</td>
                                         </tr>
                                     ))}
@@ -63,5 +81,8 @@ export default function PayrollShow({ period }: Props) {
 }
 
 PayrollShow.layout = {
-    breadcrumbs: [{ title: 'Penggajian', href: '/payroll/periods' }, { title: 'Detail', href: '#' }],
+    breadcrumbs: [
+        { title: 'Penggajian', href: '/payroll/periods' },
+        { title: 'Detail', href: '#' },
+    ],
 };

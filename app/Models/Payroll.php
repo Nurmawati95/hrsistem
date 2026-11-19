@@ -28,11 +28,14 @@ class Payroll extends Model
         'net_salary' => 'decimal:2',
     ];
 
+    /** @return BelongsTo<Employee, $this> */
+    /** @return BelongsTo<Employee, $this> */
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
 
+    /** @return BelongsTo<PayrollPeriod, $this> */
     public function period(): BelongsTo
     {
         return $this->belongsTo(PayrollPeriod::class, 'payroll_period_id');

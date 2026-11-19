@@ -13,11 +13,7 @@ type PageProps = {
     auth: Auth;
 };
 
-export default function Profile({
-    status,
-}: {
-    status?: string;
-}) {
+export default function Profile() {
     const { auth } = usePage<PageProps>().props;
 
     return (
@@ -80,8 +76,6 @@ export default function Profile({
                                     message={errors.email}
                                 />
                             </div>
-
-
 
                             <div className="flex items-center gap-4">
                                 <Button

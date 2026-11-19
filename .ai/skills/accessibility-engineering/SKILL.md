@@ -43,6 +43,7 @@ npx --yes pa11y@9.1.1 http://localhost:3000
 For a combined report, run `bash skills/accessibility-engineering/scripts/audit-a11y.sh url <url> --json`. It runs both pinned tools, records their status and versions, and fails rather than reporting a clean result when either tool does not produce a valid report.
 
 Review the violations grouped by severity:
+
 - **Critical** — Blocks screen reader access entirely (missing alt text on info images, empty buttons)
 - **Serious** — Makes content difficult or impossible to access (low contrast, missing labels)
 - **Moderate** — Causes confusion or extra effort (heading level skips, redundant ARIA)
@@ -55,6 +56,7 @@ For each violation, verify it's a real issue (not a false positive) by inspectin
 Automated checks are a smoke test, not proof of conformance. Complete the audit manually.
 
 **Keyboard audit:**
+
 1. Tab through every interactive element — can you see where you are?
 2. Activate buttons and links with Enter/Space
 3. Close modals with Escape
@@ -62,6 +64,7 @@ Automated checks are a smoke test, not proof of conformance. Complete the audit 
 5. Verify no keyboard traps exist
 
 **Screen reader audit (VoiceOver on macOS, NVDA on Windows):**
+
 1. Navigate by heading (VoiceOver: Ctrl+Option+Cmd+H) — is the structure logical?
 2. Navigate by landmark (open the rotor with Ctrl+Option+U, choose Landmarks) — are regions labeled?
 3. Navigate by link (open the rotor with Ctrl+Option+U, choose Links) — do link descriptions make sense out of context?
@@ -69,6 +72,7 @@ Automated checks are a smoke test, not proof of conformance. Complete the audit 
 5. Navigate a dynamic update — are changes announced?
 
 **Visual audit:**
+
 1. Verify color contrast (4.5:1 text, 3:1 large text, 3:1 UI components)
 2. Zoom to 200% — does layout break or overlap?
 3. Test with forced colors / high contrast mode (Windows High Contrast)
@@ -87,15 +91,15 @@ Apply the accessibility checklist (`../../references/accessibility-checklist.md`
 
 ## Common Rationalizations
 
-| Rationalization | Reality |
-|---|---|
-| "We'll fix a11y later" | Delayed remediation compounds across components and can create legal liability. Audit before shipping. |
-| "Automated tools caught everything" | Automated checks cannot prove keyboard or screen reader behavior. Manual testing is mandatory. |
-| "Screen reader users are a tiny minority" | Accessibility is a requirement, not a usage-share calculation. Keyboard navigation, captions, and clear structure also help users across contexts. |
-| "This is an internal tool, it doesn't need a11y" | Internal tools are subject to the same regulations. Disabled employees and contractors need access. |
-| "I'll just use aria-label everywhere" | ARIA is a bridge, not a foundation. Semantic HTML first. Overusing ARIA creates maintenance burden and can make things worse. |
-| "The design system handles accessibility" | Design systems provide accessible primitives. How you compose them determines whether the result is accessible. |
-| "The audit passed axe-core, so we're done" | Pass axe-core as a smoke test, then test with screen readers and keyboard. A green lighthouse score is not a clean bill of health. |
+| Rationalization                                  | Reality                                                                                                                                            |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "We'll fix a11y later"                           | Delayed remediation compounds across components and can create legal liability. Audit before shipping.                                             |
+| "Automated tools caught everything"              | Automated checks cannot prove keyboard or screen reader behavior. Manual testing is mandatory.                                                     |
+| "Screen reader users are a tiny minority"        | Accessibility is a requirement, not a usage-share calculation. Keyboard navigation, captions, and clear structure also help users across contexts. |
+| "This is an internal tool, it doesn't need a11y" | Internal tools are subject to the same regulations. Disabled employees and contractors need access.                                                |
+| "I'll just use aria-label everywhere"            | ARIA is a bridge, not a foundation. Semantic HTML first. Overusing ARIA creates maintenance burden and can make things worse.                      |
+| "The design system handles accessibility"        | Design systems provide accessible primitives. How you compose them determines whether the result is accessible.                                    |
+| "The audit passed axe-core, so we're done"       | Pass axe-core as a smoke test, then test with screen readers and keyboard. A green lighthouse score is not a clean bill of health.                 |
 
 ## Red Flags
 

@@ -29,12 +29,41 @@ export default function PayrollPeriods({ periods }: Props) {
                         <CardTitle>Tambah Periode</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <form onSubmit={submit} className="flex flex-wrap gap-2">
-                            <Input placeholder="Name" value={form.data.name} onChange={(e) => form.setData('name', e.target.value)} />
-                            <Input type="date" value={form.data.start_date} onChange={(e) => form.setData('start_date', e.target.value)} />
-                            <Input type="date" value={form.data.end_date} onChange={(e) => form.setData('end_date', e.target.value)} />
-                            <Input type="date" value={form.data.pay_date} onChange={(e) => form.setData('pay_date', e.target.value)} />
-                            <Button disabled={form.processing} type="submit">Tambah</Button>
+                        <form
+                            onSubmit={submit}
+                            className="flex flex-wrap gap-2"
+                        >
+                            <Input
+                                placeholder="Name"
+                                value={form.data.name}
+                                onChange={(e) =>
+                                    form.setData('name', e.target.value)
+                                }
+                            />
+                            <Input
+                                type="date"
+                                value={form.data.start_date}
+                                onChange={(e) =>
+                                    form.setData('start_date', e.target.value)
+                                }
+                            />
+                            <Input
+                                type="date"
+                                value={form.data.end_date}
+                                onChange={(e) =>
+                                    form.setData('end_date', e.target.value)
+                                }
+                            />
+                            <Input
+                                type="date"
+                                value={form.data.pay_date}
+                                onChange={(e) =>
+                                    form.setData('pay_date', e.target.value)
+                                }
+                            />
+                            <Button disabled={form.processing} type="submit">
+                                Tambah
+                            </Button>
                         </form>
                     </CardContent>
                 </Card>
@@ -64,7 +93,15 @@ export default function PayrollPeriods({ periods }: Props) {
                                         <td className="p-2">{p.pay_date}</td>
                                         <td className="p-2">{p.status}</td>
                                         <td className="p-2">
-                                            <Button size="sm" className="mr-1" onClick={() => router.visit(`/payroll/periods/${p.id}`)}>
+                                            <Button
+                                                size="sm"
+                                                className="mr-1"
+                                                onClick={() =>
+                                                    router.visit(
+                                                        `/payroll/periods/${p.id}`,
+                                                    )
+                                                }
+                                            >
                                                 Lihat
                                             </Button>
                                         </td>

@@ -20,56 +20,78 @@ class Employee extends Model
         'basic_salary' => 'decimal:2',
     ];
 
+    /** @return BelongsTo<User, $this> */
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<Position, $this> */
+    /** @return BelongsTo<Position, $this> */
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
     }
 
+    /** @return BelongsTo<Department, $this> */
+    /** @return BelongsTo<Department, $this> */
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
     }
 
+    /** @return HasMany<EmployeeEducation, $this> */
+    /** @return HasMany<EmployeeEducation, $this> */
     public function educations(): HasMany
     {
         return $this->hasMany(EmployeeEducation::class);
     }
 
+    /** @return HasMany<EmployeeDocument, $this> */
+    /** @return HasMany<EmployeeDocument, $this> */
     public function documents(): HasMany
     {
         return $this->hasMany(EmployeeDocument::class);
     }
 
+    /** @return HasMany<EmployeeJobHistory, $this> */
+    /** @return HasMany<EmployeeJobHistory, $this> */
     public function jobHistories(): HasMany
     {
         return $this->hasMany(EmployeeJobHistory::class);
     }
 
+    /** @return HasMany<Attendance, $this> */
+    /** @return HasMany<Attendance, $this> */
     public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class);
     }
 
+    /** @return HasMany<ShiftAssignment, $this> */
+    /** @return HasMany<ShiftAssignment, $this> */
     public function shiftAssignments(): HasMany
     {
         return $this->hasMany(ShiftAssignment::class);
     }
 
+    /** @return HasMany<LeaveRequest, $this> */
+    /** @return HasMany<LeaveRequest, $this> */
     public function leaveRequests(): HasMany
     {
         return $this->hasMany(LeaveRequest::class);
     }
 
+    /** @return HasMany<LeaveBalance, $this> */
+    /** @return HasMany<LeaveBalance, $this> */
     public function leaveBalances(): HasMany
     {
         return $this->hasMany(LeaveBalance::class);
     }
 
+    /** @return HasMany<Payroll, $this> */
+    /** @return HasMany<Payroll, $this> */
     public function payrolls(): HasMany
     {
         return $this->hasMany(Payroll::class);

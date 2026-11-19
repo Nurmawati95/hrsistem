@@ -39,20 +39,33 @@ export default function PositionsIndex({ positions, departments }: Props) {
                         <CardTitle>Tambah Jabatan</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <form onSubmit={submit} className="flex flex-wrap gap-2">
+                        <form
+                            onSubmit={submit}
+                            className="flex flex-wrap gap-2"
+                        >
                             <Input
                                 placeholder="Name"
                                 value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
+                                onChange={(e) =>
+                                    setData('name', e.target.value)
+                                }
                                 className="w-48"
                             />
-                            <Select value={data.department_id} onValueChange={(v) => setData('department_id', v)}>
+                            <Select
+                                value={data.department_id}
+                                onValueChange={(v) =>
+                                    setData('department_id', v)
+                                }
+                            >
                                 <SelectTrigger className="w-48">
                                     <SelectValue placeholder="Department" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {departments.map((d) => (
-                                        <SelectItem key={d.id} value={String(d.id)}>
+                                        <SelectItem
+                                            key={d.id}
+                                            value={String(d.id)}
+                                        >
                                             {d.name}
                                         </SelectItem>
                                     ))}
@@ -61,7 +74,9 @@ export default function PositionsIndex({ positions, departments }: Props) {
                             <Input
                                 placeholder="Description"
                                 value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
+                                onChange={(e) =>
+                                    setData('description', e.target.value)
+                                }
                                 className="w-64"
                             />
                             <Button disabled={processing} type="submit">
@@ -89,10 +104,18 @@ export default function PositionsIndex({ positions, departments }: Props) {
                                 {positions.map((p: any) => (
                                     <tr key={p.id} className="border-b">
                                         <td className="p-2">{p.name}</td>
-                                        <td className="p-2">{p.department?.name ?? '-'}</td>
-                                        <td className="p-2">{p.description ?? '-'}</td>
                                         <td className="p-2">
-                                            <Button variant="destructive" size="sm" onClick={() => remove(p.id)}>
+                                            {p.department?.name ?? '-'}
+                                        </td>
+                                        <td className="p-2">
+                                            {p.description ?? '-'}
+                                        </td>
+                                        <td className="p-2">
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() => remove(p.id)}
+                                            >
                                                 Hapus
                                             </Button>
                                         </td>

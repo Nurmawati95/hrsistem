@@ -13,11 +13,15 @@ class ShiftAssignment extends Model
         'date' => 'date',
     ];
 
+    /** @return BelongsTo<Employee, $this> */
+    /** @return BelongsTo<Employee, $this> */
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
     }
 
+    /** @return BelongsTo<Shift, $this> */
+    /** @return BelongsTo<Shift, $this> */
     public function shift(): BelongsTo
     {
         return $this->belongsTo(Shift::class);

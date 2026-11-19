@@ -11,7 +11,8 @@ function DeptNode({ dept, level = 0 }: { dept: any; level?: number }) {
                 <ul className="ml-4 list-disc text-sm text-muted-foreground">
                     {dept.employees.map((e: any) => (
                         <li key={e.id}>
-                            {e.first_name} {e.last_name} — {e.position?.name ?? '-'}
+                            {e.first_name} {e.last_name} —{' '}
+                            {e.position?.name ?? '-'}
                         </li>
                     ))}
                 </ul>
@@ -36,7 +37,11 @@ export default function OrganizationIndex({ departments }: Props) {
                         <CardTitle>Departemen & Karyawan</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {roots.length === 0 && <p className="text-muted-foreground">No departments.</p>}
+                        {roots.length === 0 && (
+                            <p className="text-muted-foreground">
+                                No departments.
+                            </p>
+                        )}
                         {roots.map((d) => (
                             <DeptNode key={d.id} dept={d} />
                         ))}

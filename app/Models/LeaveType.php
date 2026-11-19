@@ -13,11 +13,15 @@ class LeaveType extends Model
         'is_paid' => 'boolean',
     ];
 
+    /** @return HasMany<LeaveRequest, $this> */
+    /** @return HasMany<LeaveRequest, $this> */
     public function requests(): HasMany
     {
         return $this->hasMany(LeaveRequest::class);
     }
 
+    /** @return HasMany<LeaveBalance, $this> */
+    /** @return HasMany<LeaveBalance, $this> */
     public function balances(): HasMany
     {
         return $this->hasMany(LeaveBalance::class);

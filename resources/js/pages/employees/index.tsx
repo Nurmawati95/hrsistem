@@ -64,14 +64,22 @@ export default function EmployeesIndex({ employees, filters }: PageProps) {
                                 <tbody>
                                     {employees.data.map((emp: any) => (
                                         <tr key={emp.id} className="border-b">
-                                            <td className="p-2">{emp.employee_number}</td>
+                                            <td className="p-2">
+                                                {emp.employee_number}
+                                            </td>
                                             <td className="p-2">
                                                 {emp.first_name} {emp.last_name}
                                             </td>
                                             <td className="p-2">{emp.email}</td>
-                                            <td className="p-2">{emp.department?.name ?? '-'}</td>
-                                            <td className="p-2">{emp.position?.name ?? '-'}</td>
-                                            <td className="p-2">{emp.employment_status}</td>
+                                            <td className="p-2">
+                                                {emp.department?.name ?? '-'}
+                                            </td>
+                                            <td className="p-2">
+                                                {emp.position?.name ?? '-'}
+                                            </td>
+                                            <td className="p-2">
+                                                {emp.employment_status}
+                                            </td>
                                             <td className="p-2">
                                                 <Link
                                                     href={`/employees/${emp.id}`}
@@ -92,9 +100,13 @@ export default function EmployeesIndex({ employees, filters }: PageProps) {
                                     <button
                                         key={i}
                                         disabled={!link.url}
-                                        onClick={() => link.url && router.visit(link.url)}
+                                        onClick={() =>
+                                            link.url && router.visit(link.url)
+                                        }
                                         className={`rounded border px-3 py-1 text-sm ${link.active ? 'bg-primary text-primary-foreground' : ''}`}
-                                        dangerouslySetInnerHTML={{ __html: link.label }}
+                                        dangerouslySetInnerHTML={{
+                                            __html: link.label,
+                                        }}
                                     />
                                 ))}
                             </div>

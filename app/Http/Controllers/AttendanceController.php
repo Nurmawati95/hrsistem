@@ -50,7 +50,7 @@ class AttendanceController extends Controller
             $threshold = now()->setTime(9, 0, 0);
             if (now()->gt($threshold)) {
                 $attendance->status = 'late';
-                $attendance->late_minutes = now()->diffInMinutes($threshold);
+                $attendance->late_minutes = (int) now()->diffInMinutes($threshold);
             }
 
             $attendance->save();
@@ -76,7 +76,7 @@ class AttendanceController extends Controller
             // overtime: after 17:00
             $threshold = now()->setTime(17, 0, 0);
             if (now()->gt($threshold)) {
-                $attendance->overtime_minutes = now()->diffInMinutes($threshold);
+                $attendance->overtime_minutes = (int) now()->diffInMinutes($threshold);
             }
 
             $attendance->save();

@@ -15,6 +15,8 @@ class PayrollPeriod extends Model
         'pay_date' => 'date',
     ];
 
+    /** @return HasMany<Payroll, $this> */
+    /** @return HasMany<Payroll, $this> */
     public function payrolls(): HasMany
     {
         return $this->hasMany(Payroll::class);

@@ -2,7 +2,6 @@ import { Head, router, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 type Props = { departments: any[] };
 
@@ -19,7 +18,8 @@ export default function DepartmentsIndex({ departments }: Props) {
     };
 
     const remove = (id: number) => {
-        if (confirm('Delete this department?')) router.delete(`/departments/${id}`);
+        if (confirm('Delete this department?'))
+            router.delete(`/departments/${id}`);
     };
 
     return (
@@ -33,17 +33,24 @@ export default function DepartmentsIndex({ departments }: Props) {
                         <CardTitle>Tambah Departemen</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <form onSubmit={submit} className="flex flex-wrap gap-2">
+                        <form
+                            onSubmit={submit}
+                            className="flex flex-wrap gap-2"
+                        >
                             <Input
                                 placeholder="Name"
                                 value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
+                                onChange={(e) =>
+                                    setData('name', e.target.value)
+                                }
                                 className="w-48"
                             />
                             <Input
                                 placeholder="Description"
                                 value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
+                                onChange={(e) =>
+                                    setData('description', e.target.value)
+                                }
                                 className="w-64"
                             />
                             <Button disabled={processing} type="submit">
@@ -71,10 +78,18 @@ export default function DepartmentsIndex({ departments }: Props) {
                                 {departments.map((d: any) => (
                                     <tr key={d.id} className="border-b">
                                         <td className="p-2">{d.name}</td>
-                                        <td className="p-2">{d.parent?.name ?? '-'}</td>
-                                        <td className="p-2">{d.description ?? '-'}</td>
                                         <td className="p-2">
-                                            <Button variant="destructive" size="sm" onClick={() => remove(d.id)}>
+                                            {d.parent?.name ?? '-'}
+                                        </td>
+                                        <td className="p-2">
+                                            {d.description ?? '-'}
+                                        </td>
+                                        <td className="p-2">
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() => remove(d.id)}
+                                            >
                                                 Hapus
                                             </Button>
                                         </td>
