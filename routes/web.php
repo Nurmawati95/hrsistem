@@ -30,6 +30,12 @@ Route::get('/', function () {
 
 Route::middleware(['auth', EnsureValidRole::class])->group(function () {
     Route::get('dashboard', function () {
+        $user = auth()->user();
+
+        if ($user && $user->isKaryawan()) {
+            return redirect()->route('employees.index');
+        }
+
         return Inertia::render('dashboard', [
             'stats' => [
                 'employees' => Employee::count(),

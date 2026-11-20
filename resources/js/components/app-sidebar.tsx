@@ -64,11 +64,6 @@ const adminNavItems: NavItem[] = [
 
 const karyawanNavItems: NavItem[] = [
     {
-        title: 'Dashboard Utama',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-    {
         title: 'Master Karyawan',
         href: '/employees',
         icon: Users,
