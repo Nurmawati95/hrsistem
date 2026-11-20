@@ -53,8 +53,11 @@ class EmployeeSeeder extends Seeder
                     'name' => $name,
                     'password' => Hash::make('password'),
                     'email_verified_at' => now(),
+                    'role' => User::ROLE_ADMIN,
                 ]
             );
+
+            $user->update(['role' => User::ROLE_ADMIN]);
 
             $photo = $this->generateProfilePhoto($admin['number']);
 
@@ -95,8 +98,11 @@ class EmployeeSeeder extends Seeder
                     'name' => $name,
                     'password' => Hash::make('password'),
                     'email_verified_at' => now(),
+                    'role' => User::ROLE_KARYAWAN,
                 ]
             );
+
+            $user->update(['role' => User::ROLE_KARYAWAN]);
 
             $photo = $this->generateProfilePhoto($number);
 

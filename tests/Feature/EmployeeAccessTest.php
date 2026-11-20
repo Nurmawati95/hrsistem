@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\Employee;
+use App\Models\LeaveRequest;
+use App\Models\LeaveType;
+use App\Models\PayrollPeriod;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -115,4 +118,71 @@ it('shows the uploaded profile photo in the employees index after an update', fu
             unlink(public_path('uploads/employees/'.$newFilename));
         }
     }
+});
+
+it('denies karyawan access to employee creation', function () {
+    $karyawan = Employee::whereHas('position', fn ($q) => $q->where('name', 'Karyawan'))->first()->user;
+
+    $response = $this->actingAs($karyawan)->get(route('employees.create'));
+
+    $response->assertForbidden();
+});
+
+it('denies karyawan access to department management', function () {
+    $karyawan = Employee::whereHas('position', fn ($q) => $q->where('name', 'Karyawan'))->first()->user;
+
+    $response = $this->actingAs($karyawan)->post(route('departments.store'), [
+        'name' => 'New Department',
+    ]);
+
+    $response->assertForbidden();
+});
+
+it('denies karyawan access to payroll processing', function () {
+    $karyawan = Employee::whereHas('position', fn ($q) => $q->where('name', 'Karyawan'))->first()->user;
+
+    $response = $this->actingAs($karyawan)->post(route('payroll.periods.process', ['payrollPeriod' => PayrollPeriod::firstOrCreate([
+        'name' => 'Test Period',
+        'start_date' => now()->startOfMonth()->toDateString(),
+        'end_date' => now()->startOfMonth()->addDays(5)->toDateString(),
+        'pay_date' => now()->addDay()->toDateString(),
+    ])]));
+
+    $response->assertForbidden();
+});
+
+it('allows karyawan to create a leave request for themselves', function () {
+    $karyawan = Employee::whereHas('position', fn ($q) => $q->where('name', 'Karyawan'))->first()->user;
+    $employee = Employee::where('user_id', $karyawan->id)->first();
+    $leaveType = LeaveType::firstOrCreate(['name' => 'Cuti']);
+
+    $response = $this->actingAs($karyawan)->post(route('leave.requests.store'), [
+        'employee_id' => $employee->id,
+        'leave_type_id' => $leaveType->id,
+        'start_date' => now()->addDays(3)->toDateString(),
+        'end_date' => now()->addDays(4)->toDateString(),
+        'reason' => 'Urusan keluarga',
+    ]);
+
+    $response->assertRedirect();
+    expect(LeaveRequest::where('employee_id', $employee->id)->where('status', 'pending')->exists())->toBeTrue();
+});
+
+it('denies karyawan approval of leave requests', function () {
+    $karyawan = Employee::whereHas('position', fn ($q) => $q->where('name', 'Karyawan'))->first()->user;
+    $employee = Employee::where('user_id', $karyawan->id)->first();
+    $leaveType = LeaveType::firstOrCreate(['name' => 'Cuti']);
+
+    $leaveRequest = LeaveRequest::create([
+        'employee_id' => $employee->id,
+        'leave_type_id' => $leaveType->id,
+        'start_date' => now()->addDays(3)->toDateString(),
+        'end_date' => now()->addDays(4)->toDateString(),
+        'days' => 2,
+        'status' => 'pending',
+    ]);
+
+    $response = $this->actingAs($karyawan)->post(route('leave.requests.approve', $leaveRequest));
+
+    $response->assertForbidden();
 });

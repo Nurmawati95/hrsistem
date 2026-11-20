@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import {
     Building2,
     CalendarDays,
@@ -23,7 +24,7 @@ import {
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const adminNavItems: NavItem[] = [
     {
         title: 'Dashboard Utama',
         href: dashboard(),
@@ -61,9 +62,32 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
+const karyawanNavItems: NavItem[] = [
+    {
+        title: 'Dashboard Utama',
+        href: dashboard(),
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Master Karyawan',
+        href: '/employees',
+        icon: Users,
+    },
+    {
+        title: 'Cuti & Izin Pegawai',
+        href: '/leave/requests',
+        icon: CalendarDays,
+    },
+];
+
 const footerNavItems: NavItem[] = [];
 
 export function AppSidebar() {
+    const { role } = usePage().props as { role?: string };
+
+    const isAdmin = role === 'admin';
+    const items = isAdmin ? adminNavItems : karyawanNavItems;
+
     return (
         <Sidebar
             collapsible="icon"
@@ -87,7 +111,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={items} />
             </SidebarContent>
 
             <SidebarFooter className="border-t border-slate-100 p-2 dark:border-slate-800/80">

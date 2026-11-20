@@ -190,10 +190,10 @@ export default function Welcome({ company, stats }: Props) {
                             ) : (
                                 <Button
                                     asChild
-                                    className="bg-[#12284c] font-medium shadow-sm hover:bg-[#1b3a6b]"
+                                    className="bg-[#12284c] font-semibold text-white shadow-sm hover:bg-[#1b3a6b] hover:text-white"
                                 >
                                     <Link href={login()}>
-                                        <Lock className="mr-1.5 size-4" />
+                                        <Lock className="mr-1.5 size-5 text-white" />
                                         Masuk Portal
                                     </Link>
                                 </Button>
@@ -224,24 +224,6 @@ export default function Welcome({ company, stats }: Props) {
                                 </p>
 
                                 <div className="mt-8 flex flex-wrap items-center gap-4">
-                                    <Button
-                                        asChild
-                                        size="lg"
-                                        className="bg-[#12284c] px-6 text-sm font-semibold shadow-sm hover:bg-[#1b3a6b]"
-                                    >
-                                        <Link
-                                            href={
-                                                auth?.user
-                                                    ? dashboard()
-                                                    : login()
-                                            }
-                                        >
-                                            {auth?.user
-                                                ? 'Menuju Dashboard HR'
-                                                : 'Login Pegawai / Admin'}
-                                            <ChevronRight className="ml-1 size-4" />
-                                        </Link>
-                                    </Button>
                                     <a
                                         href="#kebijakan"
                                         className="inline-flex items-center text-sm font-medium text-slate-700 underline-offset-4 hover:underline"
@@ -327,24 +309,6 @@ export default function Welcome({ company, stats }: Props) {
                                     </div>
 
                                     {/* Quick action button inside card */}
-                                    <div className="mt-5">
-                                        <Button
-                                            asChild
-                                            className="w-full bg-[#12284c] hover:bg-[#1b3a6b]"
-                                        >
-                                            <Link
-                                                href={
-                                                    auth?.user
-                                                        ? dashboard()
-                                                        : login()
-                                                }
-                                            >
-                                                {auth?.user
-                                                    ? 'Masuk ke Dashboard'
-                                                    : 'Login ke Portal Karyawan'}
-                                            </Link>
-                                        </Button>
-                                    </div>
                                 </div>
                             </div>
                         </div>

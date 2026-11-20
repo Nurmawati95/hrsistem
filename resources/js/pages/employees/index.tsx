@@ -1,12 +1,15 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import {
     Briefcase,
     Building2,
     Eye,
+    FileSpreadsheet,
+    FileText,
     GraduationCap,
     Pencil,
     Plus,
     Search,
+    Upload,
     UserCheck,
     Users,
 } from 'lucide-react';
@@ -44,6 +47,7 @@ export default function EmployeesIndex({
     recent,
 }: PageProps) {
     const [search, setSearch] = useState(filters.search ?? '');
+    const importForm = useForm({ file: null as File | null });
 
     const submitSearch = (e: React.FormEvent) => {
         e.preventDefault();
@@ -106,15 +110,63 @@ export default function EmployeesIndex({
                     </div>
 
                     {isAdmin && (
-                        <Button
-                            asChild
-                            className="bg-[#12284c] text-xs font-semibold tracking-wider text-white uppercase shadow-sm hover:bg-[#1b3a6b]"
-                        >
-                            <Link href="/employees/create">
-                                <Plus className="mr-1.5 size-4" />
-                                Tambah Pegawai Baru
-                            </Link>
-                        </Button>
+                        <div className="flex flex-wrap items-center gap-2">
+                            <Button
+                                asChild
+                                className="bg-[#12284c] text-xs font-semibold tracking-wider text-white uppercase shadow-sm hover:bg-[#1b3a6b]"
+                            >
+                                <Link href="/employees/create">
+                                    <Plus className="mr-1.5 size-4" />
+                                    Tambah Pegawai Baru
+                                </Link>
+                            </Button>
+                            <Button
+                                asChild
+                                variant="outline"
+                                className="text-xs font-semibold"
+                            >
+                                <a href="/employees/export">
+                                    <FileSpreadsheet className="mr-1.5 size-4" />
+                                    Export Excel
+                                </a>
+                            </Button>
+                            <Button
+                                asChild
+                                variant="outline"
+                                className="text-xs font-semibold"
+                            >
+                                <a href="/employees/export/pdf">
+                                    <FileText className="mr-1.5 size-4" />
+                                    Export PDF
+                                </a>
+                            </Button>
+                            <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-input bg-background px-3 py-2 text-xs font-semibold shadow-xs hover:bg-accent">
+                                <Upload className="size-4" />
+                                Import Excel
+                                <input
+                                    type="file"
+                                    name="file"
+                                    accept=".xlsx,.xls,.csv"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                            importForm.setData('file', file);
+                                            importForm.post(
+                                                '/employees/import',
+                                                {
+                                                    forceFormData: true,
+                                                    onSuccess: () => {
+                                                        importForm.reset();
+                                                        e.target.value = '';
+                                                    },
+                                                },
+                                            );
+                                        }
+                                    }}
+                                />
+                            </label>
+                        </div>
                     )}
                 </header>
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\PayrollPeriodController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Middleware\EnsureValidRole;
 use App\Models\Attendance;
 use App\Models\CompanySetting;
 use App\Models\Department;
@@ -27,7 +28,7 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', EnsureValidRole::class])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard', [
             'stats' => [
@@ -39,6 +40,9 @@ Route::middleware(['auth'])->group(function () {
         ]);
     })->name('dashboard');
 
+    Route::get('employees/export', [EmployeeController::class, 'export'])->name('employees.export');
+    Route::get('employees/export/pdf', [EmployeeController::class, 'exportPdf'])->name('employees.exportPdf');
+    Route::post('employees/import', [EmployeeController::class, 'import'])->name('employees.import');
     Route::resource('employees', EmployeeController::class);
     Route::resource('departments', DepartmentController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('positions', PositionController::class)->only(['index', 'store', 'update', 'destroy']);

@@ -8,6 +8,7 @@ use App\Models\Payroll;
 use App\Models\PayrollPeriod;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -15,6 +16,8 @@ class PayrollPeriodController extends Controller
 {
     public function index(): Response
     {
+        Gate::authorize('view.any.payroll');
+
         return Inertia::render('payroll/periods', [
             'periods' => PayrollPeriod::orderByDesc('start_date')->get(),
         ]);
@@ -22,6 +25,8 @@ class PayrollPeriodController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        Gate::authorize('view.any.payroll');
+
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'start_date' => 'required|date',
@@ -38,6 +43,8 @@ class PayrollPeriodController extends Controller
 
     public function show(PayrollPeriod $payrollPeriod): Response
     {
+        Gate::authorize('view.any.payroll');
+
         $payrollPeriod->load('payrolls.employee');
 
         return Inertia::render('payroll/show', [
@@ -47,6 +54,8 @@ class PayrollPeriodController extends Controller
 
     public function process(PayrollPeriod $payrollPeriod): RedirectResponse
     {
+        Gate::authorize('process.payroll');
+
         foreach (Employee::all() as $employee) {
             $attendances = Attendance::where('employee_id', $employee->id)
                 ->whereBetween('date', [$payrollPeriod->start_date, $payrollPeriod->end_date])

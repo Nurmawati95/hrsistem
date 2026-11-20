@@ -29,6 +29,7 @@ type Props = {
     leaveTypes: any[];
     employees: any[];
     balances: any[];
+    isAdmin: boolean;
 };
 
 export default function LeaveRequests({
@@ -36,6 +37,7 @@ export default function LeaveRequests({
     leaveTypes,
     employees,
     balances,
+    isAdmin,
 }: Props) {
     const form = useForm({
         employee_id: '',
@@ -331,7 +333,8 @@ export default function LeaveRequests({
                                                 {getStatusTicket(r.status)}
                                             </td>
                                             <td className="p-3.5 pr-5 text-right">
-                                                {r.status === 'pending' ? (
+                                                {isAdmin &&
+                                                r.status === 'pending' ? (
                                                     <div className="flex items-center justify-end gap-1.5">
                                                         <Button
                                                             size="sm"
