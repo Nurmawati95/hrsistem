@@ -140,6 +140,13 @@ export default function EmployeesIndex({
                                     Export PDF
                                 </a>
                             </Button>
+                            <a
+                                href="/employees/template"
+                                className="inline-flex items-center gap-1.5 rounded-md border border-input bg-background px-3 py-2 text-xs font-semibold shadow-xs hover:bg-accent"
+                            >
+                                <FileSpreadsheet className="size-4" />
+                                Template Excel
+                            </a>
                             <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-md border border-input bg-background px-3 py-2 text-xs font-semibold shadow-xs hover:bg-accent">
                                 <Upload className="size-4" />
                                 Import Excel

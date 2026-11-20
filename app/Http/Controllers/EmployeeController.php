@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\EmployeesExport;
+use App\Exports\EmployeesTemplateExport;
 use App\Imports\EmployeesImport;
 use App\Models\Department;
 use App\Models\Employee;
@@ -210,6 +211,16 @@ class EmployeeController extends Controller
         Gate::authorize('view.any.employee');
 
         return Excel::download(new EmployeesExport, 'data-karyawan.xlsx');
+    }
+
+    /**
+     * Download Excel template for employee import.
+     */
+    public function downloadTemplate(): BinaryFileResponse
+    {
+        Gate::authorize('create.employee');
+
+        return Excel::download(new EmployeesTemplateExport, 'template-import-pegawai.xlsx');
     }
 
     /**

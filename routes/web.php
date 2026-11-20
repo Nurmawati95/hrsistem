@@ -40,6 +40,7 @@ Route::middleware(['auth', EnsureValidRole::class])->group(function () {
         ]);
     })->name('dashboard');
 
+    Route::get('employees/template', [EmployeeController::class, 'downloadTemplate'])->name('employees.template');
     Route::get('employees/export', [EmployeeController::class, 'export'])->name('employees.export');
     Route::get('employees/export/pdf', [EmployeeController::class, 'exportPdf'])->name('employees.exportPdf');
     Route::post('employees/import', [EmployeeController::class, 'import'])->name('employees.import');
