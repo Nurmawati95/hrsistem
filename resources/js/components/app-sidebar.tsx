@@ -69,6 +69,11 @@ const karyawanNavItems: NavItem[] = [
         icon: Users,
     },
     {
+        title: 'Absensi & Presensi',
+        href: '/attendance',
+        icon: ClipboardList,
+    },
+    {
         title: 'Cuti & Izin Pegawai',
         href: '/leave/requests',
         icon: CalendarDays,

@@ -129,7 +129,7 @@ export default function Login({ status, canResetPassword }: Props) {
 
                             <a
                                 href={googleRedirect.url()}
-                                className="inline-flex h-10 w-full items-center justify-center gap-2.5 rounded-md border border-slate-200 bg-white px-4 text-xs font-medium text-slate-700 shadow-xs transition-colors hover:bg-slate-50 focus:outline-hidden focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                                className="inline-flex h-10 w-full items-center justify-center gap-2.5 rounded-md border border-slate-200 bg-white px-4 text-xs font-medium text-slate-700 shadow-xs transition-colors hover:bg-slate-50 focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:outline-hidden dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
                             >
                                 <svg
                                     className="h-4 w-4"
@@ -158,7 +158,8 @@ export default function Login({ status, canResetPassword }: Props) {
                         </div>
 
                         <div className="border-t border-slate-100 pt-2 text-center text-xs text-slate-500 dark:border-slate-800">
-                            Belum memiliki akun? Hubungi HRD / Administrator untuk pendaftaran pegawai.
+                            Belum memiliki akun? Hubungi HRD / Administrator
+                            untuk pendaftaran pegawai.
                         </div>
                     </>
                 )}
