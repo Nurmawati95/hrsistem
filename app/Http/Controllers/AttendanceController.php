@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Position;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -20,10 +23,10 @@ class AttendanceController extends Controller
 
         $query = Attendance::with('employee');
 
-        // Karyawan hanya melihat absensi sendiri.
+        // Pastikan karyawan memiliki record employee (auto-create jika belum ada).
         $employee = null;
         if ($user->isKaryawan()) {
-            $employee = Employee::where('user_id', $user->id)->first();
+            $employee = $this->ensureEmployeeForUser($user);
             if ($employee) {
                 $query->where('employee_id', $employee->id);
             }
@@ -59,8 +62,12 @@ class AttendanceController extends Controller
         ]);
 
         // Admin dapat memilih pegawai; karyawan hanya dirinya sendiri.
+        /** @var Employee|null $employee */
+        $employee = null;
         if ($user->isAdmin() && ! empty($data['employee_id'])) {
-            $employee = Employee::find($data['employee_id']);
+            $employee = Employee::where('id', $data['employee_id'])->first();
+        } elseif ($user->isKaryawan()) {
+            $employee = $this->ensureEmployeeForUser($user);
         } else {
             $employee = Employee::where('user_id', $user->id)->first();
         }
@@ -95,7 +102,9 @@ class AttendanceController extends Controller
             $attendance->save();
         }
 
-        return back()->with('success', 'Checked in.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Check-in berhasil dicatat.']);
+
+        return to_route('attendance.index');
     }
 
     public function checkOut(Request $request): RedirectResponse
@@ -110,8 +119,12 @@ class AttendanceController extends Controller
             'photo' => 'nullable|string',
         ]);
 
+        /** @var Employee|null $employee */
+        $employee = null;
         if ($user->isAdmin() && ! empty($data['employee_id'])) {
-            $employee = Employee::find($data['employee_id']);
+            $employee = Employee::where('id', $data['employee_id'])->first();
+        } elseif ($user->isKaryawan()) {
+            $employee = $this->ensureEmployeeForUser($user);
         } else {
             $employee = Employee::where('user_id', $user->id)->first();
         }
@@ -142,7 +155,50 @@ class AttendanceController extends Controller
             $attendance->save();
         }
 
-        return back()->with('success', 'Checked out.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Check-out berhasil dicatat.']);
+
+        return to_route('attendance.index');
+    }
+
+    /**
+     * Ensure a karyawan user has an employee record; create a minimal one if missing.
+     */
+    protected function ensureEmployeeForUser(User $user): ?Employee
+    {
+        $employee = Employee::where('user_id', $user->id)->first();
+        if ($employee) {
+            return $employee;
+        }
+
+        $department = Department::first();
+        $position = Position::where('name', 'Karyawan')->first()
+            ?? Position::first();
+
+        $nameParts = explode(' ', $user->name, 2);
+        $firstName = $nameParts[0];
+        $lastName = $nameParts[1] ?? $firstName;
+
+        $employeeNumber = 'KRY-'.str_pad((string) $user->id, 4, '0', STR_PAD_LEFT);
+
+        // Avoid duplicate employee_number
+        if (Employee::where('employee_number', $employeeNumber)->exists()) {
+            $employeeNumber = 'KRY-'.$user->id.'-'.time();
+        }
+
+        $employee = Employee::create([
+            'user_id' => $user->id,
+            'employee_number' => $employeeNumber,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'email' => $user->email,
+            'hire_date' => now()->toDateString(),
+            'employment_status' => 'contract',
+            'position_id' => $position?->id,
+            'department_id' => $department?->id,
+            'basic_salary' => 0,
+        ]);
+
+        return $employee;
     }
 
     /**
@@ -195,6 +251,8 @@ class AttendanceController extends Controller
             $data
         );
 
-        return back()->with('success', 'Attendance saved.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Data presensi berhasil disimpan.']);
+
+        return to_route('attendance.index');
     }
 }

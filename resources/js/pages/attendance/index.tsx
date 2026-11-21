@@ -69,13 +69,34 @@ export default function AttendanceIndex({
     const doCheckIn = (e: React.FormEvent) => {
         e.preventDefault();
         checkInForm.post('/attendance/check-in', {
-            onSuccess: () => checkInForm.reset(),
+            preserveScroll: true,
+            onSuccess: () => {
+                checkInForm.reset();
+                if (employees.length === 1) {
+                    checkInForm.setData('employee_id', String(employees[0].id));
+                }
+            },
+            onError: (errors) => {
+                console.error('Check-in errors:', errors);
+            },
         });
     };
     const doCheckOut = (e: React.FormEvent) => {
         e.preventDefault();
         checkOutForm.post('/attendance/check-out', {
-            onSuccess: () => checkOutForm.reset(),
+            preserveScroll: true,
+            onSuccess: () => {
+                checkOutForm.reset();
+                if (employees.length === 1) {
+                    checkOutForm.setData(
+                        'employee_id',
+                        String(employees[0].id),
+                    );
+                }
+            },
+            onError: (errors) => {
+                console.error('Check-out errors:', errors);
+            },
         });
     };
     const doManual = (e: React.FormEvent) => {
@@ -452,7 +473,8 @@ export default function AttendanceIndex({
                             <Button
                                 disabled={
                                     checkInForm.processing ||
-                                    !checkInForm.data.employee_id
+                                    (employees.length > 1 &&
+                                        !checkInForm.data.employee_id)
                                 }
                                 type="submit"
                                 className="mt-1 h-9 bg-emerald-700 text-xs font-semibold tracking-wider text-white uppercase hover:bg-emerald-800"
@@ -606,7 +628,8 @@ export default function AttendanceIndex({
                             <Button
                                 disabled={
                                     checkOutForm.processing ||
-                                    !checkOutForm.data.employee_id
+                                    (employees.length > 1 &&
+                                        !checkOutForm.data.employee_id)
                                 }
                                 type="submit"
                                 className="mt-1 h-9 bg-amber-600 text-xs font-semibold tracking-wider text-white uppercase hover:bg-amber-700"
