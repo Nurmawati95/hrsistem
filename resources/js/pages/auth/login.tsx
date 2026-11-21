@@ -8,7 +8,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { register } from '@/routes';
 import { redirect as googleRedirect } from '@/routes/auth/google';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
@@ -159,14 +158,7 @@ export default function Login({ status, canResetPassword }: Props) {
                         </div>
 
                         <div className="border-t border-slate-100 pt-2 text-center text-xs text-slate-500 dark:border-slate-800">
-                            Belum memiliki akun?{' '}
-                            <TextLink
-                                href={register()}
-                                tabIndex={5}
-                                className="font-semibold text-[#16325c] hover:underline dark:text-sky-400"
-                            >
-                                Registrasi Pegawai
-                            </TextLink>
+                            Belum memiliki akun? Hubungi HRD / Administrator untuk pendaftaran pegawai.
                         </div>
                     </>
                 )}

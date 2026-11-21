@@ -40,13 +40,13 @@ test('google callback authenticates existing user and updates google attributes'
         ->and($user->avatar)->toBe('https://lh3.googleusercontent.com/avatar.jpg');
 });
 
-test('google callback automatically creates new user with karyawan role', function () {
+test('google callback rejects unregistered user who is not in users or employees table', function () {
     $googleUserMock = Mockery::mock(GoogleUser::class);
     $googleUserMock->shouldReceive('getId')->andReturn('google-id-99999');
-    $googleUserMock->shouldReceive('getName')->andReturn('Budi Santoso');
-    $googleUserMock->shouldReceive('getNickname')->andReturn('budi');
-    $googleUserMock->shouldReceive('getEmail')->andReturn('budi@company.com');
-    $googleUserMock->shouldReceive('getAvatar')->andReturn('https://lh3.googleusercontent.com/budi.jpg');
+    $googleUserMock->shouldReceive('getName')->andReturn('Orang Asing');
+    $googleUserMock->shouldReceive('getNickname')->andReturn('asing');
+    $googleUserMock->shouldReceive('getEmail')->andReturn('stranger@example.com');
+    $googleUserMock->shouldReceive('getAvatar')->andReturn(null);
 
     $providerMock = Mockery::mock('Laravel\Socialite\Two\GoogleProvider');
     $providerMock->shouldReceive('user')->andReturn($googleUserMock);
@@ -55,16 +55,14 @@ test('google callback automatically creates new user with karyawan role', functi
 
     $response = $this->get(route('auth.google.callback'));
 
-    $newUser = User::where('email', 'budi@company.com')->first();
-    expect($newUser)->not->toBeNull();
-    expect($newUser->role)->toBe(User::ROLE_KARYAWAN);
-    expect($newUser->google_id)->toBe('google-id-99999');
+    $this->assertGuest();
+    $response->assertRedirect(route('login'));
+    $response->assertSessionHasErrors(['email']);
 
-    $this->assertAuthenticatedAs($newUser);
-    $response->assertRedirect(route('dashboard'));
+    expect(User::where('email', 'stranger@example.com')->exists())->toBeFalse();
 });
 
-test('google callback connects existing employee record if user_id is null', function () {
+test('google callback connects and creates user for registered employee record', function () {
     $employee = Employee::create([
         'employee_number' => 'EMP-TEST-001',
         'first_name' => 'Siti',
@@ -86,10 +84,43 @@ test('google callback connects existing employee record if user_id is null', fun
 
     Socialite::shouldReceive('driver')->with('google')->andReturn($providerMock);
 
-    $this->get(route('auth.google.callback'));
+    $response = $this->get(route('auth.google.callback'));
+
+    $newUser = User::where('email', 'siti@company.com')->first();
+    expect($newUser)->not->toBeNull();
+    expect($newUser->role)->toBe(User::ROLE_KARYAWAN);
+    expect($newUser->google_id)->toBe('google-id-88888');
+
+    $this->assertAuthenticatedAs($newUser);
+    $response->assertRedirect(route('dashboard'));
 
     $employee->refresh();
-    expect($employee->user_id)->not->toBeNull();
+    expect($employee->user_id)->toBe($newUser->id);
+});
+
+test('google callback rejects user with invalid role', function () {
+    $user = User::factory()->create([
+        'email' => 'disabled@company.com',
+        'role' => 'disabled_role',
+    ]);
+
+    $googleUserMock = Mockery::mock(GoogleUser::class);
+    $googleUserMock->shouldReceive('getId')->andReturn('google-id-77777');
+    $googleUserMock->shouldReceive('getName')->andReturn('Disabled User');
+    $googleUserMock->shouldReceive('getNickname')->andReturn('disabled');
+    $googleUserMock->shouldReceive('getEmail')->andReturn('disabled@company.com');
+    $googleUserMock->shouldReceive('getAvatar')->andReturn(null);
+
+    $providerMock = Mockery::mock('Laravel\Socialite\Two\GoogleProvider');
+    $providerMock->shouldReceive('user')->andReturn($googleUserMock);
+
+    Socialite::shouldReceive('driver')->with('google')->andReturn($providerMock);
+
+    $response = $this->get(route('auth.google.callback'));
+
+    $this->assertGuest();
+    $response->assertRedirect(route('login'));
+    $response->assertSessionHasErrors(['email']);
 });
 
 test('google callback redirects to login with error on exception', function () {

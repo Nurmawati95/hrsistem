@@ -49,7 +49,21 @@ class GoogleAuthController extends Controller
             ->orWhere('email', $email)
             ->first();
 
+        $employee = Employee::where('email', $email)->first();
+
+        if (! $user && ! $employee) {
+            return redirect()->route('login')->withErrors([
+                'email' => 'Akun Google Anda ('.$email.') belum terdaftar sebagai karyawan di sistem. Silakan hubungi bagian HRD / Administrator.',
+            ]);
+        }
+
         if ($user) {
+            if (! $user->canLogin()) {
+                return redirect()->route('login')->withErrors([
+                    'email' => 'Maaf, akun Anda tidak memiliki izin untuk masuk ke sistem.',
+                ]);
+            }
+
             $user->update([
                 'google_id' => $googleUser->getId(),
                 'avatar' => $googleUser->getAvatar(),
@@ -57,7 +71,7 @@ class GoogleAuthController extends Controller
             ]);
         } else {
             $user = User::create([
-                'name' => $googleUser->getName() ?? $googleUser->getNickname() ?? 'Pengguna Google',
+                'name' => $employee->full_name ?: ($googleUser->getName() ?? 'Karyawan'),
                 'email' => $email,
                 'google_id' => $googleUser->getId(),
                 'avatar' => $googleUser->getAvatar(),
@@ -66,7 +80,6 @@ class GoogleAuthController extends Controller
             ]);
         }
 
-        $employee = Employee::where('email', $email)->first();
         if ($employee && ! $employee->user_id) {
             $employee->update(['user_id' => $user->id]);
         }
