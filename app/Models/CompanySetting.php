@@ -18,6 +18,8 @@ class CompanySetting extends Model
         'announcement_active',
         'leave_policy',
         'attendance_policy',
+        'qris_image',
+        'qris_string',
     ];
 
     protected $casts = [

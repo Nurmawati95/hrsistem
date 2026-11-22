@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Settings\CompanyController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\QrisController;
 use App\Http\Controllers\Settings\SecurityController;
 use App\Http\Middleware\EnsureValidRole;
 use Illuminate\Auth\Middleware\RequirePassword;
@@ -15,6 +16,9 @@ Route::middleware(['auth', EnsureValidRole::class])->group(function () {
 
     Route::get('settings/company', [CompanyController::class, 'edit'])->name('company.edit');
     Route::patch('settings/company', [CompanyController::class, 'update'])->name('company.update');
+
+    Route::get('settings/qris', [QrisController::class, 'edit'])->name('qris.edit');
+    Route::patch('settings/qris', [QrisController::class, 'update'])->name('qris.update');
 });
 
 Route::middleware(['auth', EnsureValidRole::class])->group(function () {

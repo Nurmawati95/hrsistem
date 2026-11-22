@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CashAdvance;
 use App\Models\CashAdvanceInstallment;
+use App\Models\CompanySetting;
 use App\Models\Employee;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -30,12 +31,17 @@ class CashAdvanceController extends Controller
 
         $cashAdvances = $query->orderByDesc('created_at')->paginate(20);
 
+        $setting = CompanySetting::current();
+
         return Inertia::render('cash-advances/index', [
             'cashAdvances' => $cashAdvances,
             'employees' => $user->isAdmin()
                 ? Employee::orderBy('first_name')->get(['id', 'first_name', 'last_name', 'employee_number'])
                 : collect(),
             'isAdmin' => $user->isAdmin(),
+            'qrisImage' => $setting->qris_image
+                ? '/uploads/qris/'.$setting->qris_image
+                : null,
         ]);
     }
 

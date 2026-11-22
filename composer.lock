@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "97aa1778e32cde907913c375596ee561",
+    "content-hash": "490daccc6af24824588c6ddbca46ffa1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -557,6 +557,75 @@
             },
             "time": "2024-07-08T12:26:09+00:00",
             "published-time": "2024-07-08T12:27:13+00:00"
+        },
+        {
+            "name": "dhank77/qris-dinamis",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dhank77/qris-dinamis.git",
+                "reference": "907b436bb3091d8ec2d1d424642764bb0203ca91"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dhank77/qris-dinamis/zipball/907b436bb3091d8ec2d1d424642764bb0203ca91",
+                "reference": "907b436bb3091d8ec2d1d424642764bb0203ca91",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.5 || ^11.0"
+            },
+            "suggest": {
+                "chillerlan/php-qrcode": "Render the dynamic QRIS as a PNG/SVG image on the server (see examples/05-generate-qr-image.php)",
+                "endroid/qr-code": "Alternative library for rendering QR images on the server"
+            },
+            "bin": [
+                "bin/qris"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "QrisDinamis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "M. Hamdani Ilham Latjoro",
+                    "email": "d41113512@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Gidhan",
+                    "homepage": "https://github.com/verssache",
+                    "role": "Original author (TypeScript)"
+                }
+            ],
+            "description": "Convert static QRIS to dynamic QRIS in PHP: parse, validate, inject amount & service fee, recalculate CRC16. Zero dependencies.",
+            "homepage": "https://github.com/dhank77/qris-dinamis",
+            "keywords": [
+                "EMVCo",
+                "crc16",
+                "dynamic-qris",
+                "gpn",
+                "indonesia",
+                "payment",
+                "qr-code",
+                "qris",
+                "qris-dinamis"
+            ],
+            "support": {
+                "issues": "https://github.com/dhank77/qris-dinamis/issues",
+                "source": "https://github.com/dhank77/qris-dinamis"
+            },
+            "time": "2026-10-28T05:58:56+00:00",
+            "published-time": "2026-10-28T06:00:34+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -1769,6 +1838,65 @@
             },
             "time": "2026-11-02T10:29:10+00:00",
             "published-time": "2026-11-02T10:45:07+00:00"
+        },
+        {
+            "name": "khanamiryan/qrcode-detector-decoder",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/khanamiryan/php-qrcode-detector-decoder.git",
+                "reference": "17c570bb39f641cc1c4c41a46177ac491393a01d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/khanamiryan/php-qrcode-detector-decoder/zipball/17c570bb39f641cc1c4c41a46177ac491393a01d",
+                "reference": "17c570bb39f641cc1c4c41a46177ac491393a01d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5 | ^8.0 | ^9.0",
+                "rector/rector": "^1.0.4",
+                "symplify/easy-coding-standard": "^11.0",
+                "vimeo/psalm": "^4.24"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/Common/customFunctions.php"
+                ],
+                "psr-4": {
+                    "Zxing\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Ashot Khanamiryan",
+                    "email": "a.khanamiryan@gmail.com",
+                    "homepage": "https://github.com/khanamiryan",
+                    "role": "Developer"
+                }
+            ],
+            "description": "QR code decoder / reader",
+            "homepage": "https://github.com/khanamiryan/php-qrcode-detector-decoder/",
+            "keywords": [
+                "barcode",
+                "qr",
+                "zxing"
+            ],
+            "support": {
+                "issues": "https://github.com/khanamiryan/php-qrcode-detector-decoder/issues",
+                "source": "https://github.com/khanamiryan/php-qrcode-detector-decoder/tree/2.0.3"
+            },
+            "time": "2025-06-10T08:44:02+00:00",
+            "published-time": "2025-07-10T12:54:24+00:00"
         },
         {
             "name": "laravel/chisel",

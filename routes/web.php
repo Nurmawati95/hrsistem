@@ -9,6 +9,7 @@ use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\PayrollPeriodController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\Settings\QrisController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Middleware\EnsureValidRole;
 use App\Models\Attendance;
@@ -98,6 +99,7 @@ Route::middleware(['auth', EnsureValidRole::class])->group(function () {
     Route::post('cash-advances/{cashAdvance}/disburse', [CashAdvanceController::class, 'disburse'])->name('cash-advances.disburse');
     Route::post('cash-advances/{cashAdvance}/reject', [CashAdvanceController::class, 'reject'])->name('cash-advances.reject');
     Route::post('cash-advances/installments/{installment}/pay', [CashAdvanceController::class, 'payInstallment'])->name('cash-advances.pay-installment');
+    Route::get('cash-advances/installments/{installment}/qris', [QrisController::class, 'generateDynamicQris'])->name('cash-advances.qris');
 });
 
 require __DIR__.'/settings.php';

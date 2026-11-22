@@ -26,6 +26,7 @@ type Props = {
     cashAdvances: { data: any[] };
     employees: any[];
     isAdmin: boolean;
+    qrisImage: string | null;
 };
 
 const STATUS_LABEL: Record<string, { label: string; color: string }> = {
@@ -63,8 +64,37 @@ export default function CashAdvancesIndex({
     cashAdvances,
     employees,
     isAdmin,
+    qrisImage,
 }: Props) {
     const [payingId, setPayingId] = useState<number | null>(null);
+    const [qrisData, setQrisData] = useState<{
+        qris_string: string;
+        amount: number;
+        unique_code: string;
+        qr_url: string;
+    } | null>(null);
+    const [qrisLoading, setQrisLoading] = useState(false);
+
+    const loadQris = async (installmentId: number) => {
+        setQrisLoading(true);
+        setQrisData(null);
+        try {
+            const res = await fetch(
+                `/cash-advances/installments/${installmentId}/qris`,
+                { headers: { Accept: 'application/json' } },
+            );
+            const json = await res.json();
+            if (json.qris_string) {
+                setQrisData(json);
+            } else {
+                alert(json.error || 'Gagal memuat QRIS dinamis.');
+            }
+        } catch (e) {
+            alert('Gagal memuat QRIS dinamis.');
+        } finally {
+            setQrisLoading(false);
+        }
+    };
 
     const form = useForm({
         amount: '',
@@ -375,11 +405,26 @@ export default function CashAdvancesIndex({
                                                                 <Button
                                                                     size="sm"
                                                                     className="h-7 bg-purple-700 px-2.5 text-[11px] font-semibold text-white hover:bg-purple-800"
-                                                                    onClick={() =>
+                                                                    onClick={() => {
                                                                         setPayingId(
                                                                             ca.id,
-                                                                        )
-                                                                    }
+                                                                        );
+                                                                        const nextInst =
+                                                                            ca.installments?.find(
+                                                                                (
+                                                                                    i: any,
+                                                                                ) =>
+                                                                                    i.status ===
+                                                                                    'pending',
+                                                                            );
+                                                                        if (
+                                                                            nextInst
+                                                                        ) {
+                                                                            loadQris(
+                                                                                nextInst.id,
+                                                                            );
+                                                                        }
+                                                                    }}
                                                                 >
                                                                     <QrCode className="mr-1 size-3" />
                                                                     Bayar
@@ -418,34 +463,55 @@ export default function CashAdvancesIndex({
                                         </p>
                                     );
                                 }
-                                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=KASBON-${ca.id}-INSTALLMENT-${nextInstallment.installment_number}-AMOUNT-${nextInstallment.amount}`;
                                 return (
                                     <div className="space-y-4 text-center">
                                         <p className="text-xs text-slate-600">
-                                            Scan QR berikut dengan aplikasi
+                                            Scan QRIS berikut dengan aplikasi
                                             e-wallet / mobile banking Anda.
                                         </p>
-                                        <div className="flex justify-center">
-                                            <img
-                                                src={qrUrl}
-                                                alt="QRIS"
-                                                className="size-48 rounded-lg border"
-                                            />
-                                        </div>
-                                        <div className="rounded-lg bg-slate-50 p-3 text-xs dark:bg-slate-800">
-                                            <p className="font-semibold text-slate-800 dark:text-white">
-                                                Cicilan ke-
-                                                {
-                                                    nextInstallment.installment_number
-                                                }
+                                        {qrisLoading && (
+                                            <p className="text-xs text-slate-500">
+                                                Memuat QRIS dinamis...
                                             </p>
-                                            <p className="font-mono text-lg font-bold text-[#0f274a] dark:text-sky-400">
-                                                Rp{' '}
-                                                {Number(
-                                                    nextInstallment.amount,
-                                                ).toLocaleString('id-ID')}
+                                        )}
+                                        {qrisData && (
+                                            <>
+                                                <div className="flex justify-center">
+                                                    <img
+                                                        src={qrisData.qr_url}
+                                                        alt="QRIS Dinamis"
+                                                        className="size-48 rounded-lg border object-contain"
+                                                    />
+                                                </div>
+                                                <div className="rounded-lg bg-slate-50 p-3 text-xs dark:bg-slate-800">
+                                                    <p className="font-semibold text-slate-800 dark:text-white">
+                                                        Cicilan ke-
+                                                        {
+                                                            nextInstallment.installment_number
+                                                        }
+                                                    </p>
+                                                    <p className="font-mono text-lg font-bold text-[#0f274a] dark:text-sky-400">
+                                                        Rp{' '}
+                                                        {Number(
+                                                            nextInstallment.amount,
+                                                        ).toLocaleString(
+                                                            'id-ID',
+                                                        )}
+                                                    </p>
+                                                    <p className="mt-1 font-mono text-[10px] text-slate-500">
+                                                        Kode Unik:{' '}
+                                                        {qrisData.unique_code}
+                                                    </p>
+                                                </div>
+                                            </>
+                                        )}
+                                        {!qrisLoading && !qrisData && (
+                                            <p className="text-xs text-red-500">
+                                                QRIS dinamis gagal dimuat.
+                                                Pastikan QRIS statis sudah
+                                                diatur di Settings.
                                             </p>
-                                        </div>
+                                        )}
                                         <div className="flex gap-2">
                                             <Button
                                                 className="flex-1 bg-purple-700 text-xs font-semibold text-white hover:bg-purple-800"
@@ -461,9 +527,10 @@ export default function CashAdvancesIndex({
                                             <Button
                                                 variant="outline"
                                                 className="text-xs"
-                                                onClick={() =>
-                                                    setPayingId(null)
-                                                }
+                                                onClick={() => {
+                                                    setPayingId(null);
+                                                    setQrisData(null);
+                                                }}
                                             >
                                                 Tutup
                                             </Button>

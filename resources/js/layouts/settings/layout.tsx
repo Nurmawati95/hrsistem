@@ -22,6 +22,11 @@ const sidebarNavItems: NavItem[] = [
         icon: null,
     },
     {
+        title: 'QRIS Pembayaran',
+        href: '/settings/qris',
+        icon: null,
+    },
+    {
         title: 'Security',
         href: editSecurity(),
         icon: null,
