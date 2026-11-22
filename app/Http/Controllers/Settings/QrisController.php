@@ -178,21 +178,27 @@ class QrisController extends Controller
 
         $amount = (float) $installment->amount;
 
+        // Add a 3-digit unique code to the amount so each payment has a
+        // distinguishable nominal (e.g. Rp 100.123 instead of Rp 100.000).
+        $uniqueNumber = random_int(100, 999);
+        $paymentAmount = $amount + $uniqueNumber;
+
         try {
-            $dynamicQris = Qris::convert($staticQris, $amount);
+            $dynamicQris = Qris::convert($staticQris, $paymentAmount);
         } catch (\Throwable $e) {
             return response()->json(['error' => 'Gagal generate QRIS dinamis: '.$e->getMessage()], 422);
         }
 
-        $uniqueCode = 'KASBON-'.$installment->cash_advance_id.'-INS-'.$installment->installment_number;
+        $uniqueCode = 'KASBON-'.$installment->cash_advance_id.'-INS-'.$installment->installment_number.'-'.bin2hex(random_bytes(4));
 
         // Store the pending reference so a payment webhook can match it.
         $installment->update(['transaction_ref' => $uniqueCode]);
 
         return response()->json([
             'qris_string' => $dynamicQris,
-            'amount' => $amount,
-            'unique_code' => $uniqueCode,
+            'amount' => $paymentAmount,
+            'unique_code' => (string) $uniqueNumber,
+            'transaction_ref' => $uniqueCode,
             'qr_url' => 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data='.urlencode($dynamicQris),
         ]);
     }

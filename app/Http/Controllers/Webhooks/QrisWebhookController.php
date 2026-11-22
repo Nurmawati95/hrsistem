@@ -50,7 +50,7 @@ class QrisWebhookController extends Controller
         if ($reference) {
             $installment = CashAdvanceInstallment::where('transaction_ref', $reference)->first();
 
-            if (! $installment && preg_match('/^KASBON-(\d+)-INS-(\d+)$/', (string) $reference, $matches)) {
+            if (! $installment && preg_match('/^KASBON-(\d+)-INS-(\d+)/', (string) $reference, $matches)) {
                 $installment = CashAdvanceInstallment::where('cash_advance_id', $matches[1])
                     ->where('installment_number', $matches[2])
                     ->first();
@@ -59,6 +59,21 @@ class QrisWebhookController extends Controller
 
         if (! $installment && $request->filled('installment_id')) {
             $installment = CashAdvanceInstallment::find($request->input('installment_id'));
+        }
+
+        // Fallback: identify by the unique amount (base + 3-digit code).
+        if (! $installment) {
+            $paidAmount = $request->input('amount') ?? $request->input('data.amount');
+            if ($paidAmount !== null) {
+                $paidAmount = (float) $paidAmount;
+                $installment = CashAdvanceInstallment::where('status', 'pending')
+                    ->get()
+                    ->first(function (CashAdvanceInstallment $candidate) use ($paidAmount) {
+                        $base = (float) $candidate->amount;
+
+                        return $paidAmount >= $base && $paidAmount <= ($base + 999);
+                    });
+            }
         }
 
         if (! $installment) {
@@ -70,9 +85,10 @@ class QrisWebhookController extends Controller
         }
 
         $amount = $request->input('amount') ?? $request->input('data.amount');
-        if ($amount !== null && (float) $amount !== (float) $installment->amount) {
-            // Allow small floating point differences.
-            if (abs((float) $amount - (float) $installment->amount) > 0.01) {
+        if ($amount !== null) {
+            $paidAmount = (float) $amount;
+            $base = (float) $installment->amount;
+            if ($paidAmount < $base || $paidAmount > ($base + 999)) {
                 return response()->json(['error' => 'Amount mismatch.'], 422);
             }
         }
