@@ -77,5 +77,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('update.company.settings', fn (User $user) => $user->isAdmin());
         Gate::define('view.own.profile', fn (User $user) => true);
         Gate::define('update.own.profile', fn (User $user) => true);
+
+        // Cash advances (Kasbon): karyawan can create/view own; admin manages approvals.
+        Gate::define('view.any.cash.advance', fn (User $user) => $user->isAdmin());
+        Gate::define('create.cash.advance', fn (User $user) => $user->isKaryawan() || $user->isAdmin());
+        Gate::define('pay.cash.advance.installment', fn (User $user) => $user->isKaryawan() || $user->isAdmin());
     }
 }

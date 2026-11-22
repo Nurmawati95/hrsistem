@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import {
+    Banknote,
     Building2,
     CalendarDays,
     ClipboardList,
@@ -60,6 +61,11 @@ const adminNavItems: NavItem[] = [
         href: '/payroll/periods',
         icon: DollarSign,
     },
+    {
+        title: 'Kasbon & Cicilan',
+        href: '/cash-advances',
+        icon: Banknote,
+    },
 ];
 
 const karyawanNavItems: NavItem[] = [
@@ -77,6 +83,11 @@ const karyawanNavItems: NavItem[] = [
         title: 'Cuti & Izin Pegawai',
         href: '/leave/requests',
         icon: CalendarDays,
+    },
+    {
+        title: 'Kasbon & Cicilan',
+        href: '/cash-advances',
+        icon: Banknote,
     },
 ];
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\GoogleAuthController;
+use App\Http\Controllers\CashAdvanceController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\LeaveRequestController;
@@ -89,6 +90,14 @@ Route::middleware(['auth', EnsureValidRole::class])->group(function () {
     Route::post('payroll/periods', [PayrollPeriodController::class, 'store'])->name('payroll.periods.store');
     Route::get('payroll/periods/{payrollPeriod}', [PayrollPeriodController::class, 'show'])->name('payroll.periods.show');
     Route::post('payroll/periods/{payrollPeriod}/process', [PayrollPeriodController::class, 'process'])->name('payroll.periods.process');
+
+    Route::get('cash-advances', [CashAdvanceController::class, 'index'])->name('cash-advances.index');
+    Route::post('cash-advances', [CashAdvanceController::class, 'store'])->name('cash-advances.store');
+    Route::post('cash-advances/{cashAdvance}/supervisor-approve', [CashAdvanceController::class, 'supervisorApprove'])->name('cash-advances.supervisor-approve');
+    Route::post('cash-advances/{cashAdvance}/finance-approve', [CashAdvanceController::class, 'financeApprove'])->name('cash-advances.finance-approve');
+    Route::post('cash-advances/{cashAdvance}/disburse', [CashAdvanceController::class, 'disburse'])->name('cash-advances.disburse');
+    Route::post('cash-advances/{cashAdvance}/reject', [CashAdvanceController::class, 'reject'])->name('cash-advances.reject');
+    Route::post('cash-advances/installments/{installment}/pay', [CashAdvanceController::class, 'payInstallment'])->name('cash-advances.pay-installment');
 });
 
 require __DIR__.'/settings.php';
