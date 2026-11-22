@@ -7,7 +7,6 @@ import {
     Clock,
     FileText,
     Info,
-    Lock,
     Mail,
     MapPin,
     Phone,
@@ -16,7 +15,7 @@ import {
 } from 'lucide-react';
 import AppLogoIcon from '@/components/app-logo-icon';
 import { Button } from '@/components/ui/button';
-import { dashboard, login } from '@/routes';
+import { dashboard } from '@/routes';
 
 type CompanySettingType = {
     company_name: string;
@@ -177,7 +176,7 @@ export default function Welcome({ company, stats }: Props) {
 
                         {/* Auth actions */}
                         <div className="flex items-center gap-3">
-                            {auth?.user ? (
+                            {auth?.user && (
                                 <Button
                                     asChild
                                     className="bg-[#12284c] hover:bg-[#1b3a6b]"
@@ -185,16 +184,6 @@ export default function Welcome({ company, stats }: Props) {
                                     <Link href={dashboard()}>
                                         Buka Dashboard
                                         <ChevronRight className="ml-1 size-4" />
-                                    </Link>
-                                </Button>
-                            ) : (
-                                <Button
-                                    asChild
-                                    className="bg-[#12284c] font-semibold text-white shadow-sm hover:bg-[#1b3a6b] hover:text-white"
-                                >
-                                    <Link href={login()}>
-                                        <Lock className="mr-1.5 size-5 text-white" />
-                                        Masuk Portal
                                     </Link>
                                 </Button>
                             )}
@@ -513,18 +502,6 @@ export default function Welcome({ company, stats }: Props) {
                                     Akses Portal
                                 </h4>
                                 <div className="flex flex-col gap-1.5 text-xs text-slate-400">
-                                    <Link
-                                        href={login()}
-                                        className="transition-colors hover:text-white"
-                                    >
-                                        → Login Pegawai
-                                    </Link>
-                                    <Link
-                                        href={login()}
-                                        className="transition-colors hover:text-white"
-                                    >
-                                        → Login Administrator
-                                    </Link>
                                     <a
                                         href="#kebijakan"
                                         className="transition-colors hover:text-white"

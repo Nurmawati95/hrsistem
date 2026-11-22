@@ -126,7 +126,7 @@ export default function Dashboard({ stats }: Props) {
         <>
             <Head title="Dashboard - HR Sistem" />
 
-            <div className="flex h-full flex-1 flex-col gap-6 bg-[#f8fafc] p-6 lg:p-8 dark:bg-slate-950">
+            <div className="flex h-full flex-1 flex-col gap-6 bg-[#f8fafc] p-4 sm:p-6 lg:p-8 dark:bg-slate-950">
                 {/* Header Banner resembling Institutional Service Desk */}
                 <header className="flex flex-col gap-4 rounded-xl border border-slate-200/80 bg-white p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900">
                     <div className="flex flex-col gap-1">
@@ -345,7 +345,7 @@ export default function Dashboard({ stats }: Props) {
                                 kerahasiaan data kepegawaian.
                             </p>
 
-                            <div className="grid grid-cols-2 gap-3 pt-2">
+                            <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
                                 <div className="rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
                                     <span className="text-[10px] font-medium text-slate-400 uppercase">
                                         Pengaturan Informasi

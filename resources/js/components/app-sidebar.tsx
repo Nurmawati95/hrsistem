@@ -25,7 +25,7 @@ import {
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
-const adminNavItems: NavItem[] = [
+export const adminNavItems: NavItem[] = [
     {
         title: 'Dashboard Utama',
         href: dashboard(),
@@ -68,7 +68,7 @@ const adminNavItems: NavItem[] = [
     },
 ];
 
-const karyawanNavItems: NavItem[] = [
+export const karyawanNavItems: NavItem[] = [
     {
         title: 'Master Karyawan',
         href: '/employees',

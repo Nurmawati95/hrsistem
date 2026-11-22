@@ -23,7 +23,7 @@ class EnsureValidRole
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect('/login')
+            return redirect(route('login'))
                 ->withErrors(['role' => 'Maaf, peran akun Anda tidak diizinkan untuk masuk ke sistem.'])
                 ->withInput();
         }

@@ -1,17 +1,14 @@
 import { Head, router, useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
     Banknote,
     Check,
     CreditCard,
-    DollarSign,
     QrCode,
     Send,
     X,
 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -60,13 +57,26 @@ const STATUS_LABEL: Record<string, { label: string; color: string }> = {
     },
 };
 
+const INSTALLMENT_STATUS: Record<string, { label: string; color: string }> = {
+    pending: {
+        label: 'Belum Bayar',
+        color: 'bg-amber-50 text-amber-800 border-amber-200',
+    },
+    paid: {
+        label: 'Lunas',
+        color: 'bg-emerald-100 text-emerald-900 border-emerald-300',
+    },
+};
+
 export default function CashAdvancesIndex({
     cashAdvances,
     employees,
     isAdmin,
     qrisImage,
 }: Props) {
-    const [payingId, setPayingId] = useState<number | null>(null);
+    const [payingInstallmentId, setPayingInstallmentId] = useState<number | null>(
+        null,
+    );
     const [qrisData, setQrisData] = useState<{
         qris_string: string;
         amount: number;
@@ -76,25 +86,17 @@ export default function CashAdvancesIndex({
     const [qrisLoading, setQrisLoading] = useState(false);
 
     useEffect(() => {
-        if (payingId === null || !qrisData) return;
-        const ca = cashAdvances.data.find(
-            (c: any) => c.id === payingId,
-        );
-        const nextInst = ca?.installments?.find(
-            (i: any) => i.status === 'pending',
-        );
-        if (!nextInst) return;
-        const installmentId = nextInst.id;
+        if (payingInstallmentId === null || !qrisData) return;
         const interval = setInterval(async () => {
             try {
                 const res = await fetch(
-                    `/cash-advances/installments/${installmentId}/status`,
+                    `/cash-advances/installments/${payingInstallmentId}/status`,
                     { headers: { Accept: 'application/json' } },
                 );
                 const json = await res.json();
                 if (json.status === 'paid') {
                     clearInterval(interval);
-                    setPayingId(null);
+                    setPayingInstallmentId(null);
                     setQrisData(null);
                     router.reload({ only: ['cashAdvances'] });
                 }
@@ -103,7 +105,7 @@ export default function CashAdvancesIndex({
             }
         }, 3000);
         return () => clearInterval(interval);
-    }, [payingId, qrisData]);
+    }, [payingInstallmentId, qrisData]);
 
     const loadQris = async (installmentId: number) => {
         setQrisLoading(true);
@@ -152,10 +154,24 @@ export default function CashAdvancesIndex({
     const payInstallment = (id: number) =>
         router.post(`/cash-advances/installments/${id}/pay`);
 
+    const findInstallment = (id: number) => {
+        for (const ca of cashAdvances.data) {
+            const inst = (ca.installments || []).find(
+                (i: any) => i.id === id,
+            );
+            if (inst) return { ca, inst };
+        }
+        return null;
+    };
+
+    const payingInfo = payingInstallmentId
+        ? findInstallment(payingInstallmentId)
+        : null;
+
     return (
         <>
             <Head title="Kasbon - HR Sistem" />
-            <div className="flex h-full flex-1 flex-col gap-6 bg-[#f8fafc] p-6 lg:p-8 dark:bg-slate-950">
+            <div className="flex h-full flex-1 flex-col gap-6 bg-[#f8fafc] p-4 sm:p-6 lg:p-8 dark:bg-slate-950">
                 <header className="flex flex-col gap-4 rounded-xl border border-slate-200/90 bg-white p-5 shadow-xs sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900">
                     <div>
                         <div className="flex items-center gap-2">
@@ -298,172 +314,280 @@ export default function CashAdvancesIndex({
                                         const statusInfo =
                                             STATUS_LABEL[ca.status] ??
                                             STATUS_LABEL.pending;
+                                        const installments =
+                                            ca.installments || [];
                                         return (
-                                            <tr
-                                                key={ca.id}
-                                                className="transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-800/40"
-                                            >
-                                                <td className="p-3.5 pl-5">
-                                                    <p className="font-semibold text-slate-900 dark:text-slate-100">
-                                                        {
-                                                            ca.employee
-                                                                ?.first_name
-                                                        }{' '}
-                                                        {ca.employee?.last_name}
-                                                    </p>
-                                                    <p className="font-mono text-[10px] text-slate-400">
-                                                        {
-                                                            ca.employee
-                                                                ?.employee_number
-                                                        }
-                                                    </p>
-                                                </td>
-                                                <td className="p-3.5 font-mono font-bold text-[#0f274a] dark:text-sky-400">
-                                                    Rp{' '}
-                                                    {Number(
-                                                        ca.amount,
-                                                    ).toLocaleString('id-ID')}
-                                                </td>
-                                                <td className="max-w-xs truncate p-3.5 text-slate-600 dark:text-slate-400">
-                                                    {ca.reason}
-                                                </td>
-                                                <td className="p-3.5 font-mono text-slate-600 dark:text-slate-400">
-                                                    {ca.total_installments}x @
-                                                    Rp{' '}
-                                                    {Number(
-                                                        ca.installment_amount,
-                                                    ).toLocaleString('id-ID')}
-                                                </td>
-                                                <td className="p-3.5 font-mono font-bold text-amber-700">
-                                                    Rp{' '}
-                                                    {Number(
-                                                        ca.remaining_balance,
-                                                    ).toLocaleString('id-ID')}
-                                                </td>
-                                                <td className="p-3.5">
-                                                    <span
-                                                        className={`inline-flex items-center rounded-sm border px-2 py-0.5 font-mono text-[10px] font-bold ${statusInfo.color}`}
-                                                    >
-                                                        {statusInfo.label}
-                                                    </span>
-                                                </td>
-                                                <td className="p-3.5 pr-5 text-right">
-                                                    <div className="flex flex-wrap items-center justify-end gap-1.5">
-                                                        {isAdmin &&
-                                                            ca.status ===
-                                                                'pending' && (
-                                                                <>
-                                                                    <Button
-                                                                        size="sm"
-                                                                        className="h-7 bg-sky-700 px-2.5 text-[11px] font-semibold text-white hover:bg-sky-800"
-                                                                        onClick={() =>
-                                                                            supervisorApprove(
-                                                                                ca.id,
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <Check className="mr-1 size-3" />
-                                                                        Atasan
-                                                                    </Button>
-                                                                    <Button
-                                                                        size="sm"
-                                                                        variant="destructive"
-                                                                        className="h-7 px-2.5 text-[11px] font-semibold"
-                                                                        onClick={() =>
-                                                                            reject(
-                                                                                ca.id,
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <X className="mr-1 size-3" />
-                                                                        Tolak
-                                                                    </Button>
-                                                                </>
-                                                            )}
-                                                        {isAdmin &&
-                                                            ca.status ===
-                                                                'supervisor_approved' && (
-                                                                <>
-                                                                    <Button
-                                                                        size="sm"
-                                                                        className="h-7 bg-indigo-700 px-2.5 text-[11px] font-semibold text-white hover:bg-indigo-800"
-                                                                        onClick={() =>
-                                                                            financeApprove(
-                                                                                ca.id,
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <Check className="mr-1 size-3" />
-                                                                        Finance
-                                                                    </Button>
-                                                                    <Button
-                                                                        size="sm"
-                                                                        variant="destructive"
-                                                                        className="h-7 px-2.5 text-[11px] font-semibold"
-                                                                        onClick={() =>
-                                                                            reject(
-                                                                                ca.id,
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <X className="mr-1 size-3" />
-                                                                        Tolak
-                                                                    </Button>
-                                                                </>
-                                                            )}
-                                                        {isAdmin &&
-                                                            ca.status ===
-                                                                'finance_approved' && (
-                                                                <Button
-                                                                    size="sm"
-                                                                    className="h-7 bg-emerald-700 px-2.5 text-[11px] font-semibold text-white hover:bg-emerald-800"
-                                                                    onClick={() =>
-                                                                        disburse(
-                                                                            ca.id,
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    <Banknote className="mr-1 size-3" />
-                                                                    Cairkan
-                                                                </Button>
-                                                            )}
-                                                        {!isAdmin &&
-                                                            (ca.status ===
-                                                                'disbursed' ||
+                                            <Fragment key={ca.id}>
+                                                <tr
+                                                    key={ca.id}
+                                                    className="transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-800/40"
+                                                >
+                                                    <td className="p-3.5 pl-5">
+                                                        <p className="font-semibold text-slate-900 dark:text-slate-100">
+                                                            {
+                                                                ca.employee
+                                                                    ?.first_name
+                                                            }{' '}
+                                                            {ca.employee?.last_name}
+                                                        </p>
+                                                        <p className="font-mono text-[10px] text-slate-400">
+                                                            {
+                                                                ca.employee
+                                                                    ?.employee_number
+                                                            }
+                                                        </p>
+                                                    </td>
+                                                    <td className="p-3.5 font-mono font-bold text-[#0f274a] dark:text-sky-400">
+                                                        Rp{' '}
+                                                        {Number(
+                                                            ca.amount,
+                                                        ).toLocaleString('id-ID')}
+                                                    </td>
+                                                    <td className="max-w-xs truncate p-3.5 text-slate-600 dark:text-slate-400">
+                                                        {ca.reason}
+                                                    </td>
+                                                    <td className="p-3.5 font-mono text-slate-600 dark:text-slate-400">
+                                                        {ca.total_installments}x
+                                                        @ Rp{' '}
+                                                        {Number(
+                                                            ca.installment_amount,
+                                                        ).toLocaleString('id-ID')}
+                                                    </td>
+                                                    <td className="p-3.5 font-mono font-bold text-amber-700">
+                                                        Rp{' '}
+                                                        {Number(
+                                                            ca.remaining_balance,
+                                                        ).toLocaleString('id-ID')}
+                                                    </td>
+                                                    <td className="p-3.5">
+                                                        <span
+                                                            className={`inline-flex items-center rounded-sm border px-2 py-0.5 font-mono text-[10px] font-bold ${statusInfo.color}`}
+                                                        >
+                                                            {statusInfo.label}
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3.5 pr-5 text-right">
+                                                        <div className="flex flex-wrap items-center justify-end gap-1.5">
+                                                            {isAdmin &&
                                                                 ca.status ===
-                                                                    'repaying') && (
-                                                                <Button
-                                                                    size="sm"
-                                                                    className="h-7 bg-purple-700 px-2.5 text-[11px] font-semibold text-white hover:bg-purple-800"
-                                                                    onClick={() => {
-                                                                        setPayingId(
-                                                                            ca.id,
-                                                                        );
-                                                                        const nextInst =
-                                                                            ca.installments?.find(
-                                                                                (
-                                                                                    i: any,
-                                                                                ) =>
-                                                                                    i.status ===
-                                                                                    'pending',
-                                                                            );
-                                                                        if (
-                                                                            nextInst
-                                                                        ) {
-                                                                            loadQris(
-                                                                                nextInst.id,
-                                                                            );
+                                                                    'pending' && (
+                                                                    <>
+                                                                        <Button
+                                                                            size="sm"
+                                                                            className="h-7 bg-sky-700 px-2.5 text-[11px] font-semibold text-white hover:bg-sky-800"
+                                                                            onClick={() =>
+                                                                                supervisorApprove(
+                                                                                    ca.id,
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <Check className="mr-1 size-3" />
+                                                                            Atasan
+                                                                        </Button>
+                                                                        <Button
+                                                                            size="sm"
+                                                                            variant="destructive"
+                                                                            className="h-7 px-2.5 text-[11px] font-semibold"
+                                                                            onClick={() =>
+                                                                                reject(
+                                                                                    ca.id,
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <X className="mr-1 size-3" />
+                                                                            Tolak
+                                                                        </Button>
+                                                                    </>
+                                                                )}
+                                                            {isAdmin &&
+                                                                ca.status ===
+                                                                    'supervisor_approved' && (
+                                                                    <>
+                                                                        <Button
+                                                                            size="sm"
+                                                                            className="h-7 bg-indigo-700 px-2.5 text-[11px] font-semibold text-white hover:bg-indigo-800"
+                                                                            onClick={() =>
+                                                                                financeApprove(
+                                                                                    ca.id,
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <Check className="mr-1 size-3" />
+                                                                            Finance
+                                                                        </Button>
+                                                                        <Button
+                                                                            size="sm"
+                                                                            variant="destructive"
+                                                                            className="h-7 px-2.5 text-[11px] font-semibold"
+                                                                            onClick={() =>
+                                                                                reject(
+                                                                                    ca.id,
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            <X className="mr-1 size-3" />
+                                                                            Tolak
+                                                                        </Button>
+                                                                    </>
+                                                                )}
+                                                            {isAdmin &&
+                                                                ca.status ===
+                                                                    'finance_approved' && (
+                                                                    <Button
+                                                                        size="sm"
+                                                                        className="h-7 bg-emerald-700 px-2.5 text-[11px] font-semibold text-white hover:bg-emerald-800"
+                                                                        onClick={() =>
+                                                                            disburse(
+                                                                                ca.id,
+                                                                            )
                                                                         }
-                                                                    }}
-                                                                >
-                                                                    <QrCode className="mr-1 size-3" />
-                                                                    Bayar
-                                                                    Cicilan
-                                                                </Button>
-                                                            )}
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                                    >
+                                                                        <Banknote className="mr-1 size-3" />
+                                                                        Cairkan
+                                                                    </Button>
+                                                                )}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {installments.length > 0 && (
+                                                    <tr
+                                                        key={`inst-${ca.id}`}
+                                                        className="bg-slate-50/60 dark:bg-slate-900/40"
+                                                    >
+                                                        <td
+                                                            colSpan={7}
+                                                            className="p-0"
+                                                        >
+                                                            <div className="px-5 py-3">
+                                                                <p className="mb-2 text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                                                                    Rincian Cicilan
+                                                                </p>
+                                                                {installments.length ===
+                                                                0 ? (
+                                                                    <p className="text-xs text-slate-400">
+                                                                        Belum ada
+                                                                        cicilan
+                                                                        (kasbon
+                                                                        belum
+                                                                        dicairkan).
+                                                                    </p>
+                                                                ) : (
+                                                                    <div className="overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700">
+                                                                        <table className="w-full text-left text-xs">
+                                                                            <thead>
+                                                                                <tr className="border-b border-slate-200 bg-white text-[10px] font-bold tracking-wider text-slate-500 uppercase dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-400">
+                                                                                    <th className="px-3 py-2">
+                                                                                        Cicilan
+                                                                                        ke-
+                                                                                    </th>
+                                                                                    <th className="px-3 py-2">
+                                                                                        Jumlah
+                                                                                    </th>
+                                                                                    <th className="px-3 py-2">
+                                                                                        Status
+                                                                                    </th>
+                                                                                    <th className="px-3 py-2">
+                                                                                        Dibayar
+                                                                                        pada
+                                                                                    </th>
+                                                                                    <th className="px-3 py-2 text-right">
+                                                                                        Tindakan
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                                                                                {installments.map(
+                                                                                    (
+                                                                                        inst: any,
+                                                                                    ) => {
+                                                                                        const instStatus =
+                                                                                            INSTALLMENT_STATUS[
+                                                                                                inst.status
+                                                                                            ] ??
+                                                                                            INSTALLMENT_STATUS.pending;
+                                                                                        const canPay =
+                                                                                            !isAdmin &&
+                                                                                            inst.status ===
+                                                                                                'pending' &&
+                                                                                            (ca.status ===
+                                                                                                'disbursed' ||
+                                                                                                ca.status ===
+                                                                                                    'repaying');
+                                                                                        return (
+                                                                                            <tr
+                                                                                                key={
+                                                                                                    inst.id
+                                                                                                }
+                                                                                                className="bg-white dark:bg-slate-900"
+                                                                                            >
+                                                                                                <td className="px-3 py-2 font-mono font-semibold">
+                                                                                                    {
+                                                                                                        inst.installment_number
+                                                                                                    }{' '}
+                                                                                                    /{' '}
+                                                                                                    {
+                                                                                                        ca.total_installments
+                                                                                                    }
+                                                                                                </td>
+                                                                                                <td className="px-3 py-2 font-mono font-bold text-[#0f274a] dark:text-sky-400">
+                                                                                                    Rp{' '}
+                                                                                                    {Number(
+                                                                                                        inst.amount,
+                                                                                                    ).toLocaleString(
+                                                                                                        'id-ID',
+                                                                                                    )}
+                                                                                                </td>
+                                                                                                <td className="px-3 py-2">
+                                                                                                    <span
+                                                                                                        className={`inline-flex items-center rounded-sm border px-2 py-0.5 font-mono text-[10px] font-bold ${instStatus.color}`}
+                                                                                                    >
+                                                                                                        {
+                                                                                                            instStatus.label
+                                                                                                        }
+                                                                                                    </span>
+                                                                                                </td>
+                                                                                                <td className="px-3 py-2 font-mono text-[10px] text-slate-500">
+                                                                                                    {inst.paid_at
+                                                                                                        ? new Date(
+                                                                                                              inst.paid_at,
+                                                                                                          ).toLocaleString(
+                                                                                                              'id-ID',
+                                                                                                          )
+                                                                                                        : '-'}
+                                                                                                </td>
+                                                                                                <td className="px-3 py-2 text-right">
+                                                                                                    {canPay && (
+                                                                                                        <Button
+                                                                                                            size="sm"
+                                                                                                            className="h-7 bg-purple-700 px-2.5 text-[11px] font-semibold text-white hover:bg-purple-800"
+                                                                                                            onClick={() => {
+                                                                                                                setPayingInstallmentId(
+                                                                                                                    inst.id,
+                                                                                                                );
+                                                                                                                loadQris(
+                                                                                                                    inst.id,
+                                                                                                                );
+                                                                                                            }}
+                                                                                                        >
+                                                                                                            <QrCode className="mr-1 size-3" />
+                                                                                                            Bayar
+                                                                                                            Cicilan
+                                                                                                        </Button>
+                                                                                                    )}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        );
+                                                                                    },
+                                                                                )}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                )}
+                                            </Fragment>
                                         );
                                     })
                                 )}
@@ -473,101 +597,86 @@ export default function CashAdvancesIndex({
                 </div>
 
                 {/* Modal Bayar Cicilan via QRIS */}
-                {payingId !== null && (
+                {payingInstallmentId !== null && payingInfo && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4">
                         <div className="w-full max-w-md rounded-xl bg-white p-5 shadow-xl dark:bg-slate-900">
                             <h3 className="mb-3 text-sm font-bold text-slate-900 dark:text-white">
                                 Pembayaran Cicilan via QRIS
                             </h3>
-                            {(() => {
-                                const ca = cashAdvances.data.find(
-                                    (c: any) => c.id === payingId,
-                                );
-                                const nextInstallment = ca?.installments?.find(
-                                    (i: any) => i.status === 'pending',
-                                );
-                                if (!nextInstallment) {
-                                    return (
-                                        <p className="text-xs text-slate-500">
-                                            Semua cicilan sudah lunas.
-                                        </p>
-                                    );
-                                }
-                                return (
-                                    <div className="space-y-4 text-center">
-                                        <p className="text-xs text-slate-600">
-                                            Scan QRIS berikut dengan aplikasi
-                                            e-wallet / mobile banking Anda.
-                                        </p>
-                                        {qrisLoading && (
-                                            <p className="text-xs text-slate-500">
-                                                Memuat QRIS dinamis...
-                                            </p>
-                                        )}
-                                        {qrisData && (
-                                            <>
-                                                <div className="flex justify-center">
-                                                    <img
-                                                        src={qrisData.qr_url}
-                                                        alt="QRIS Dinamis"
-                                                        className="size-48 rounded-lg border object-contain"
-                                                    />
-                                                </div>
-                                                <div className="rounded-lg bg-slate-50 p-3 text-xs dark:bg-slate-800">
-                                                    <p className="font-semibold text-slate-800 dark:text-white">
-                                                        Cicilan ke-
-                                                        {
-                                                            nextInstallment.installment_number
-                                                        }
-                                                    </p>
-                                                    <p className="font-mono text-lg font-bold text-[#0f274a] dark:text-sky-400">
-                                                        Rp{' '}
-                                                        {Number(
-                                                            nextInstallment.amount,
-                                                        ).toLocaleString(
-                                                            'id-ID',
-                                                        )}
-                                                    </p>
-                                                    <p className="mt-1 font-mono text-[10px] text-slate-500">
-                                                        Kode Unik:{' '}
-                                                        {qrisData.unique_code}
-                                                    </p>
-                                                </div>
-                                            </>
-                                        )}
-                                        {!qrisLoading && !qrisData && (
-                                            <p className="text-xs text-red-500">
-                                                QRIS dinamis gagal dimuat.
-                                                Pastikan QRIS statis sudah
-                                                diatur di Settings.
-                                            </p>
-                                        )}
-                                        <div className="flex gap-2">
-                                            <Button
-                                                className="flex-1 bg-purple-700 text-xs font-semibold text-white hover:bg-purple-800"
-                                                onClick={() =>
-                                                    payInstallment(
-                                                        nextInstallment.id,
-                                                    )
-                                                }
-                                            >
-                                                <CreditCard className="mr-1.5 size-4" />
-                                                Konfirmasi Pembayaran
-                                            </Button>
-                                            <Button
-                                                variant="outline"
-                                                className="text-xs"
-                                                onClick={() => {
-                                                    setPayingId(null);
-                                                    setQrisData(null);
-                                                }}
-                                            >
-                                                Tutup
-                                            </Button>
+                            <div className="space-y-4 text-center">
+                                <p className="text-xs text-slate-600">
+                                    Scan QRIS berikut dengan aplikasi e-wallet /
+                                    mobile banking Anda.
+                                </p>
+                                {qrisLoading && (
+                                    <p className="text-xs text-slate-500">
+                                        Memuat QRIS dinamis...
+                                    </p>
+                                )}
+                                {qrisData && (
+                                    <>
+                                        <div className="flex justify-center">
+                                            <img
+                                                src={qrisData.qr_url}
+                                                alt="QRIS Dinamis"
+                                                className="size-48 rounded-lg border object-contain"
+                                            />
                                         </div>
-                                    </div>
-                                );
-                            })()}
+                                        <div className="rounded-lg bg-slate-50 p-3 text-xs dark:bg-slate-800">
+                                            <p className="font-semibold text-slate-800 dark:text-white">
+                                                Cicilan ke-
+                                                {
+                                                    payingInfo.inst.installment_number
+                                                }{' '}
+                                                dari{' '}
+                                                {
+                                                    payingInfo.ca
+                                                        .total_installments
+                                                }
+                                            </p>
+                                            <p className="font-mono text-lg font-bold text-[#0f274a] dark:text-sky-400">
+                                                Rp{' '}
+                                                {Number(
+                                                    payingInfo.inst.amount,
+                                                ).toLocaleString('id-ID')}
+                                            </p>
+                                            <p className="mt-1 font-mono text-[10px] text-slate-500">
+                                                Kode Unik:{' '}
+                                                {qrisData.unique_code}
+                                            </p>
+                                        </div>
+                                    </>
+                                )}
+                                {!qrisLoading && !qrisData && (
+                                    <p className="text-xs text-red-500">
+                                        QRIS dinamis gagal dimuat. Pastikan
+                                        QRIS statis sudah diatur di Settings.
+                                    </p>
+                                )}
+                                <div className="flex gap-2">
+                                    <Button
+                                        className="flex-1 bg-purple-700 text-xs font-semibold text-white hover:bg-purple-800"
+                                        onClick={() =>
+                                            payInstallment(
+                                                payingInstallmentId,
+                                            )
+                                        }
+                                    >
+                                        <CreditCard className="mr-1.5 size-4" />
+                                        Konfirmasi Pembayaran
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        className="text-xs"
+                                        onClick={() => {
+                                            setPayingInstallmentId(null);
+                                            setQrisData(null);
+                                        }}
+                                    >
+                                        Tutup
+                                    </Button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )}

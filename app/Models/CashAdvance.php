@@ -53,6 +53,6 @@ class CashAdvance extends Model
     /** @return HasMany<CashAdvanceInstallment, $this> */
     public function installments(): HasMany
     {
-        return $this->hasMany(CashAdvanceInstallment::class);
+        return $this->hasMany(CashAdvanceInstallment::class)->orderBy('installment_number');
     }
 }
