@@ -11,12 +11,14 @@ use App\Http\Controllers\PayrollPeriodController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\Settings\QrisController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\Webhooks\QrisWebhookController;
 use App\Http\Middleware\EnsureValidRole;
 use App\Models\Attendance;
 use App\Models\CompanySetting;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\LeaveRequest;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -99,7 +101,13 @@ Route::middleware(['auth', EnsureValidRole::class])->group(function () {
     Route::post('cash-advances/{cashAdvance}/disburse', [CashAdvanceController::class, 'disburse'])->name('cash-advances.disburse');
     Route::post('cash-advances/{cashAdvance}/reject', [CashAdvanceController::class, 'reject'])->name('cash-advances.reject');
     Route::post('cash-advances/installments/{installment}/pay', [CashAdvanceController::class, 'payInstallment'])->name('cash-advances.pay-installment');
+    Route::get('cash-advances/installments/{installment}/status', [CashAdvanceController::class, 'installmentStatus'])->name('cash-advances.installment-status');
     Route::get('cash-advances/installments/{installment}/qris', [QrisController::class, 'generateDynamicQris'])->name('cash-advances.qris');
 });
 
 require __DIR__.'/settings.php';
+
+// Public payment webhook (QRIS)
+Route::post('webhooks/qris', [QrisWebhookController::class, 'handle'])
+    ->withoutMiddleware([PreventRequestForgery::class])
+    ->name('qris.webhook');

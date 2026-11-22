@@ -6,6 +6,7 @@ use App\Models\CashAdvance;
 use App\Models\CashAdvanceInstallment;
 use App\Models\CompanySetting;
 use App\Models\Employee;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -136,6 +137,14 @@ class CashAdvanceController extends Controller
         Inertia::flash('toast', ['type' => 'success', 'message' => 'Kasbon dicairkan. Cicilan dibuat.']);
 
         return to_route('cash-advances.index');
+    }
+
+    public function installmentStatus(CashAdvanceInstallment $installment): JsonResponse
+    {
+        return response()->json([
+            'status' => $installment->status,
+            'paid_at' => $installment->paid_at,
+        ]);
     }
 
     public function payInstallment(CashAdvanceInstallment $installment): RedirectResponse

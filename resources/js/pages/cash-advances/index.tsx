@@ -1,5 +1,5 @@
 import { Head, router, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Banknote,
     Check,
@@ -74,6 +74,36 @@ export default function CashAdvancesIndex({
         qr_url: string;
     } | null>(null);
     const [qrisLoading, setQrisLoading] = useState(false);
+
+    useEffect(() => {
+        if (payingId === null || !qrisData) return;
+        const ca = cashAdvances.data.find(
+            (c: any) => c.id === payingId,
+        );
+        const nextInst = ca?.installments?.find(
+            (i: any) => i.status === 'pending',
+        );
+        if (!nextInst) return;
+        const installmentId = nextInst.id;
+        const interval = setInterval(async () => {
+            try {
+                const res = await fetch(
+                    `/cash-advances/installments/${installmentId}/status`,
+                    { headers: { Accept: 'application/json' } },
+                );
+                const json = await res.json();
+                if (json.status === 'paid') {
+                    clearInterval(interval);
+                    setPayingId(null);
+                    setQrisData(null);
+                    router.reload({ only: ['cashAdvances'] });
+                }
+            } catch {
+                // ignore
+            }
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [payingId, qrisData]);
 
     const loadQris = async (installmentId: number) => {
         setQrisLoading(true);

@@ -186,6 +186,9 @@ class QrisController extends Controller
 
         $uniqueCode = 'KASBON-'.$installment->cash_advance_id.'-INS-'.$installment->installment_number;
 
+        // Store the pending reference so a payment webhook can match it.
+        $installment->update(['transaction_ref' => $uniqueCode]);
+
         return response()->json([
             'qris_string' => $dynamicQris,
             'amount' => $amount,
