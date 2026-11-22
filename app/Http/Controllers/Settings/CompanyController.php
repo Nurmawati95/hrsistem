@@ -40,27 +40,9 @@ class CompanyController extends Controller
             'announcement_active' => ['boolean'],
             'leave_policy' => ['nullable', 'string'],
             'attendance_policy' => ['nullable', 'string'],
-            'qris_image' => ['nullable', 'image', 'max:2048'],
         ]);
 
         $setting = CompanySetting::current();
-
-        if ($request->hasFile('qris_image')) {
-            $directory = public_path('uploads/qris');
-            if (! is_dir($directory)) {
-                @mkdir($directory, 0755, true);
-            }
-            $file = $request->file('qris_image');
-            $filename = 'qris-'.time().'.'.$file->getClientOriginalExtension();
-            $file->move($directory, $filename);
-
-            // Delete old QRIS image
-            if ($setting->qris_image && file_exists(public_path('uploads/qris/'.$setting->qris_image))) {
-                @unlink(public_path('uploads/qris/'.$setting->qris_image));
-            }
-
-            $validated['qris_image'] = $filename;
-        }
 
         $setting->update($validated);
 

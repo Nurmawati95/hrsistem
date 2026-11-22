@@ -1,4 +1,5 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
+import { useEffect } from 'react';
 import type { ChangeEvent, FormEventHandler } from 'react';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
@@ -25,12 +26,21 @@ export default function QrisSettings({ setting, status }: Props) {
             qris_string: setting?.qris_string ?? '',
         });
 
+    useEffect(() => {
+        setData('qris_string', setting?.qris_string ?? '');
+    }, [setting?.qris_string]);
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         patch('/settings/qris', {
             preserveScroll: true,
             forceFormData: true,
         });
+    };
+
+    const deleteQris = () => {
+        if (!confirm('Hapus QRIS yang sudah diupload?')) return;
+        router.delete('/settings/qris', { preserveScroll: true });
     };
 
     return (
@@ -58,9 +68,20 @@ export default function QrisSettings({ setting, status }: Props) {
                                     alt="QRIS"
                                     className="size-32 rounded-lg border object-contain"
                                 />
-                                <span className="text-xs text-muted-foreground">
-                                    QRIS saat ini
-                                </span>
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-xs text-muted-foreground">
+                                        QRIS saat ini
+                                    </span>
+                                    <Button
+                                        type="button"
+                                        variant="destructive"
+                                        size="sm"
+                                        onClick={deleteQris}
+                                        className="h-8 text-xs"
+                                    >
+                                        Hapus QRIS
+                                    </Button>
+                                </div>
                             </div>
                         )}
                         <div className="grid gap-2">

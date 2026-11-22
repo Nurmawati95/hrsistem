@@ -26,12 +26,14 @@ class QrisController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
+        $request->validate([
             'qris_image' => ['nullable', 'image', 'max:2048'],
             'qris_string' => ['nullable', 'string'],
         ]);
 
         $setting = CompanySetting::current();
+
+        $validated = [];
 
         if ($request->hasFile('qris_image')) {
             $directory = public_path('uploads/qris');
@@ -48,27 +50,109 @@ class QrisController extends Controller
 
             $validated['qris_image'] = $filename;
 
-            // Decode QR from uploaded image
+            // Decode QR from uploaded image -> static qris string (hasil scan)
             $decoded = $this->decodeQrFromImage(public_path('uploads/qris/'.$filename));
             if ($decoded) {
                 $validated['qris_string'] = $decoded;
             }
-        }
-
-        // If admin edited the string manually, use that
-        if ($request->filled('qris_string')) {
+        } elseif ($request->filled('qris_string')) {
+            // Manual edit/modification of the static qris string
             $validated['qris_string'] = $request->input('qris_string');
         }
 
-        $setting->update($validated);
+        if (! empty($validated)) {
+            $setting->update($validated);
+        }
 
         return back()->with('status', 'QRIS berhasil diperbarui.');
+    }
+
+    /**
+     * Delete the uploaded QRIS image and its extracted string.
+     */
+    public function destroy(): RedirectResponse
+    {
+        $setting = CompanySetting::current();
+
+        if ($setting->qris_image && file_exists(public_path('uploads/qris/'.$setting->qris_image))) {
+            @unlink(public_path('uploads/qris/'.$setting->qris_image));
+        }
+
+        $setting->update([
+            'qris_image' => null,
+            'qris_string' => null,
+        ]);
+
+        return back()->with('status', 'QRIS berhasil dihapus.');
     }
 
     /**
      * Decode QR code from an image file.
      */
     protected function decodeQrFromImage(string $path): ?string
+    {
+        $text = $this->tryDecodeFile($path);
+        if ($text !== null) {
+            return $text;
+        }
+
+        try {
+            $info = @getimagesize($path);
+            $mime = is_array($info) ? ($info['mime'] ?? '') : '';
+            $source = match ($mime) {
+                'image/jpeg' => @imagecreatefromjpeg($path),
+                'image/png' => @imagecreatefrompng($path),
+                'image/gif' => @imagecreatefromgif($path),
+                'image/webp' => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($path) : false,
+                default => false,
+            };
+
+            if (! $source) {
+                return null;
+            }
+
+            $width = imagesx($source);
+            $height = imagesy($source);
+            $max = 1024;
+            $scale = min(1.0, $max / max($width, $height));
+            $newWidth = max(1, (int) round($width * $scale));
+            $newHeight = max(1, (int) round($height * $scale));
+
+            $canvas = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresampled($canvas, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+            imagefilter($canvas, IMG_FILTER_GRAYSCALE);
+            imagefilter($canvas, IMG_FILTER_CONTRAST, -50);
+
+            imagedestroy($source);
+
+            foreach ([0, 90, 180, 270] as $degrees) {
+                $rotated = $degrees === 0 ? $canvas : imagerotate($canvas, $degrees, 0);
+                $tempFile = tempnam(sys_get_temp_dir(), 'qris').'.png';
+                imagepng($rotated, $tempFile);
+
+                $decoded = $this->tryDecodeFile($tempFile);
+                @unlink($tempFile);
+
+                if ($degrees !== 0) {
+                    imagedestroy($rotated);
+                }
+
+                if ($decoded !== null) {
+                    imagedestroy($canvas);
+
+                    return $decoded;
+                }
+            }
+
+            imagedestroy($canvas);
+
+            return null;
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
+    protected function tryDecodeFile(string $path): ?string
     {
         try {
             $reader = new QrReader($path, QrReader::SOURCE_TYPE_FILE);

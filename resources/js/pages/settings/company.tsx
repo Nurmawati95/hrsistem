@@ -21,7 +21,6 @@ type CompanySettingType = {
     announcement_active: boolean;
     leave_policy: string;
     attendance_policy: string;
-    qris_image: string | null;
 };
 
 type Props = {
@@ -43,7 +42,6 @@ export default function CompanySettings({ setting, status }: Props) {
             announcement_active: setting?.announcement_active ?? true,
             leave_policy: setting?.leave_policy ?? '',
             attendance_policy: setting?.attendance_policy ?? '',
-            qris_image: null as File | null,
         });
 
     const submit: FormEventHandler = (e) => {
@@ -280,47 +278,6 @@ export default function CompanySettings({ setting, status }: Props) {
                                 placeholder="Ketentuan batas pengajuan cuti dan bukti sakit"
                             />
                             <InputError message={errors.leave_policy} />
-                        </div>
-                    </div>
-
-                    {/* QRIS dipindahkan ke tab khusus "QRIS Pembayaran" */}
-                    <div className="space-y-4 rounded-xl border border-border bg-card p-5">
-                        <h3 className="text-sm font-bold tracking-wide text-foreground uppercase">
-                            QRIS Pembayaran Kasbon
-                        </h3>
-                        <p className="text-xs text-muted-foreground">
-                            Upload gambar QRIS statis yang akan ditampilkan saat
-                            karyawan membayar cicilan kasbon.
-                        </p>
-                        {setting?.qris_image && (
-                            <div className="flex items-center gap-4">
-                                <img
-                                    src={`/uploads/qris/${setting.qris_image}`}
-                                    alt="QRIS"
-                                    className="size-32 rounded-lg border object-contain"
-                                />
-                                <span className="text-xs text-muted-foreground">
-                                    QRIS saat ini
-                                </span>
-                            </div>
-                        )}
-                        <div className="grid gap-2">
-                            <Label htmlFor="qris_image">
-                                Upload QRIS Baru (PNG/JPG)
-                            </Label>
-                            <Input
-                                id="qris_image"
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) =>
-                                    setData(
-                                        'qris_image',
-                                        e.target.files?.[0] ?? null,
-                                    )
-                                }
-                                className="h-9 text-xs"
-                            />
-                            <InputError message={errors.qris_image} />
                         </div>
                     </div>
 

@@ -19,6 +19,7 @@ Route::middleware(['auth', EnsureValidRole::class])->group(function () {
 
     Route::get('settings/qris', [QrisController::class, 'edit'])->name('qris.edit');
     Route::patch('settings/qris', [QrisController::class, 'update'])->name('qris.update');
+    Route::delete('settings/qris', [QrisController::class, 'destroy'])->name('qris.destroy');
 });
 
 Route::middleware(['auth', EnsureValidRole::class])->group(function () {
